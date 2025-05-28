@@ -5,6 +5,10 @@ public class KCISimulator {
     public static void main(String[] args) {
 
         baka
+                
+        
+                
+                aajsbfjs
     
     }
     

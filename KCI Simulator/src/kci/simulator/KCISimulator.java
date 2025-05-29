@@ -1,13 +1,23 @@
 package kci.simulator;
 
-public class KCISimulator {
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.*;
 
-    public static void main(String[] args) {
+public class KCISimulator{
 
-<<<<<<< HEAD
-        
+    public static JFrame frame;
+    
+    public static void main(String[] args) {        
+        frame = new JFrame("Main Menu");
+        frame.setSize(600,300);
+        frame.setLocation(400,200);
+        frame.addKeyListener(new KCIKeyListener());
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(null);
                 
-=======
->>>>>>> 76e391e3f9df4db5c630c985ed5e7215222fe824
+        frame.setVisible(true);
     } 
 }
+ha

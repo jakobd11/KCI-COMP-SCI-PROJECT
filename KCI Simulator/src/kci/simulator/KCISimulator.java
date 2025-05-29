@@ -18,5 +18,7 @@ public class KCISimulator{
         frame.setLayout(null);
                 
         frame.setVisible(true);
+        
+        baka
     } 
 }

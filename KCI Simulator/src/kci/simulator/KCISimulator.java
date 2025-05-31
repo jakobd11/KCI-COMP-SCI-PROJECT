@@ -11,7 +11,7 @@ public class KCISimulator{
     
     public static void main(String[] args) {        
         frame = new JFrame("Main Menu");
-        frame.setSize(600,300);
+        frame.setSize(350,350);
         frame.setLocation(400,200);
         frame.addKeyListener(new KCIKeyListener());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

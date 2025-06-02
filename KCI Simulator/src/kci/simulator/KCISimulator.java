@@ -15,7 +15,6 @@ public class KCISimulator {
     public static int characterX = 300, characterY = 300;
 
     public static Set<Integer> pressedKeys = new HashSet<>();
-    public static char lastDirection = 's';
 
     public static void main(String[] args) {
         frame = new JFrame("Main Menu");
@@ -52,7 +51,6 @@ public class KCISimulator {
 
         layeredPane.add(panel, Integer.valueOf(0));
 
-        // Icons
         ImageIcon walkingW = new ImageIcon(new ImageIcon("walkfwd.gif").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
         ImageIcon walkingS = new ImageIcon(new ImageIcon("walkback.gif").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
         ImageIcon walkingA = new ImageIcon(new ImageIcon("walkleft.gif").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
@@ -71,7 +69,6 @@ public class KCISimulator {
         character.setDoubleBuffered(true);
         layeredPane.add(character, Integer.valueOf(1));
 
-        // KeyListener
         frame.addKeyListener(new KCIKeyListener() {
             public void keyPressed(KeyEvent e) {
                 pressedKeys.add(e.getKeyCode());
@@ -101,7 +98,6 @@ public class KCISimulator {
             }
         });
 
-        // Timer for continuous movement
         javax.swing.Timer timer = new javax.swing.Timer(16, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 boolean sprinting = pressedKeys.contains(KeyEvent.VK_SHIFT);
@@ -129,7 +125,6 @@ public class KCISimulator {
                     moved = true;
                 }
 
-                // Clamp boundaries
                 if (characterY < 160) characterY = 160;
                 if (characterY > 440) characterY = 440;
                 if (characterX < 0) characterX = 0;

@@ -12,6 +12,8 @@ public class KCISimulator{
     public static JLabel character;
     public static JLayeredPane layeredPane;
     
+    public static int characterX = 300, characterY = 300;
+    
     public static void main(String[] args) {        
         frame = new JFrame("Main Menu");
         frame.setSize(700,700);
@@ -51,23 +53,34 @@ public class KCISimulator{
         
         layeredPane.add(panel, Integer.valueOf(0));  
         
-        ImageIcon characterIcon = new ImageIcon(new ImageIcon("smoke.jpg").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
+        ImageIcon characterIcon = new ImageIcon(new ImageIcon("raiderwalking.gif").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
         character = new JLabel(characterIcon);
-        character.setBounds(300, 300, 100, 100);
+        character.setBounds(characterX, characterY, 100, 100);
         layeredPane.add(character, Integer.valueOf(1));
         
-        frame.addKeyListener(new KCIKeyListener() {
+        frame.addKeyListener(new KCIKeyListener() {  
             public void keyPressed(KeyEvent e) {
-                if (e.getKeyChar() == 'w') {
-                    
-                } else if (e.getKeyChar() == 'a') {
-                    
-                } else if (e.getKeyChar() == 's') {
-                    
-                } else if (e.getKeyChar() == 'd') {
-                    
+                switch (e.getKeyChar()) {
+                    case 'w':
+                        characterY -= 10;
+                        break;
+                    case 's':
+                        characterY += 10;
+                        break;
+                    case 'a':
+                        characterX -= 10;
+                        break;
+                    case 'd':
+                        characterX += 10;
+                        break;
+                    default:
+                        break;
                 }
+                
+                character.setLocation(characterX, characterY);
             }
+            
+            
         });
         
         frame.setFocusable(true);

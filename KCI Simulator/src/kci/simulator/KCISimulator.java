@@ -5,33 +5,33 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 
-public class KCISimulator{
+public class KCISimulator {
 
     public static JFrame frame;
     public static JPanel panel;
     public static JLabel character;
     public static JLayeredPane layeredPane;
-    
+
     public static int characterX = 300, characterY = 300;
-    
-    public static void main(String[] args) {        
+
+    public static Set<Integer> pressedKeys = new HashSet<>();
+    public static char lastDirection = 's';
+
+    public static void main(String[] args) {
         frame = new JFrame("Main Menu");
-        frame.setSize(700,700);
-        frame.setLocation(400,200);
+        frame.setSize(700, 700);
+        frame.setLocation(400, 200);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
+
         layeredPane = new JLayeredPane();
         layeredPane.setPreferredSize(new Dimension(7 * 100, 7 * 100));
         frame.setContentPane(layeredPane);
-        
+
         panel = new JPanel();
-        panel.setLayout(new GridLayout(7,7));
+        panel.setLayout(new GridLayout(7, 7));
         panel.setBounds(0, 0, 700, 700);
-        
-        
-        
+
         int[][] mapMatrix = new int[7][7];
-        
         for (int i = 0; i < mapMatrix.length; i++) {
             for (int j = 0; j < mapMatrix[i].length; j++) {
                 ImageIcon pic;
@@ -46,13 +46,13 @@ public class KCISimulator{
                     pic = new ImageIcon(new ImageIcon("floor.jpg").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
                 }
                 JLabel label = new JLabel(pic);
-                label.setBounds(0, 0, 100, 100);
                 panel.add(label);
             }
         }
-        
-        layeredPane.add(panel, Integer.valueOf(0));  
-        
+
+        layeredPane.add(panel, Integer.valueOf(0));
+
+        // Icons
         ImageIcon walkingW = new ImageIcon(new ImageIcon("walkfwd.gif").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
         ImageIcon walkingS = new ImageIcon(new ImageIcon("walkback.gif").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
         ImageIcon walkingA = new ImageIcon(new ImageIcon("walkleft.gif").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
@@ -65,97 +65,79 @@ public class KCISimulator{
         ImageIcon runningS = new ImageIcon(new ImageIcon("sprintback.gif").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
         ImageIcon runningA = new ImageIcon(new ImageIcon("sprintleft.gif").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
         ImageIcon runningD = new ImageIcon(new ImageIcon("sprintright.gif").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
-        
-        character = new JLabel(facingW);
+
+        character = new JLabel(facingS);
         character.setBounds(characterX, characterY, 100, 100);
         character.setDoubleBuffered(true);
         layeredPane.add(character, Integer.valueOf(1));
-        
-        frame.addKeyListener(new KCIKeyListener() {  
+
+        // KeyListener
+        frame.addKeyListener(new KCIKeyListener() {
             public void keyPressed(KeyEvent e) {
-                boolean sprinting = false;
-                switch (e.getKeyChar()) {
-                    case 'w':
-                        characterY -= 15;
-                        character.setIcon(walkingW);
+                pressedKeys.add(e.getKeyCode());
+            }
+
+            public void keyReleased(KeyEvent e) {
+                pressedKeys.remove(e.getKeyCode());
+
+                switch (e.getKeyCode()) {
+                    case KeyEvent.VK_W:
+                        character.setIcon(facingW);
                         break;
-                    case 's':
-                        characterY += 15;
-                        character.setIcon(walkingS);
+                    case KeyEvent.VK_S:
+                        character.setIcon(facingS);
                         break;
-                    case 'a':
-                        characterX -= 15;
-                        character.setIcon(walkingA);
+                    case KeyEvent.VK_A:
+                        character.setIcon(facingA);
                         break;
-                    case 'd':
-                        characterX += 15;
-                        character.setIcon(walkingD);
-                        break;
-                    case 'W':
-                        characterY -= 30;
-                        character.setIcon(runningW);
-                        sprinting = true;
-                        break;
-                    case 'S':
-                        characterY += 30;
-                        character.setIcon(runningS);
-                        sprinting = true;
-                        break;
-                    case 'A':
-                        characterX -= 30;
-                        character.setIcon(runningA);
-                        sprinting = true;
-                        break;
-                    case 'D':
-                        characterX += 30;
-                        character.setIcon(runningD);
-                        sprinting = true;
-                        break;
-                    default:
+                    case KeyEvent.VK_D:
+                        character.setIcon(facingD);
                         break;
                 }
-                
+            }
+        });
+
+        // Timer for continuous movement
+        javax.swing.Timer timer = new javax.swing.Timer(16, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                boolean sprinting = pressedKeys.contains(KeyEvent.VK_SHIFT);
+                boolean moved = false;
+                int speed = sprinting ? 10 : 5;
+
+                if (pressedKeys.contains(KeyEvent.VK_W)) {
+                    characterY -= speed;
+                    character.setIcon(sprinting ? runningW : walkingW);
+                    moved = true;
+                }
+                if (pressedKeys.contains(KeyEvent.VK_S)) {
+                    characterY += speed;
+                    character.setIcon(sprinting ? runningS : walkingS);
+                    moved = true;
+                }
+                if (pressedKeys.contains(KeyEvent.VK_A)) {
+                    characterX -= speed;
+                    character.setIcon(sprinting ? runningA : walkingA);
+                    moved = true;
+                }
+                if (pressedKeys.contains(KeyEvent.VK_D)) {
+                    characterX += speed;
+                    character.setIcon(sprinting ? runningD : walkingD);
+                    moved = true;
+                }
+
+                // Clamp boundaries
                 if (characterY < 160) characterY = 160;
                 if (characterY > 440) characterY = 440;
                 if (characterX < 0) characterX = 0;
                 if (characterX > 600) characterX = 600;
 
                 character.setLocation(characterX, characterY);
-                
-            } 
-            public void keyReleased (KeyEvent e) {
-                switch (e.getKeyChar()) {
-                    case 'w':
-                        character.setIcon(facingW);
-                        break;
-                    case 's':
-                        character.setIcon(facingS);
-                        break;
-                    case 'a':
-                        character.setIcon(facingA);
-                        break;
-                    case 'd':
-                        character.setIcon(facingD);
-                        break;
-                    case 'W':
-                        character.setIcon(facingW);
-                        break;
-                    case 'S':
-                        character.setIcon(facingS);
-                        break;
-                    case 'A':
-                        character.setIcon(facingA);
-                        break;
-                    case 'D':
-                        character.setIcon(walkingD);
-                        break;
-                    default:
-                        break;
-                }
             }
         });
-        
+        timer.start();
+
         frame.setFocusable(true);
         frame.setVisible(true);
     }
 }
+

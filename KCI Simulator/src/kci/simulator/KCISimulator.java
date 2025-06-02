@@ -14,7 +14,6 @@ public class KCISimulator{
         frame.setSize(700,700);
         frame.setLocation(400,200);
         frame.setLayout(new GridLayout(7,7));
-        frame.addKeyListener(new KCIKeyListener());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         int[][] mapMatrix = new int[7][7];
@@ -39,5 +38,19 @@ public class KCISimulator{
         }
           
         frame.setVisible(true);
+        
+        frame.addKeyListener(new KCIKeyListener() {
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyChar() == 'w') {
+                    
+                } else if (e.getKeyChar() == 'a') {
+                    
+                } else if (e.getKeyChar() == 's') {
+                    
+                } else if (e.getKeyChar() == 'd') {
+                    
+                }
+            }
+        });
     } 
 }

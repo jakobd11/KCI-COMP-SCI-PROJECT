@@ -8,7 +8,7 @@ class KCIKeyListener implements KeyListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
-        System.out.println("Key Typed: " + e.getKeyChar());
+        
     }
 
     @Override
@@ -18,7 +18,7 @@ class KCIKeyListener implements KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-        System.out.println("Key Released: " + e.getKeyChar());
+        
     }
     
 }

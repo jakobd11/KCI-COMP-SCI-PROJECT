@@ -53,47 +53,115 @@ public class KCISimulator{
         
         layeredPane.add(panel, Integer.valueOf(0));  
         
-        ImageIcon characterIcon = new ImageIcon(new ImageIcon("raiderwalking.gif").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
-        character = new JLabel(characterIcon);
+        ImageIcon walkingW = new ImageIcon(new ImageIcon("raiderwalking.gif").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
+        ImageIcon walkingS = new ImageIcon(new ImageIcon("raiderwalking.gif").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
+        ImageIcon walkingA = new ImageIcon(new ImageIcon("raiderwalking.gif").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
+        ImageIcon walkingD = new ImageIcon(new ImageIcon("raiderwalking.gif").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
+        ImageIcon facingW = new ImageIcon(new ImageIcon("raiderwalking.gif").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
+        ImageIcon facingS = new ImageIcon(new ImageIcon("raiderwalking.gif").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
+        ImageIcon facingA = new ImageIcon(new ImageIcon("raiderwalking.gif").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
+        ImageIcon facingD = new ImageIcon(new ImageIcon("raiderwalking.gif").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
+        character = new JLabel(facingW);
         character.setBounds(characterX, characterY, 100, 100);
         layeredPane.add(character, Integer.valueOf(1));
         
         frame.addKeyListener(new KCIKeyListener() {  
-            public void keyPressed(KeyEvent e) {         
+            public void keyPressed(KeyEvent e) {
+                boolean sprinting = false;
                 switch (e.getKeyChar()) {
                     case 'w':
                         characterY -= 15;
+                        character.setIcon(walkingW);
                         break;
                     case 's':
                         characterY += 15;
+                        character.setIcon(walkingS);
                         break;
                     case 'a':
                         characterX -= 15;
+                        character.setIcon(walkingA);
                         break;
                     case 'd':
                         characterX += 15;
+                        character.setIcon(walkingD);
                         break;
                     case 'W':
                         characterY -= 30;
+                        character.setIcon(walkingW);
+                        sprinting = true;
                         break;
                     case 'S':
                         characterY += 30;
+                        character.setIcon(walkingS);
+                        sprinting = true;
                         break;
                     case 'A':
                         characterX -= 30;
+                        character.setIcon(walkingA);
+                        sprinting = true;
                         break;
                     case 'D':
                         characterX += 30;
+                        character.setIcon(walkingD);
+                        sprinting = true;
                         break;
                     default:
                         break;
                 }
+                if (characterY > 160){
+                    if (characterY < 440) {
+                        character.setLocation(characterX, characterY);
+                    } else {
+                        if (sprinting) {
+                            characterY -= 30;
+                        } else {
+                            characterY -= 15;
+                        }
+                    }
+                } else {
+                    if (sprinting) {
+                        characterY += 30;
+                    } else {
+                        characterY += 15;
+                    }
+                        
+                    
+                }
                 
-                character.setLocation(characterX, characterY);
+            } 
+            public void keyReleased (KeyEvent e) {
+                switch (e.getKeyChar()) {
+                    case 'w':
+                        character.setIcon(facingW);
+                        break;
+                    case 's':
+                        character.setIcon(facingS);
+                        break;
+                    case 'a':
+                        character.setIcon(facingA);
+                        break;
+                    case 'd':
+                        character.setIcon(facingD);
+                        break;
+                    case 'W':
+                        character.setIcon(facingW);
+                        break;
+                    case 'S':
+                        character.setIcon(facingS);
+                        break;
+                    case 'A':
+                        character.setIcon(facingA);
+                        break;
+                    case 'D':
+                        character.setIcon(walkingD);
+                        break;
+                    default:
+                        break;
+                }
             }
         });
         
         frame.setFocusable(true);
         frame.setVisible(true);
-    } 
+    }
 }

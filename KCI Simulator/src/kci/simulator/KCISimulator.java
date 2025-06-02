@@ -53,16 +53,17 @@ public class KCISimulator{
         
         layeredPane.add(panel, Integer.valueOf(0));  
         
-        ImageIcon walkingW = new ImageIcon(new ImageIcon("raiderwalking.gif").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
-        ImageIcon walkingS = new ImageIcon(new ImageIcon("raiderwalking.gif").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
-        ImageIcon walkingA = new ImageIcon(new ImageIcon("raiderwalking.gif").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
-        ImageIcon walkingD = new ImageIcon(new ImageIcon("raiderwalking.gif").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
-        ImageIcon facingW = new ImageIcon(new ImageIcon("raiderwalking.gif").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
-        ImageIcon facingS = new ImageIcon(new ImageIcon("raiderwalking.gif").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
-        ImageIcon facingA = new ImageIcon(new ImageIcon("raiderwalking.gif").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
-        ImageIcon facingD = new ImageIcon(new ImageIcon("raiderwalking.gif").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
+        ImageIcon walkingW = new ImageIcon(new ImageIcon("walkfwd.gif").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
+        ImageIcon walkingS = new ImageIcon(new ImageIcon("walkback.gif").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
+        ImageIcon walkingA = new ImageIcon(new ImageIcon("walkleft.gif").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
+        ImageIcon walkingD = new ImageIcon(new ImageIcon("walkright.gif").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
+        ImageIcon facingW = new ImageIcon(new ImageIcon("standfwd.gif").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
+        ImageIcon facingS = new ImageIcon(new ImageIcon("standback.gif").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
+        ImageIcon facingA = new ImageIcon(new ImageIcon("standleft.gif").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
+        ImageIcon facingD = new ImageIcon(new ImageIcon("standright.gif").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
         character = new JLabel(facingW);
         character.setBounds(characterX, characterY, 100, 100);
+        character.setDoubleBuffered(true);
         layeredPane.add(character, Integer.valueOf(1));
         
         frame.addKeyListener(new KCIKeyListener() {  

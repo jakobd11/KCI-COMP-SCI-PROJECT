@@ -114,25 +114,13 @@ public class KCISimulator{
                     default:
                         break;
                 }
-                if (characterY > 160){
-                    if (characterY < 440) {
-                        character.setLocation(characterX, characterY);
-                    } else {
-                        if (sprinting) {
-                            characterY -= 30;
-                        } else {
-                            characterY -= 15;
-                        }
-                    }
-                } else {
-                    if (sprinting) {
-                        characterY += 30;
-                    } else {
-                        characterY += 15;
-                    }
-                        
-                    
-                }
+                
+                if (characterY < 160) characterY = 160;
+                if (characterY > 440) characterY = 440;
+                if (characterX < 0) characterX = 0;
+                if (characterX > 600) characterX = 600;
+
+                character.setLocation(characterX, characterY);
                 
             } 
             public void keyReleased (KeyEvent e) {

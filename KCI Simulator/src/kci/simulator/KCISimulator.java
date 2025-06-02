@@ -59,25 +59,24 @@ public class KCISimulator{
         layeredPane.add(character, Integer.valueOf(1));
         
         frame.addKeyListener(new KCIKeyListener() {  
-            public void keyPressed(KeyEvent e) {
-                switch (e.getKeyChar()) {
-                    case 'w':
+            public void keyPressed(KeyEvent e) {         
+                    if (e.getKeyChar() == 'w') {
                         characterY -= 10;
-                        break;
-                    case 's':
+                    }
+                    
+                    if (e.getKeyChar() == 's') {
                         characterY += 10;
-                        break;
-                    case 'a':
+                    }
+                    
+                    if (e.getKeyChar() == 'a') {
                         characterX -= 10;
-                        break;
-                    case 'd':
+                    }
+                    
+                    if (e.getKeyChar() == 'd') {
                         characterX += 10;
-                        break;
-                    default:
-                        break;
-                }
-                
-                character.setLocation(characterX, characterY);
+                    }
+                    
+                    character.setLocation(characterX, characterY);
             }
             
             

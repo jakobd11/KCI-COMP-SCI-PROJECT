@@ -89,9 +89,7 @@ public class KCISimulator{
                         break;
                 }
                 
-                
-                    
-                    character.setLocation(characterX, characterY);
+                character.setLocation(characterX, characterY);
             }
         });
         

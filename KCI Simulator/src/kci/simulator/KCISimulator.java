@@ -60,26 +60,39 @@ public class KCISimulator{
         
         frame.addKeyListener(new KCIKeyListener() {  
             public void keyPressed(KeyEvent e) {         
-                    if (e.getKeyChar() == 'w') {
-                        characterY -= 10;
-                    }
-                    
-                    if (e.getKeyChar() == 's') {
-                        characterY += 10;
-                    }
-                    
-                    if (e.getKeyChar() == 'a') {
-                        characterX -= 10;
-                    }
-                    
-                    if (e.getKeyChar() == 'd') {
-                        characterX += 10;
-                    }
+                switch (e.getKeyChar()) {
+                    case 'w':
+                        characterY -= 15;
+                        break;
+                    case 's':
+                        characterY += 15;
+                        break;
+                    case 'a':
+                        characterX -= 15;
+                        break;
+                    case 'd':
+                        characterX += 15;
+                        break;
+                    case 'W':
+                        characterY -= 30;
+                        break;
+                    case 'S':
+                        characterY += 30;
+                        break;
+                    case 'A':
+                        characterX -= 30;
+                        break;
+                    case 'D':
+                        characterX += 30;
+                        break;
+                    default:
+                        break;
+                }
+                
+                
                     
                     character.setLocation(characterX, characterY);
             }
-            
-            
         });
         
         frame.setFocusable(true);

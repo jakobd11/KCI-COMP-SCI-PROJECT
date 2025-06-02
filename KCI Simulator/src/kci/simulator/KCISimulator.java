@@ -8,16 +8,25 @@ import java.util.*;
 public class KCISimulator{
 
     public static JFrame frame;
+    public static JPanel panel;
+    public static JLabel character;
     
     public static void main(String[] args) {        
         frame = new JFrame("Main Menu");
         frame.setSize(700,700);
         frame.setLocation(400,200);
-        frame.setLayout(new GridLayout(7,7));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        int[][] mapMatrix = new int[7][7];
+        panel = new JPanel();
+        frame.add(panel);
+        panel.setLayout(new GridLayout(7,7));
+        
         ImageIcon pic;
+        pic = new ImageIcon(new ImageIcon("smoke.jpg").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
+        character = new JLabel(pic);
+        frame.add(character);
+        
+        int[][] mapMatrix = new int[7][7];
         
         for (int i = 0; i < mapMatrix.length; i++) {
             for (int j = 0; j < mapMatrix[i].length; j++) {
@@ -33,7 +42,7 @@ public class KCISimulator{
                 }
                 JLabel label = new JLabel(pic);
                 label.setBounds(0, 0, 100, 100);
-                frame.add(label);
+                panel.add(label);
             }
         }
           

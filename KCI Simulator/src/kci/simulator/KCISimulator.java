@@ -82,15 +82,19 @@ public class KCISimulator {
 
                 switch (e.getKeyCode()) {
                     case KeyEvent.VK_W:
+                    case KeyEvent.VK_UP:
                         character.setIcon(facingW);
                         break;
                     case KeyEvent.VK_S:
+                    case KeyEvent.VK_DOWN:    
                         character.setIcon(facingS);
                         break;
                     case KeyEvent.VK_A:
+                    case KeyEvent.VK_LEFT:
                         character.setIcon(facingA);
                         break;
                     case KeyEvent.VK_D:
+                    case KeyEvent.VK_RIGHT:
                         character.setIcon(facingD);
                         break;
                 }
@@ -104,22 +108,22 @@ public class KCISimulator {
                 boolean moved = false;
                 int speed = sprinting ? 10 : 5;
 
-                if (pressedKeys.contains(KeyEvent.VK_W)) {
+                if (pressedKeys.contains(KeyEvent.VK_W)||pressedKeys.contains(KeyEvent.VK_UP)) {
                     characterY -= speed;
                     character.setIcon(sprinting ? runningW : walkingW);
                     moved = true;
                 }
-                if (pressedKeys.contains(KeyEvent.VK_S)) {
+                if (pressedKeys.contains(KeyEvent.VK_S)||pressedKeys.contains(KeyEvent.VK_DOWN)) {
                     characterY += speed;
                     character.setIcon(sprinting ? runningS : walkingS);
                     moved = true;
                 }
-                if (pressedKeys.contains(KeyEvent.VK_A)) {
+                if (pressedKeys.contains(KeyEvent.VK_A)||pressedKeys.contains(KeyEvent.VK_LEFT)) {
                     characterX -= speed;
                     character.setIcon(sprinting ? runningA : walkingA);
                     moved = true;
                 }
-                if (pressedKeys.contains(KeyEvent.VK_D)) {
+                if (pressedKeys.contains(KeyEvent.VK_D)||pressedKeys.contains(KeyEvent.VK_RIGHT)) {
                     characterX += speed;
                     character.setIcon(sprinting ? runningD : walkingD);
                     moved = true;

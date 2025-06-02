@@ -61,6 +61,11 @@ public class KCISimulator{
         ImageIcon facingS = new ImageIcon(new ImageIcon("standback.gif").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
         ImageIcon facingA = new ImageIcon(new ImageIcon("standleft.gif").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
         ImageIcon facingD = new ImageIcon(new ImageIcon("standright.gif").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
+        ImageIcon runningW = new ImageIcon(new ImageIcon("sprintfwd.gif").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
+        ImageIcon runningS = new ImageIcon(new ImageIcon("sprintback.gif").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
+        ImageIcon runningA = new ImageIcon(new ImageIcon("sprintleft.gif").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
+        ImageIcon runningD = new ImageIcon(new ImageIcon("sprintright.gif").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
+        
         character = new JLabel(facingW);
         character.setBounds(characterX, characterY, 100, 100);
         character.setDoubleBuffered(true);
@@ -88,22 +93,22 @@ public class KCISimulator{
                         break;
                     case 'W':
                         characterY -= 30;
-                        character.setIcon(walkingW);
+                        character.setIcon(runningW);
                         sprinting = true;
                         break;
                     case 'S':
                         characterY += 30;
-                        character.setIcon(walkingS);
+                        character.setIcon(runningS);
                         sprinting = true;
                         break;
                     case 'A':
                         characterX -= 30;
-                        character.setIcon(walkingA);
+                        character.setIcon(runningA);
                         sprinting = true;
                         break;
                     case 'D':
                         characterX += 30;
-                        character.setIcon(walkingD);
+                        character.setIcon(runningD);
                         sprinting = true;
                         break;
                     default:

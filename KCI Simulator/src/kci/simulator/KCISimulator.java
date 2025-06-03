@@ -9,10 +9,10 @@ public class KCISimulator {
 
     public static JFrame frame;
     public static JPanel panel;
-    public static JLabel character;
+    public static JLabel character, staminaLabel;
     public static JLayeredPane layeredPane;
 
-    public static int characterX = 300, characterY = 300;
+    public static int characterX = 300, characterY = 300, stamina = 100;
 
     public static Set<Integer> pressedKeys = new HashSet<>();
 
@@ -64,6 +64,12 @@ public class KCISimulator {
         ImageIcon runningA = new ImageIcon(new ImageIcon("sprintleft.gif").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
         ImageIcon runningD = new ImageIcon(new ImageIcon("sprintright.gif").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
 
+        staminaLabel = new JLabel(Integer.toString(stamina));
+        staminaLabel.setFont(new java.awt.Font("Arial", Font.BOLD, 24));
+        staminaLabel.setBounds(200, 50, 200, 24);
+        staminaLabel.setForeground(Color.red);
+        layeredPane.add(staminaLabel, Integer.valueOf(2));
+        
         character = new JLabel(facingS);
         character.setBounds(characterX, characterY, 100, 100);
         character.setDoubleBuffered(true);
@@ -101,23 +107,40 @@ public class KCISimulator {
         javax.swing.Timer timer = new javax.swing.Timer(16, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 boolean sprinting = pressedKeys.contains(KeyEvent.VK_SHIFT);
+                boolean moving = false;
+                
+                if (stamina == 0) {
+                    sprinting = false;
+                }
+                
                 int speed = sprinting ? 10 : 5;
 
                 if (pressedKeys.contains(KeyEvent.VK_W)||pressedKeys.contains(KeyEvent.VK_UP)) {
                     characterY -= speed;
                     character.setIcon(sprinting ? runningW : walkingW);
+                    moving = true;
                 }
                 if (pressedKeys.contains(KeyEvent.VK_S)||pressedKeys.contains(KeyEvent.VK_DOWN)) {
                     characterY += speed;
                     character.setIcon(sprinting ? runningS : walkingS);
+                    moving = true;
                 }
                 if (pressedKeys.contains(KeyEvent.VK_A)||pressedKeys.contains(KeyEvent.VK_LEFT)) {
                     characterX -= speed;
                     character.setIcon(sprinting ? runningA : walkingA);
+                    moving = true;
                 }
                 if (pressedKeys.contains(KeyEvent.VK_D)||pressedKeys.contains(KeyEvent.VK_RIGHT)) {
                     characterX += speed;
                     character.setIcon(sprinting ? runningD : walkingD);
+                    moving = true;
+                }
+                
+                if (sprinting && moving) {
+                    stamina -= 1;
+                } if (pressedKeys.contains(KeyEvent.VK_SHIFT)) {
+                } else {
+                    stamina += 2;
                 }
 
                 if (characterY < 160) 
@@ -130,6 +153,8 @@ public class KCISimulator {
                     characterX = 600;
 
                 character.setLocation(characterX, characterY);
+                
+                staminaLabel.setText(Integer.toString(stamina));
             }
         });
         timer.start();

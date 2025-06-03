@@ -8,8 +8,9 @@ import java.util.*;
 public class KCISimulator {
 
     public static JFrame frame;
-    public static JPanel panel;
-    public static JLabel character, staminaLabel;
+    public static JPanel mapPanel, center, sideMenu;
+    public static JLabel character;
+    public static JProgressBar staminaBar;
     public static JLayeredPane layeredPane;
 
     public static int characterX = 300, characterY = 300, stamina = 100;
@@ -21,14 +22,20 @@ public class KCISimulator {
         frame.setSize(700, 700);
         frame.setLocation(400, 200);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(new BorderLayout());
 
         layeredPane = new JLayeredPane();
         layeredPane.setPreferredSize(new Dimension(7 * 100, 7 * 100));
-        frame.setContentPane(layeredPane);
+        frame.add(layeredPane, BorderLayout.CENTER);
+        
+        sideMenu = new JPanel();
+        frame.add(sideMenu, BorderLayout.WEST);
+        staminaBar = new JProgressBar(0,100);
+        sideMenu.add(staminaBar);
 
-        panel = new JPanel();
-        panel.setLayout(new GridLayout(7, 7));
-        panel.setBounds(0, 0, 700, 700);
+        mapPanel = new JPanel();
+        mapPanel.setLayout(new GridLayout(7, 7));
+        mapPanel.setBounds(0, 0, 700, 700);
 
         int[][] mapMatrix = new int[7][7];
         for (int i = 0; i < mapMatrix.length; i++) {
@@ -45,11 +52,11 @@ public class KCISimulator {
                     pic = new ImageIcon(new ImageIcon("floor.jpg").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
                 }
                 JLabel label = new JLabel(pic);
-                panel.add(label);
+                mapPanel.add(label);
             }
         }
 
-        layeredPane.add(panel, Integer.valueOf(0));
+        layeredPane.add(mapPanel, Integer.valueOf(0));
 
         ImageIcon walkingW = new ImageIcon(new ImageIcon("walkfwd.gif").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
         ImageIcon walkingS = new ImageIcon(new ImageIcon("walkback.gif").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
@@ -63,12 +70,6 @@ public class KCISimulator {
         ImageIcon runningS = new ImageIcon(new ImageIcon("sprintback.gif").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
         ImageIcon runningA = new ImageIcon(new ImageIcon("sprintleft.gif").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
         ImageIcon runningD = new ImageIcon(new ImageIcon("sprintright.gif").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
-
-        staminaLabel = new JLabel(Integer.toString(stamina));
-        staminaLabel.setFont(new java.awt.Font("Arial", Font.BOLD, 24));
-        staminaLabel.setBounds(200, 50, 200, 24);
-        staminaLabel.setForeground(Color.red);
-        layeredPane.add(staminaLabel, Integer.valueOf(2));
         
         character = new JLabel(facingS);
         character.setBounds(characterX, characterY, 100, 100);
@@ -113,7 +114,7 @@ public class KCISimulator {
                     sprinting = false;
                 }
                 
-                int speed = sprinting ? 10 : 5;
+                int speed = sprinting ? 7 : 4;
 
                 if (pressedKeys.contains(KeyEvent.VK_W)||pressedKeys.contains(KeyEvent.VK_UP)) {
                     characterY -= speed;
@@ -141,7 +142,7 @@ public class KCISimulator {
                 else if (pressedKeys.contains(KeyEvent.VK_SHIFT)) {}
                 else {
                     if (stamina < 100)
-                        stamina += 2;
+                        stamina += 1;
                 }
 
                 if (characterY < 160) 
@@ -155,7 +156,7 @@ public class KCISimulator {
 
                 character.setLocation(characterX, characterY);
                 
-                staminaLabel.setText(Integer.toString(stamina));
+                staminaBar.setValue(stamina);
             }
         });
         timer.start();

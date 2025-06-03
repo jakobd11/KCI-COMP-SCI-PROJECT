@@ -125,10 +125,14 @@ public class KCISimulator {
                     moved = true;
                 }
 
-                if (characterY < 160) characterY = 160;
-                if (characterY > 440) characterY = 440;
-                if (characterX < 0) characterX = 0;
-                if (characterX > 600) characterX = 600;
+                if (characterY < 160) 
+                    characterY = 160;
+                if (characterY > 440) 
+                    characterY = 440;
+                if (characterX < 0) 
+                    characterX = 0;
+                if (characterX > 600) 
+                    characterX = 600;
 
                 character.setLocation(characterX, characterY);
             }

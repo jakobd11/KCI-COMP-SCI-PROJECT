@@ -65,7 +65,6 @@ public class KCISimulator {
 
         layeredPane.add(mapPanel, Integer.valueOf(0));
 
-        // Load scaled character icons
         ImageIcon walkingW = new ImageIcon(new ImageIcon("walkfwd.gif").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT));
         ImageIcon walkingS = new ImageIcon(new ImageIcon("walkback.gif").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT));
         ImageIcon walkingA = new ImageIcon(new ImageIcon("walkleft.gif").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT));
@@ -152,7 +151,6 @@ public class KCISimulator {
                     if (stamina < 100) stamina += 1;
                 }
 
-                // Boundaries
                 if (characterY < 0 + 2*tileSize) characterY = 2*tileSize;
                 if (characterY > mapHeight - 3*tileSize) characterY = mapHeight - 3*tileSize;
                 if (characterX < 0) characterX = 0;

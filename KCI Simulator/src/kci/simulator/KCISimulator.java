@@ -101,28 +101,23 @@ public class KCISimulator {
         javax.swing.Timer timer = new javax.swing.Timer(16, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 boolean sprinting = pressedKeys.contains(KeyEvent.VK_SHIFT);
-                boolean moved = false;
                 int speed = sprinting ? 10 : 5;
 
                 if (pressedKeys.contains(KeyEvent.VK_W)||pressedKeys.contains(KeyEvent.VK_UP)) {
                     characterY -= speed;
                     character.setIcon(sprinting ? runningW : walkingW);
-                    moved = true;
                 }
                 if (pressedKeys.contains(KeyEvent.VK_S)||pressedKeys.contains(KeyEvent.VK_DOWN)) {
                     characterY += speed;
                     character.setIcon(sprinting ? runningS : walkingS);
-                    moved = true;
                 }
                 if (pressedKeys.contains(KeyEvent.VK_A)||pressedKeys.contains(KeyEvent.VK_LEFT)) {
                     characterX -= speed;
                     character.setIcon(sprinting ? runningA : walkingA);
-                    moved = true;
                 }
                 if (pressedKeys.contains(KeyEvent.VK_D)||pressedKeys.contains(KeyEvent.VK_RIGHT)) {
                     characterX += speed;
                     character.setIcon(sprinting ? runningD : walkingD);
-                    moved = true;
                 }
 
                 if (characterY < 160) 

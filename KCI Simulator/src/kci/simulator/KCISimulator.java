@@ -23,7 +23,7 @@ public class KCISimulator {
         screenX = screenSize.getWidth();
         screenY = screenSize.getHeight();
 
-        frame = new JFrame("Main Menu");
+        frame = new JFrame("KCI Simulator");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
 

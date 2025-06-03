@@ -141,7 +141,7 @@ public class KCISimulator {
                 else if (pressedKeys.contains(KeyEvent.VK_SHIFT)) {}
                 else {
                     if (stamina < 100)
-                        stamina += 2;
+                        stamina += 1;
                 }
 
                 if (characterY < 160) 

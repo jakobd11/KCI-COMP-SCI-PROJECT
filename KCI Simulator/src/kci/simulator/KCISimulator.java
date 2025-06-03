@@ -8,7 +8,7 @@ import java.util.*;
 public class KCISimulator {
 
     public static JFrame frame;
-    public static JPanel mapPanel, center, sideMenu;
+    public static JPanel mapPanel, sideMenu;
     public static JLabel character;
     public static JProgressBar staminaBar;
     public static JLayeredPane layeredPane;

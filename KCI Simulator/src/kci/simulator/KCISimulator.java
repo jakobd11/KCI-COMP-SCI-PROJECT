@@ -136,10 +136,10 @@ public class KCISimulator {
                     moving = true;
                 }
                 
-                if (sprinting && moving) {
+                if (sprinting && moving) 
                     stamina -= 1;
-                } if (pressedKeys.contains(KeyEvent.VK_SHIFT)) {
-                } else {
+                else if (pressedKeys.contains(KeyEvent.VK_SHIFT)) {}
+                else {
                     if (stamina < 100)
                         stamina += 2;
                 }

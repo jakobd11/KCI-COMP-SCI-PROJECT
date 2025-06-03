@@ -7,6 +7,7 @@ import java.util.*;
 
 public class KCISimulator {
 
+    
     public static JFrame frame;
     public static JPanel panel;
     public static JLabel character, staminaLabel;

@@ -9,7 +9,7 @@ public class KCISimulator {
 
     public static JFrame frame;
     public static JPanel mapPanel, sideMenu;
-    public static JLabel character;
+    public static JLabel character, nameLabel, rodney;
     public static JProgressBar staminaBar;
     public static JLayeredPane layeredPane;
 
@@ -36,10 +36,19 @@ public class KCISimulator {
 
         sideMenu = new JPanel();
         sideMenu.setPreferredSize(new Dimension((int)(screenX-mapWidth)/2, 100));
+        sideMenu.setLayout(new FlowLayout());
         frame.add(sideMenu, BorderLayout.WEST);
+        nameLabel = new JLabel("Rodney Raider");
+        nameLabel.setFont(new java.awt.Font("Arial", Font.BOLD, 24));
+        nameLabel.setForeground(Color.red);
+        rodney = new JLabel(new ImageIcon(new ImageIcon("rodneyorsmth.gif").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT)));
         staminaBar = new JProgressBar(0, 100);
+        staminaBar.setForeground(Color.green);
+        staminaBar.setBackground(Color.gray);
+        sideMenu.add(nameLabel);
+        sideMenu.add(rodney);
         sideMenu.add(staminaBar);
-
+        
         mapPanel = new JPanel();
         mapPanel.setLayout(new GridLayout(7, 7));
         mapPanel.setBounds(0, 0, mapWidth, mapHeight);

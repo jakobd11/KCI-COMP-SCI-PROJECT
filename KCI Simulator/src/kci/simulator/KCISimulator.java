@@ -38,10 +38,10 @@ public class KCISimulator {
         sideMenu.setPreferredSize(new Dimension((int)(screenX-mapWidth)/2, 100));
         sideMenu.setLayout(new FlowLayout());
         frame.add(sideMenu, BorderLayout.WEST);
-        nameLabel = new JLabel("Rodney Raider");
+        nameLabel = new JLabel("Rodney the Raider");
         nameLabel.setFont(new java.awt.Font("Arial", Font.BOLD, 24));
         nameLabel.setForeground(Color.red);
-        rodney = new JLabel(new ImageIcon(new ImageIcon("rodneyorsmth.gif").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT)));
+        rodney = new JLabel(new ImageIcon(new ImageIcon("rodneycropped.png").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT)));
         staminaBar = new JProgressBar(0, 100);
         staminaBar.setForeground(Color.green);
         staminaBar.setBackground(Color.gray);

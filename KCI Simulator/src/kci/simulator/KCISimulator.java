@@ -9,12 +9,13 @@ public class KCISimulator {
 
     public static JFrame frame;
     public static JPanel mapPanel, sideMenu;
-    public static JLabel character, nameLabel, rodney, interact;
+    public static JLabel character, nameLabel, rodney, interact, mapImage;
     public static JProgressBar staminaBar;
     public static JLayeredPane layeredPane;
 
-    public static int characterX = 300, characterY = 300, stamina = 100, tileSize, mapWidth, mapHeight;
+    public static int characterX, characterY, stamina = 100, tileSize, mapWidth, mapHeight, mapX, mapY;
     public static double screenX, screenY;
+    public static boolean inDialogue = false;
 
     public static Set<Integer> pressedKeys = new HashSet<>();
     
@@ -22,7 +23,7 @@ public class KCISimulator {
             runningW, runningS, runningA, runningD,
             facingW, facingS, facingA, facingD;
     
-    public static NPC janicas = new NPC(300, 300, "janicas", new JLabel("name"));
+    public static NPC janicas = new NPC(300, 300, "janicas", new JLabel());
 
     public static void main(String[] args) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -31,18 +32,26 @@ public class KCISimulator {
 
         frame = new JFrame("KCI Simulator");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setForeground(Color.black);
+        frame.setBackground(Color.black);
+        frame.getContentPane().setBackground(Color.black);
         frame.setLayout(new BorderLayout());
 
         layeredPane = new JLayeredPane();
-        tileSize = (int)screenY / 7;
-        mapWidth = tileSize * 7;
-        mapHeight = tileSize * 7;
+        tileSize = (int)screenY / 10;
+        mapWidth = tileSize * 10;
+        mapHeight = tileSize * 10;
+        characterX = (mapWidth/2)-(tileSize/2);
+        characterY = mapHeight/2;
+        mapX = tileSize;
+        mapY = -15*tileSize;
         layeredPane.setPreferredSize(new Dimension(mapWidth, mapHeight));
         frame.add(layeredPane, BorderLayout.CENTER);
 
         sideMenu = new JPanel();
         sideMenu.setPreferredSize(new Dimension((int)(screenX-mapWidth)/2, 100));
         sideMenu.setLayout(new BoxLayout(sideMenu, BoxLayout.Y_AXIS));
+        sideMenu.setBackground(Color.DARK_GRAY);
         frame.add(sideMenu, BorderLayout.WEST);
         
         nameLabel = new JLabel("Rodney the Raider");
@@ -52,7 +61,11 @@ public class KCISimulator {
         
         rodney = new JLabel(new ImageIcon(new ImageIcon("rodneycropped.png").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_SMOOTH)));
         rodney.setAlignmentX(Component.CENTER_ALIGNMENT);
-
+        
+        janicas.setImage(new JLabel(new ImageIcon(new ImageIcon("janicas.png").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT))));
+        janicas.getImage().setBounds(janicas.getNpcX(), janicas.getNpcY(), tileSize, tileSize);
+        layeredPane.add(janicas.getImage(), Integer.valueOf(3));
+        
         staminaBar = new JProgressBar(0, 100);
         staminaBar.setForeground(Color.green);
         staminaBar.setBackground(Color.gray);
@@ -62,30 +75,31 @@ public class KCISimulator {
         sideMenu.add(rodney);
         sideMenu.add(staminaBar);
         
-        mapPanel = new JPanel();
-        mapPanel.setLayout(new GridLayout(7, 7));
-        mapPanel.setBounds(0, 0, mapWidth, mapHeight);
+        mapImage = new JLabel(new ImageIcon(new ImageIcon("Map1template.jpg").getImage().getScaledInstance(mapWidth*3, mapHeight*3, Image.SCALE_DEFAULT)));
+        mapImage.setBounds(mapX, mapY, mapWidth*3, mapHeight*3);
+        layeredPane.add(mapImage, Integer.valueOf(0));
 
-        int[][] mapMatrix = new int[7][7];
-        for (int i = 0; i < mapMatrix.length; i++) {
-            for (int j = 0; j < mapMatrix[i].length; j++) {
-                ImageIcon pic;
-                if (i == 0 || i == 6) {
-                    mapMatrix[i][j] = 0;
-                    pic = new ImageIcon(new ImageIcon("smoke.jpg").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT));
-                } else if (i == 1 || i == 5) {
-                    mapMatrix[i][j] = 1;
-                    pic = new ImageIcon(new ImageIcon("wall.jpeg").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT));
-                } else {
-                    mapMatrix[i][j] = 2;
-                    pic = new ImageIcon(new ImageIcon("floor.jpg").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT));
-                }
-                JLabel label = new JLabel(pic);
-                mapPanel.add(label);
-            }
-        }
-
-        layeredPane.add(mapPanel, Integer.valueOf(0));
+//        mapPanel.setLayout(new GridLayout(7, 7));
+//        mapPanel.setBounds(0, 0, mapWidth, mapHeight);
+//
+//        int[][] mapMatrix = new int[7][7];
+//        for (int i = 0; i < mapMatrix.length; i++) {
+//            for (int j = 0; j < mapMatrix[i].length; j++) {
+//                ImageIcon pic;
+//                if (i == 0 || i == 6) {
+//                    mapMatrix[i][j] = 0;
+//                    pic = new ImageIcon(new ImageIcon("smoke.jpg").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT));
+//                } else if (i == 1 || i == 5) {
+//                    mapMatrix[i][j] = 1;
+//                    pic = new ImageIcon(new ImageIcon("wall.jpeg").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT));
+//                } else {
+//                    mapMatrix[i][j] = 2;
+//                    pic = new ImageIcon(new ImageIcon("floor.jpg").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT));
+//                }
+//                JLabel label = new JLabel(pic);
+//                mapPanel.add(label);
+//            }
+//        }
 
         facingW = new ImageIcon(new ImageIcon("standfwd.gif").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT));
         facingS = new ImageIcon(new ImageIcon("standback.gif").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT));
@@ -135,18 +149,32 @@ public class KCISimulator {
         runningA = new ImageIcon(new ImageIcon("sprintleft.gif").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT));
         runningD = new ImageIcon(new ImageIcon("sprintright.gif").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT));
 
-        interact = new JLabel("Press [ e ] to interact. ");
+        interact = new JLabel("Press [E] to interact. ");
         interact.setFont(new java.awt.Font("Arial", Font.BOLD, 24));
         interact.setForeground(Color.red);
-        interact.setLocation(200,200);
+        interact.setBounds((mapWidth/2)-100, (int)(mapHeight*0.8), 300, 24);
         layeredPane.add(interact, Integer.valueOf(2));
+        interact.setVisible(false);
         
         javax.swing.Timer timer = new javax.swing.Timer(16, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if (characterX<= janicas.getNpcX()+50 || characterX>=janicas.getNpcX()-50 ||characterY<= janicas.getNpcY()+50 || characterY>=janicas.getNpcY()-50) {
-                    
+                
+                if (characterX >= janicas.getNpcX() - 100 && characterX <= janicas.getNpcX() + 100 &&
+                    characterY >= janicas.getNpcY() - 100 && characterY <= janicas.getNpcY() + 100) {
+                    interact.setVisible(true);
+                    if (pressedKeys.contains(KeyEvent.VK_E)) {
+                        inDialogue = true;
+                    }
+                } else {
+                    interact.setVisible(false);
                 }
-                movement();
+                
+                if (inDialogue && pressedKeys.contains(KeyEvent.VK_ESCAPE)) {
+                    inDialogue = false;
+                }
+                
+                if (!inDialogue)
+                    movement();
                 
             }
         });
@@ -170,22 +198,30 @@ public class KCISimulator {
         int speed = sprinting ? 7 : 4;
 
         if (pressedKeys.contains(KeyEvent.VK_W) || pressedKeys.contains(KeyEvent.VK_UP)) {
-            characterY -= speed;
+//            characterY -= speed;
+            mapY += speed;
+            janicas.setNpcY(janicas.getNpcY() + speed);
             character.setIcon(sprinting ? runningW : walkingW);
             moving = true;
         } 
         if (pressedKeys.contains(KeyEvent.VK_S) || pressedKeys.contains(KeyEvent.VK_DOWN)) {
-            characterY += speed;
+//            characterY += speed;
+            mapY -= speed;
+            janicas.setNpcY(janicas.getNpcY() - speed);
             character.setIcon(sprinting ? runningS : walkingS);
             moving = true;
         }
         if (pressedKeys.contains(KeyEvent.VK_A) || pressedKeys.contains(KeyEvent.VK_LEFT)) {
-            characterX -= speed;
+//            characterX -= speed;
+            mapX += speed;
+            janicas.setNpcX(janicas.getNpcX() + speed);
             character.setIcon(sprinting ? runningA : walkingA);
             moving = true;
         }
         if (pressedKeys.contains(KeyEvent.VK_D) || pressedKeys.contains(KeyEvent.VK_RIGHT)) {
-            characterX += speed;
+//            characterX += speed;
+            mapX -= speed;
+            janicas.setNpcX(janicas.getNpcX() - speed);
             character.setIcon(sprinting ? runningD : walkingD);
             moving = true;
         }
@@ -197,12 +233,14 @@ public class KCISimulator {
             if (stamina < 100) stamina += 1;
         }
 
-        if (characterY < 0 + 2*tileSize) characterY = 2*tileSize;
-        if (characterY > mapHeight - 3*tileSize) characterY = mapHeight - 3*tileSize;
-        if (characterX < 0) characterX = 0;
-        if (characterX > mapWidth - tileSize) characterX = mapWidth - tileSize;
+//        if (characterY < 0 + 2*tileSize) characterY = 2*tileSize;
+//        if (characterY > mapHeight - 3*tileSize) characterY = mapHeight - 3*tileSize;
+//        if (characterX < 0) characterX = 0;
+//        if (characterX > mapWidth - tileSize) characterX = mapWidth - tileSize;
 
-        character.setLocation(characterX, characterY);
+        mapImage.setLocation(mapX, mapY);
+        janicas.getImage().setLocation(janicas.getNpcX(), janicas.getNpcY());
+//        character.setLocation(characterX, characterY);
         staminaBar.setValue(stamina);
     }
 }

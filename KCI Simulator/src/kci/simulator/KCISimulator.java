@@ -106,7 +106,7 @@ public class KCISimulator {
         facingA = new ImageIcon(new ImageIcon("standleft.gif").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT));
         facingD = new ImageIcon(new ImageIcon("standright.gif").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT));
 
-        character = new JLabel(facingS);
+        character = new JLabel(facingW);
         character.setBounds(characterX, characterY, tileSize, tileSize);
         character.setDoubleBuffered(true);
         layeredPane.add(character, Integer.valueOf(1));
@@ -158,7 +158,6 @@ public class KCISimulator {
         
         javax.swing.Timer timer = new javax.swing.Timer(16, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                
                 if (characterX >= janicas.getNpcX() - 100 && characterX <= janicas.getNpcX() + 100 &&
                     characterY >= janicas.getNpcY() - 100 && characterY <= janicas.getNpcY() + 100) {
                     interact.setVisible(true);
@@ -175,7 +174,6 @@ public class KCISimulator {
                 
                 if (!inDialogue)
                     movement();
-                
             }
         });
         timer.start();

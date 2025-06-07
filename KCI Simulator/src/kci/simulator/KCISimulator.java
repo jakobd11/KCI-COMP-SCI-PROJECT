@@ -16,6 +16,9 @@ public class KCISimulator {
     public static int characterX, characterY, stamina = 100, tileSize, mapWidth, mapHeight, mapX, mapY;
     public static double screenX, screenY;
     public static boolean inDialogue = false;
+    
+    public static Hallway thirdFloor, secondFloor, firstFloor;
+    public static Classroom compSci, office, library;
 
     public static Set<Integer> pressedKeys = new HashSet<>();
     
@@ -23,7 +26,8 @@ public class KCISimulator {
             runningW, runningS, runningA, runningD,
             facingW, facingS, facingA, facingD;
     
-    public static NPC janicas = new NPC(300, 300, "janicas", new JLabel());
+    public static ArrayList<String> temp = new ArrayList<>();
+    public static NPC janicas = new NPC(300, 300, "janicas", new JLabel(), temp);
 
     public static void main(String[] args) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();

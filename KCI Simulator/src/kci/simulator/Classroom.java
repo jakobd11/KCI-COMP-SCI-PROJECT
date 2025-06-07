@@ -9,6 +9,8 @@ import java.util.*;
 public class Classroom extends Map {
     public int boundsX, boundsY;
 
+    public Classroom() {}
+
     public Classroom(int boundsX, int boundsY, int characterX, int characterY, ArrayList<NPC> npcs, ArrayList<Door> doors) {
         super(characterX, characterY, npcs, doors);
         this.boundsX = boundsX;
@@ -47,8 +49,8 @@ public class Classroom extends Map {
         this.characterY = characterY;
     }
     
-    public void addNpcs (int npcX, int npcY, String name, JLabel image) {
-        npcs.add(new NPC(npcX,npcY,name,image));
+    public void addNpcs (int npcX, int npcY, String name, JLabel image, ArrayList<String> dialogue) {
+        npcs.add(new NPC(npcX,npcY,name,image,dialogue));
     }
     
     public void addDoors (int doorsX, int doorsY) {

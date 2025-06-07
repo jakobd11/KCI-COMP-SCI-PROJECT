@@ -12,6 +12,8 @@ public class Map {
     protected ArrayList<NPC> npcs = new ArrayList<>();
     protected ArrayList<Door> doors = new ArrayList<>();
 
+    public Map() {}
+    
     public Map(int characterX, int characterY, ArrayList<NPC> npcs, ArrayList<Door> doors) {
         this.characterX = characterX;
         this.characterY = characterY;
@@ -35,8 +37,8 @@ public class Map {
         this.characterY = characterY;
     }
 
-    public void addNpcs (int npcX, int npcY, String name, JLabel image) {
-        npcs.add(new NPC(npcX,npcY,name,image));
+    public void addNpcs (int npcX, int npcY, String name, JLabel image, ArrayList<String> dialogue) {
+        npcs.add(new NPC(npcX,npcY,name,image,dialogue));
     }
     
     public void addDoors (int doorsX, int doorsY) {

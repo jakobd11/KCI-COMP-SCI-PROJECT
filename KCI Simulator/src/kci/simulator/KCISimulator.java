@@ -55,13 +55,13 @@ public class KCISimulator {
         westMenu = new JPanel();
         westMenu.setPreferredSize(new Dimension((int)(screenX-mapWidth)/2, 100));
         westMenu.setLayout(new BoxLayout(westMenu, BoxLayout.Y_AXIS));
-        westMenu.setBackground(Color.DARK_GRAY);
+        westMenu.setBackground(Color.black);
         frame.add(westMenu, BorderLayout.WEST);
         
         eastMenu = new JPanel();
         eastMenu.setPreferredSize(new Dimension((int)(screenX-mapWidth)/2, 100));
         eastMenu.setLayout(new BoxLayout(eastMenu, BoxLayout.Y_AXIS));
-        eastMenu.setBackground(Color.DARK_GRAY);
+        eastMenu.setBackground(Color.black);
         frame.add(eastMenu, BorderLayout.EAST);
         
         nameLabel = new JLabel("Rodney the Raider");
@@ -257,7 +257,11 @@ public class KCISimulator {
     }
     
     public static void fillMaps() {
-        
+//        thirdFloor.setCharacterX();
+//        thirdFloor.setCharacterY();
+//        thirdFloor.setMapImage();
+//        thirdFloor.addDoors(,);
+//        thirdFloor.addNpcs(, , , , );
     }
     
 }

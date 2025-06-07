@@ -9,14 +9,16 @@ import java.util.*;
 public class Map {
     
     protected int characterX, characterY;
+    protected JLabel mapImage;
     protected ArrayList<NPC> npcs = new ArrayList<>();
     protected ArrayList<Door> doors = new ArrayList<>();
 
     public Map() {}
     
-    public Map(int characterX, int characterY, ArrayList<NPC> npcs, ArrayList<Door> doors) {
+    public Map(int characterX, int characterY, JLabel mapImage, ArrayList<NPC> npcs, ArrayList<Door> doors) {
         this.characterX = characterX;
         this.characterY = characterY;
+        this.mapImage = mapImage;
         this.npcs = npcs;
         this.doors = doors;
     }
@@ -35,6 +37,14 @@ public class Map {
 
     public void setCharacterY(int characterY) {
         this.characterY = characterY;
+    }
+
+    public JLabel getMapImage() {
+        return mapImage;
+    }
+
+    public void setMapImage(JLabel mapImage) {
+        this.mapImage = mapImage;
     }
 
     public void addNpcs (int npcX, int npcY, String name, JLabel image, ArrayList<String> dialogue) {

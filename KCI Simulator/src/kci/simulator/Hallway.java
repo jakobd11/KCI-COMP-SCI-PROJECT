@@ -10,8 +10,8 @@ public class Hallway extends Map {
 
     public Hallway() {}
 
-    public Hallway(int characterX, int characterY, ArrayList<NPC> npcs, ArrayList<Door> doors) {
-        super(characterX, characterY, npcs, doors);
+    public Hallway(int characterX, int characterY, JLabel mapImage, ArrayList<NPC> npcs, ArrayList<Door> doors) {
+        super(characterX, characterY, mapImage, npcs, doors);
     }
 
     public int getCharacterX() {
@@ -28,6 +28,14 @@ public class Hallway extends Map {
 
     public void setCharacterY(int characterY) {
         this.characterY = characterY;
+    }
+    
+    public JLabel getMapImage() {
+        return mapImage;
+    }
+
+    public void setMapImage(JLabel mapImage) {
+        this.mapImage = mapImage;
     }
     
     public void addNpcs (int npcX, int npcY, String name, JLabel image, ArrayList<String> dialogue) {

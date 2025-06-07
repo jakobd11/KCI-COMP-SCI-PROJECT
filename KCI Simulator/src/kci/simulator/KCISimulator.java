@@ -8,7 +8,7 @@ import java.util.*;
 public class KCISimulator {
 
     public static JFrame frame;
-    public static JPanel mapPanel, sideMenu;
+    public static JPanel mapPanel, westMenu, eastMenu;
     public static JLabel character, nameLabel, rodney, interact, mapImage;
     public static JProgressBar staminaBar;
     public static JLayeredPane layeredPane;
@@ -42,17 +42,23 @@ public class KCISimulator {
         mapWidth = tileSize * 10;
         mapHeight = tileSize * 10;
         characterX = (mapWidth/2)-(tileSize/2);
-        characterY = mapHeight/2;
+        characterY = (mapHeight/2)-(tileSize/2);
         mapX = tileSize;
         mapY = -15*tileSize;
         layeredPane.setPreferredSize(new Dimension(mapWidth, mapHeight));
         frame.add(layeredPane, BorderLayout.CENTER);
 
-        sideMenu = new JPanel();
-        sideMenu.setPreferredSize(new Dimension((int)(screenX-mapWidth)/2, 100));
-        sideMenu.setLayout(new BoxLayout(sideMenu, BoxLayout.Y_AXIS));
-        sideMenu.setBackground(Color.DARK_GRAY);
-        frame.add(sideMenu, BorderLayout.WEST);
+        westMenu = new JPanel();
+        westMenu.setPreferredSize(new Dimension((int)(screenX-mapWidth)/2, 100));
+        westMenu.setLayout(new BoxLayout(westMenu, BoxLayout.Y_AXIS));
+        westMenu.setBackground(Color.DARK_GRAY);
+        frame.add(westMenu, BorderLayout.WEST);
+        
+        eastMenu = new JPanel();
+        eastMenu.setPreferredSize(new Dimension((int)(screenX-mapWidth)/2, 100));
+        eastMenu.setLayout(new BoxLayout(eastMenu, BoxLayout.Y_AXIS));
+        eastMenu.setBackground(Color.DARK_GRAY);
+        frame.add(eastMenu, BorderLayout.EAST);
         
         nameLabel = new JLabel("Rodney the Raider");
         nameLabel.setFont(new java.awt.Font("Arial", Font.BOLD, 24));
@@ -71,9 +77,11 @@ public class KCISimulator {
         staminaBar.setBackground(Color.gray);
         staminaBar.setAlignmentX(Component.CENTER_ALIGNMENT);
         
-        sideMenu.add(nameLabel);
-        sideMenu.add(rodney);
-        sideMenu.add(staminaBar);
+        westMenu.add(nameLabel);
+        westMenu.add(rodney);
+        westMenu.add(staminaBar);
+        
+        fillMaps();
         
         mapImage = new JLabel(new ImageIcon(new ImageIcon("Map1template.jpg").getImage().getScaledInstance(mapWidth*3, mapHeight*3, Image.SCALE_DEFAULT)));
         mapImage.setBounds(mapX, mapY, mapWidth*3, mapHeight*3);
@@ -170,6 +178,8 @@ public class KCISimulator {
                 
                 if (inDialogue && pressedKeys.contains(KeyEvent.VK_ESCAPE)) {
                     inDialogue = false;
+                } else if (pressedKeys.contains(KeyEvent.VK_ESCAPE)) {
+                    
                 }
                 
                 if (!inDialogue)
@@ -241,4 +251,9 @@ public class KCISimulator {
 //        character.setLocation(characterX, characterY);
         staminaBar.setValue(stamina);
     }
+    
+    public static void fillMaps() {
+        
+    }
+    
 }

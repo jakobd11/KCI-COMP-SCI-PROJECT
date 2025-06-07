@@ -6,17 +6,10 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 
-public class Map {
-    
-    protected int characterX, characterY;
-    protected ArrayList<NPC> npcs = new ArrayList<>();
-    protected ArrayList<Door> doors = new ArrayList<>();
+public class Hallway extends Map {
 
-    public Map(int characterX, int characterY, ArrayList<NPC> npcs, ArrayList<Door> doors) {
-        this.characterX = characterX;
-        this.characterY = characterY;
-        this.npcs = npcs;
-        this.doors = doors;
+    public Hallway(int characterX, int characterY, ArrayList<NPC> npcs, ArrayList<Door> doors) {
+        super(characterX, characterY, npcs, doors);
     }
 
     public int getCharacterX() {
@@ -34,7 +27,7 @@ public class Map {
     public void setCharacterY(int characterY) {
         this.characterY = characterY;
     }
-
+    
     public void addNpcs (int npcX, int npcY, String name, JLabel image) {
         npcs.add(new NPC(npcX,npcY,name,image));
     }
@@ -42,7 +35,7 @@ public class Map {
     public void addDoors (int doorsX, int doorsY) {
         doors.add(new Door(doorsX,doorsY));
     }
-    
+
 //    public ArrayList<NPC> getNpcs() {
 //        return npcs;
 //    }

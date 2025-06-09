@@ -15,12 +15,12 @@ public class Map {
 
     public Map() {}
     
-    public Map(int characterX, int characterY, JLabel mapImage, ArrayList<NPC> npcs, ArrayList<Door> doors) {
+    public Map(int characterX, int characterY, JLabel mapImage) {
         this.characterX = characterX;
         this.characterY = characterY;
         this.mapImage = mapImage;
-        this.npcs = npcs;
-        this.doors = doors;
+//        this.npcs = npcs;
+//        this.doors = doors;
     }
 
     public int getCharacterX() {
@@ -47,8 +47,8 @@ public class Map {
         this.mapImage = mapImage;
     }
 
-    public void addNpcs (int npcX, int npcY, String name, JLabel image, ArrayList<String> dialogue) {
-        npcs.add(new NPC(npcX,npcY,name,image,dialogue));
+    public void addNpcs (int npcX, int npcY, String name, JLabel image) {
+        npcs.add(new NPC(npcX,npcY,name,image));
     }
     
     public void addDoors (int doorsX, int doorsY) {

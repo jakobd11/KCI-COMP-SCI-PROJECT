@@ -11,7 +11,7 @@ public class Hallway extends Map {
     public Hallway() {}
 
     public Hallway(int characterX, int characterY, JLabel mapImage, ArrayList<NPC> npcs, ArrayList<Door> doors) {
-        super(characterX, characterY, mapImage, npcs, doors);
+        super(characterX, characterY, mapImage);
     }
 
     public int getCharacterX() {
@@ -38,8 +38,8 @@ public class Hallway extends Map {
         this.mapImage = mapImage;
     }
     
-    public void addNpcs (int npcX, int npcY, String name, JLabel image, ArrayList<String> dialogue) {
-        npcs.add(new NPC(npcX,npcY,name,image,dialogue));
+    public void addNpcs (int npcX, int npcY, String name, JLabel image) {
+        npcs.add(new NPC(npcX,npcY,name,image));
     }
     
     public void addDoors (int doorsX, int doorsY) {

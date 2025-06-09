@@ -12,7 +12,7 @@ public class Classroom extends Map {
     public Classroom() {}
 
     public Classroom(int boundsX, int boundsY, int characterX, int characterY, JLabel mapImage, ArrayList<NPC> npcs, ArrayList<Door> doors) {
-        super(characterX, characterY, mapImage, npcs, doors);
+        super(characterX, characterY, mapImage);
         this.boundsX = boundsX;
         this.boundsY = boundsY;
     }
@@ -57,8 +57,8 @@ public class Classroom extends Map {
         this.mapImage = mapImage;
     }
     
-    public void addNpcs (int npcX, int npcY, String name, JLabel image, ArrayList<String> dialogue) {
-        npcs.add(new NPC(npcX,npcY,name,image,dialogue));
+    public void addNpcs (int npcX, int npcY, String name, JLabel image) {
+        npcs.add(new NPC(npcX,npcY,name,image));
     }
     
     public void addDoors (int doorsX, int doorsY) {

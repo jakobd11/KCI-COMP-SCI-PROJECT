@@ -14,12 +14,11 @@ public class NPC{
     protected JLabel image;
     protected ArrayList<String> dialogue = new ArrayList<>();
 
-    public NPC(int npcX, int npcY, String name, JLabel image, ArrayList<String> dialogue) {
+    public NPC(int npcX, int npcY, String name, JLabel image) {
         this.npcX = npcX;
         this.npcY = npcY;
         this.name = name;
         this.image = image;
-        this.dialogue = dialogue;
     }
 
     public int getNpcX() {

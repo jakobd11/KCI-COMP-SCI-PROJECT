@@ -17,8 +17,8 @@ public class KCISimulator {
     public static double screenX, screenY;
     public static boolean inDialogue = false;
     
-    public static Hallway thirdFloor, secondFloor, firstFloor;
-    public static Classroom compSci, office, library;
+    public static Map thirdFloor, secondFloor;
+    public static Classroom compSci, office, library, bathroom;
 
     public static Set<Integer> pressedKeys = new HashSet<>();
     
@@ -27,7 +27,7 @@ public class KCISimulator {
             facingW, facingS, facingA, facingD;
     
     public static ArrayList<String> temp = new ArrayList<>();
-    public static NPC janicas = new NPC(300, 300, "janicas", new JLabel(), temp);
+    public static NPC janicas = new NPC(300, 300, "janicas", new JLabel());
 
     public static void main(String[] args) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -47,8 +47,8 @@ public class KCISimulator {
         mapHeight = tileSize * 10;
         characterX = (mapWidth/2)-(tileSize/2);
         characterY = (mapHeight/2)-(tileSize/2);
-        mapX = tileSize;
-        mapY = -15*tileSize;
+        mapX = -4*tileSize;
+        mapY = -50*tileSize;
         layeredPane.setPreferredSize(new Dimension(mapWidth, mapHeight));
         frame.add(layeredPane, BorderLayout.CENTER);
 
@@ -87,9 +87,8 @@ public class KCISimulator {
         
         fillMaps();
         
-        mapImage = new JLabel(new ImageIcon(new ImageIcon("Map1template.jpg").getImage().getScaledInstance(mapWidth*3, mapHeight*3, Image.SCALE_DEFAULT)));
-        mapImage.setBounds(mapX, mapY, mapWidth*3, mapHeight*3);
-        layeredPane.add(mapImage, Integer.valueOf(0));
+        thirdFloor.getMapImage().setBounds(thirdFloor.getCharacterX(), thirdFloor.getCharacterY(), (int)(tileSize*67.5), (int)(tileSize*67.5));
+        layeredPane.add(thirdFloor.getMapImage(), Integer.valueOf(0));
 
 //        mapPanel.setLayout(new GridLayout(7, 7));
 //        mapPanel.setBounds(0, 0, mapWidth, mapHeight);
@@ -211,28 +210,28 @@ public class KCISimulator {
 
         if (pressedKeys.contains(KeyEvent.VK_W) || pressedKeys.contains(KeyEvent.VK_UP)) {
 //            characterY -= speed;
-            mapY += speed;
+            thirdFloor.setCharacterY(thirdFloor.getCharacterY()+speed);
             janicas.setNpcY(janicas.getNpcY() + speed);
             character.setIcon(sprinting ? runningW : walkingW);
             moving = true;
         } 
         if (pressedKeys.contains(KeyEvent.VK_S) || pressedKeys.contains(KeyEvent.VK_DOWN)) {
 //            characterY += speed;
-            mapY -= speed;
+            thirdFloor.setCharacterY(thirdFloor.getCharacterY()-speed);
             janicas.setNpcY(janicas.getNpcY() - speed);
             character.setIcon(sprinting ? runningS : walkingS);
             moving = true;
         }
         if (pressedKeys.contains(KeyEvent.VK_A) || pressedKeys.contains(KeyEvent.VK_LEFT)) {
 //            characterX -= speed;
-            mapX += speed;
+            thirdFloor.setCharacterX(thirdFloor.getCharacterX()+speed);
             janicas.setNpcX(janicas.getNpcX() + speed);
             character.setIcon(sprinting ? runningA : walkingA);
             moving = true;
         }
         if (pressedKeys.contains(KeyEvent.VK_D) || pressedKeys.contains(KeyEvent.VK_RIGHT)) {
 //            characterX += speed;
-            mapX -= speed;
+            thirdFloor.setCharacterX(thirdFloor.getCharacterX()-speed);
             janicas.setNpcX(janicas.getNpcX() - speed);
             character.setIcon(sprinting ? runningD : walkingD);
             moving = true;
@@ -250,18 +249,54 @@ public class KCISimulator {
 //        if (characterX < 0) characterX = 0;
 //        if (characterX > mapWidth - tileSize) characterX = mapWidth - tileSize;
 
-        mapImage.setLocation(mapX, mapY);
         janicas.getImage().setLocation(janicas.getNpcX(), janicas.getNpcY());
+        thirdFloor.getMapImage().setLocation(thirdFloor.getCharacterX(), thirdFloor.getCharacterY());
 //        character.setLocation(characterX, characterY);
         staminaBar.setValue(stamina);
     }
     
     public static void fillMaps() {
-//        thirdFloor.setCharacterX();
-//        thirdFloor.setCharacterY();
-//        thirdFloor.setMapImage();
-//        thirdFloor.addDoors(,);
-//        thirdFloor.addNpcs(, , , , );
+         thirdFloor = new Map(mapX, mapY, new JLabel(new ImageIcon(new ImageIcon("3rdfloorsketch.png").getImage().getScaledInstance((int)(tileSize), (int)(tileSize), Image.SCALE_DEFAULT))));
+        
+//        //class exit
+//        compSci.addDoors(, );
+        
+        //janicas
+        compSci.addNpcs(0,0 ,"Mr. Janicas" , new JLabel(new ImageIcon(new ImageIcon("janicas.png").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT))));
+        
+        thirdFloor = new Map(mapX, mapY, new JLabel(new ImageIcon(new ImageIcon("3rdfloorsketch.png").getImage().getScaledInstance((int)(tileSize*67.5), (int)(tileSize*67.5), Image.SCALE_DEFAULT))));
+        
+//        //stairs
+//        thirdFloor.addDoors(, );
+//        thirdFloor.addDoors(, );
+//        thirdFloor.addDoors(, );
+//        
+//        //rooms
+//        thirdFloor.addDoors(, );
+//        thirdFloor.addDoors(, );
+//        
+//        //hall monitors
+//        thirdFloor.addNpcs(, , , );
+//        thirdFloor.addNpcs(, , , );
+        
+//        secondFloor.setCharacterX(0);
+//        secondFloor.setCharacterY(0);
+//        secondFloor.setMapImage(new JLabel(new ImageIcon(new ImageIcon("image name here").getImage().getScaledInstance(mapWidth*3, mapHeight*3, Image.SCALE_DEFAULT))));
+//        
+//        //stairs
+//        secondFloor.addDoors(, );
+//        secondFloor.addDoors(, );
+//        secondFloor.addDoors(, );
+//        
+//        //rooms
+//        secondFloor.addDoors(, );
+//        secondFloor.addDoors(, );
+//        
+//        //hall monitors
+//        secondFloor.addNpcs(, , , );
+//        secondFloor.addNpcs(, , , );
+        
+        
     }
     
 }

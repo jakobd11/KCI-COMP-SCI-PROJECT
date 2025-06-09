@@ -55,21 +55,21 @@ public class Map {
         doors.add(new Door(doorsX,doorsY));
     }
     
-//    public ArrayList<NPC> getNpcs() {
-//        return npcs;
-//    }
-//
-//    public void setNpcs(ArrayList<NPC> npcs) {
-//        this.npcs = npcs;
-//    }
-//
-//    public ArrayList<Door> getDoors() {
-//        return doors;
-//    }
-//
-//    public void setDoors(ArrayList<Door> doors) {
-//        this.doors = doors;
-//    }
+    public ArrayList<NPC> getNpcs() {
+        return npcs;
+    }
+
+    public void setNpcs(ArrayList<NPC> npcs) {
+        this.npcs = npcs;
+    }
+
+    public ArrayList<Door> getDoors() {
+        return doors;
+    }
+
+    public void setDoors(ArrayList<Door> doors) {
+        this.doors = doors;
+    }
     
     
 }

@@ -58,13 +58,13 @@ public class NPC{
         dialogue.add(lines);
     }
 
-//    public ArrayList<String> getDialogue() {
-//        return dialogue;
-//    }
-//
-//    public void setDialogue(ArrayList<String> dialogue) {
-//        this.dialogue = dialogue;
-//    }
+    public ArrayList<String> getDialogue() {
+        return dialogue;
+    }
+
+    public void setDialogue(ArrayList<String> dialogue) {
+        this.dialogue = dialogue;
+    }
     
     
 }

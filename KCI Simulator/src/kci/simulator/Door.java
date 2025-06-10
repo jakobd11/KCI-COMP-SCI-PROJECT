@@ -7,11 +7,12 @@ import java.awt.event.*;
 import java.util.*;
 
 public class Door {
-    private int doorX, doorY;
+    private int doorX, doorY, next;
 
-    public Door(int doorX, int doorY) {
+    public Door(int doorX, int doorY, int next) {
         this.doorX = doorX;
         this.doorY = doorY;
+        this.next = next;
     }
 
     public int getDoorX() {
@@ -29,6 +30,15 @@ public class Door {
     public void setDoorY(int doorY) {
         this.doorY = doorY;
     }
+
+    public int getNext() {
+        return next;
+    }
+
+    public void setNext(int next) {
+        this.next = next;
+    }
+    
     
     
 }

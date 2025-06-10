@@ -9,30 +9,25 @@ public class KCISimulator {
 
     public static JFrame frame;
     public static JPanel mapPanel, westMenu, eastMenu;
-    public static JLabel character, nameLabel, rodney, interact, mapImage;
+    public static JLabel character, rodney, interact;
     public static JProgressBar staminaBar;
     public static JLayeredPane layeredPane;
 
-    public static int characterX, characterY, stamina = 100, tileSize, mapWidth, mapHeight, mapX, mapY;
-    public static double screenX, screenY;
+    public static int stamina = 100, tileSize, mapWidth, mapHeight;
     public static boolean inDialogue = false;
     
-    public static Map thirdFloor, secondFloor;
-    public static Classroom compSci, office, library, bathroom;
+    public static Map thirdFloor;
 
     public static Set<Integer> pressedKeys = new HashSet<>();
     
-    public static ImageIcon walkingW , walkingS, walkingA, walkingD, 
+    public static ImageIcon walkingW, walkingS, walkingA, walkingD, 
             runningW, runningS, runningA, runningD,
             facingW, facingS, facingA, facingD;
     
-    public static ArrayList<String> temp = new ArrayList<>();
     public static NPC janicas = new NPC(300, 300, "janicas", new JLabel());
 
     public static void main(String[] args) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        screenX = screenSize.getWidth();
-        screenY = screenSize.getHeight();
 
         frame = new JFrame("KCI Simulator");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -42,37 +37,30 @@ public class KCISimulator {
         frame.setLayout(new BorderLayout());
 
         layeredPane = new JLayeredPane();
-        tileSize = (int)screenY / 10;
+        tileSize = (int)screenSize.getHeight() / 10;
         mapWidth = tileSize * 10;
         mapHeight = tileSize * 10;
-        characterX = (mapWidth/2)-(tileSize/2);
-        characterY = (mapHeight/2)-(tileSize/2);
-        mapX = -4*tileSize;
-        mapY = -50*tileSize;
         layeredPane.setPreferredSize(new Dimension(mapWidth, mapHeight));
         frame.add(layeredPane, BorderLayout.CENTER);
 
         westMenu = new JPanel();
-        westMenu.setPreferredSize(new Dimension((int)(screenX-mapWidth)/2, 100));
+        westMenu.setPreferredSize(new Dimension((int)(screenSize.getWidth() - mapWidth) / 2, 100));
         westMenu.setLayout(new BoxLayout(westMenu, BoxLayout.Y_AXIS));
         westMenu.setBackground(Color.black);
         frame.add(westMenu, BorderLayout.WEST);
         
         eastMenu = new JPanel();
-        eastMenu.setPreferredSize(new Dimension((int)(screenX-mapWidth)/2, 100));
+        eastMenu.setPreferredSize(new Dimension((int)(screenSize.getWidth() - mapWidth) / 2, 100));
         eastMenu.setLayout(new BoxLayout(eastMenu, BoxLayout.Y_AXIS));
         eastMenu.setBackground(Color.black);
         frame.add(eastMenu, BorderLayout.EAST);
         
-        nameLabel = new JLabel("Rodney the Raider");
-        nameLabel.setFont(new java.awt.Font("Arial", Font.BOLD, 24));
-        nameLabel.setForeground(Color.red);
-        nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        
-        rodney = new JLabel(new ImageIcon(new ImageIcon("rodneycropped.png").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_SMOOTH)));
+        rodney = new JLabel(new ImageIcon(new ImageIcon("rodneycropped.png")
+                .getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_SMOOTH)));
         rodney.setAlignmentX(Component.CENTER_ALIGNMENT);
         
-        janicas.setImage(new JLabel(new ImageIcon(new ImageIcon("janicas.png").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT))));
+        janicas.setImage(new JLabel(new ImageIcon(new ImageIcon("janicas.png")
+                .getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT))));
         janicas.getImage().setBounds(janicas.getNpcX(), janicas.getNpcY(), tileSize, tileSize);
         layeredPane.add(janicas.getImage(), Integer.valueOf(3));
         
@@ -81,36 +69,13 @@ public class KCISimulator {
         staminaBar.setBackground(Color.gray);
         staminaBar.setAlignmentX(Component.CENTER_ALIGNMENT);
         
-        westMenu.add(nameLabel);
         westMenu.add(rodney);
         westMenu.add(staminaBar);
         
         fillMaps();
         
-        thirdFloor.getMapImage().setBounds(thirdFloor.getCharacterX(), thirdFloor.getCharacterY(), (int)(tileSize*67.5), (int)(tileSize*67.5));
+        thirdFloor.getMapImage().setBounds(thirdFloor.getCharacterX(), thirdFloor.getCharacterY(), tileSize*40, tileSize*40);
         layeredPane.add(thirdFloor.getMapImage(), Integer.valueOf(0));
-
-//        mapPanel.setLayout(new GridLayout(7, 7));
-//        mapPanel.setBounds(0, 0, mapWidth, mapHeight);
-//
-//        int[][] mapMatrix = new int[7][7];
-//        for (int i = 0; i < mapMatrix.length; i++) {
-//            for (int j = 0; j < mapMatrix[i].length; j++) {
-//                ImageIcon pic;
-//                if (i == 0 || i == 6) {
-//                    mapMatrix[i][j] = 0;
-//                    pic = new ImageIcon(new ImageIcon("smoke.jpg").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT));
-//                } else if (i == 1 || i == 5) {
-//                    mapMatrix[i][j] = 1;
-//                    pic = new ImageIcon(new ImageIcon("wall.jpeg").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT));
-//                } else {
-//                    mapMatrix[i][j] = 2;
-//                    pic = new ImageIcon(new ImageIcon("floor.jpg").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT));
-//                }
-//                JLabel label = new JLabel(pic);
-//                mapPanel.add(label);
-//            }
-//        }
 
         facingW = new ImageIcon(new ImageIcon("standfwd.gif").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT));
         facingS = new ImageIcon(new ImageIcon("standback.gif").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT));
@@ -118,7 +83,7 @@ public class KCISimulator {
         facingD = new ImageIcon(new ImageIcon("standright.gif").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT));
 
         character = new JLabel(facingW);
-        character.setBounds(characterX, characterY, tileSize, tileSize);
+        character.setBounds((mapWidth/2)-(tileSize/2), (mapHeight/2)-(tileSize/2), tileSize, tileSize);
         character.setDoubleBuffered(true);
         layeredPane.add(character, Integer.valueOf(1));
 
@@ -126,10 +91,8 @@ public class KCISimulator {
             public void keyPressed(KeyEvent e) {
                 pressedKeys.add(e.getKeyCode());
             }
-
             public void keyReleased(KeyEvent e) {
                 pressedKeys.remove(e.getKeyCode());
-
                 switch (e.getKeyCode()) {
                     case KeyEvent.VK_W:
                     case KeyEvent.VK_UP:
@@ -163,14 +126,17 @@ public class KCISimulator {
         interact = new JLabel("Press [E] to interact. ");
         interact.setFont(new java.awt.Font("Arial", Font.BOLD, 24));
         interact.setForeground(Color.red);
-        interact.setBounds((mapWidth/2)-100, (int)(mapHeight*0.8), 300, 24);
+        interact.setBounds((mapWidth / 2) - 100, (int)(mapHeight * 0.8), 300, 24);
         layeredPane.add(interact, Integer.valueOf(2));
         interact.setVisible(false);
         
         javax.swing.Timer timer = new javax.swing.Timer(16, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if (characterX >= janicas.getNpcX() - 100 && characterX <= janicas.getNpcX() + 100 &&
-                    characterY >= janicas.getNpcY() - 100 && characterY <= janicas.getNpcY() + 100) {
+                int charX = thirdFloor.getCharacterX();
+                int charY = thirdFloor.getCharacterY();
+                
+                if (charX >= janicas.getNpcX() - 100 && charX <= janicas.getNpcX() + 100 &&
+                    charY >= janicas.getNpcY() - 100 && charY <= janicas.getNpcY() + 100) {
                     interact.setVisible(true);
                     if (pressedKeys.contains(KeyEvent.VK_E)) {
                         inDialogue = true;
@@ -181,8 +147,6 @@ public class KCISimulator {
                 
                 if (inDialogue && pressedKeys.contains(KeyEvent.VK_ESCAPE)) {
                     inDialogue = false;
-                } else if (pressedKeys.contains(KeyEvent.VK_ESCAPE)) {
-                    
                 }
                 
                 if (!inDialogue)
@@ -201,7 +165,8 @@ public class KCISimulator {
     public static void movement() {
         boolean sprinting = pressedKeys.contains(KeyEvent.VK_SHIFT);
         boolean moving = false;
-
+        int dx = 0, dy = 0;
+        
         if (stamina == 0) {
             sprinting = false;
         }
@@ -209,63 +174,66 @@ public class KCISimulator {
         int speed = sprinting ? 7 : 4;
 
         if (pressedKeys.contains(KeyEvent.VK_W) || pressedKeys.contains(KeyEvent.VK_UP)) {
-//            characterY -= speed;
-            thirdFloor.setCharacterY(thirdFloor.getCharacterY()+speed);
-            janicas.setNpcY(janicas.getNpcY() + speed);
+            dy += speed;
             character.setIcon(sprinting ? runningW : walkingW);
             moving = true;
         } 
         if (pressedKeys.contains(KeyEvent.VK_S) || pressedKeys.contains(KeyEvent.VK_DOWN)) {
-//            characterY += speed;
-            thirdFloor.setCharacterY(thirdFloor.getCharacterY()-speed);
-            janicas.setNpcY(janicas.getNpcY() - speed);
+            dy -= speed;
             character.setIcon(sprinting ? runningS : walkingS);
             moving = true;
         }
         if (pressedKeys.contains(KeyEvent.VK_A) || pressedKeys.contains(KeyEvent.VK_LEFT)) {
-//            characterX -= speed;
-            thirdFloor.setCharacterX(thirdFloor.getCharacterX()+speed);
-            janicas.setNpcX(janicas.getNpcX() + speed);
+            dx += speed;
             character.setIcon(sprinting ? runningA : walkingA);
             moving = true;
         }
         if (pressedKeys.contains(KeyEvent.VK_D) || pressedKeys.contains(KeyEvent.VK_RIGHT)) {
-//            characterX += speed;
-            thirdFloor.setCharacterX(thirdFloor.getCharacterX()-speed);
-            janicas.setNpcX(janicas.getNpcX() - speed);
+            dx -= speed;
             character.setIcon(sprinting ? runningD : walkingD);
             moving = true;
         }
 
         if (pressedKeys.contains(KeyEvent.VK_SHIFT) && moving) {
             stamina -= 1;
-            if (stamina <= 0) stamina = 0;
+            if (stamina < 0) stamina = 0;
         } else {
             if (stamina < 100) stamina += 1;
         }
+        
+        int charScreenX = (mapWidth / 2) - (tileSize / 2);
+        int charScreenY = (mapHeight / 2) - (tileSize / 2);
 
-//        if (characterY < 0 + 2*tileSize) characterY = 2*tileSize;
-//        if (characterY > mapHeight - 3*tileSize) characterY = mapHeight - 3*tileSize;
-//        if (characterX < 0) characterX = 0;
-//        if (characterX > mapWidth - tileSize) characterX = mapWidth - tileSize;
+        int newMapX = thirdFloor.getCharacterX() + dx;
+        int newMapY = thirdFloor.getCharacterY() + dy;
 
-        janicas.getImage().setLocation(janicas.getNpcX(), janicas.getNpcY());
-        thirdFloor.getMapImage().setLocation(thirdFloor.getCharacterX(), thirdFloor.getCharacterY());
-//        character.setLocation(characterX, characterY);
+        int characterMapX = -newMapX + charScreenX;
+        int characterMapY = -newMapY + charScreenY;
+
+        if (canMoveTo(characterMapX, characterMapY, tileSize, tileSize, thirdFloor)) {
+            thirdFloor.setCharacterX(newMapX);
+            thirdFloor.setCharacterY(newMapY);
+            thirdFloor.getMapImage().setLocation(newMapX, newMapY);
+        }
+
+        System.out.println("x: " + thirdFloor.getCharacterX() + "\ny: " + thirdFloor.getCharacterY());
+        
         staminaBar.setValue(stamina);
     }
     
     public static void fillMaps() {
-         thirdFloor = new Map(mapX, mapY, new JLabel(new ImageIcon(new ImageIcon("3rdfloorsketch.png").getImage().getScaledInstance((int)(tileSize), (int)(tileSize), Image.SCALE_DEFAULT))));
+//         thirdFloor = new Map(mapX, mapY, new JLabel(new ImageIcon(new ImageIcon("3rdfloorsketch.png").getImage().getScaledInstance((int)(tileSize), (int)(tileSize), Image.SCALE_DEFAULT))));
+//        
+////        //class exit
+////        compSci.addDoors(, );
+//        
+//        //janicas
+//        compSci.addNpcs(0,0 ,"Mr. Janicas" , new JLabel(new ImageIcon(new ImageIcon("janicas.png").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT))));
         
-//        //class exit
-//        compSci.addDoors(, );
+        thirdFloor = new Map(0, 0, new JLabel(new ImageIcon(new ImageIcon("3rdfloorsketch.png").getImage().getScaledInstance((int)tileSize*40, (int)tileSize*40, Image.SCALE_DEFAULT))));
         
-        //janicas
-        compSci.addNpcs(0,0 ,"Mr. Janicas" , new JLabel(new ImageIcon(new ImageIcon("janicas.png").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT))));
-        
-        thirdFloor = new Map(mapX, mapY, new JLabel(new ImageIcon(new ImageIcon("3rdfloorsketch.png").getImage().getScaledInstance((int)(tileSize*67.5), (int)(tileSize*67.5), Image.SCALE_DEFAULT))));
-        
+        thirdFloor.addWalkableArea(tileSize, (int)(tileSize*2.5), (int)(tileSize*20.5), (int)(tileSize*6.5));
+        thirdFloor.addWalkableArea((int)(tileSize*9.2), (int)(tileSize*8), (int)(tileSize*4.1), (int)(tileSize*12));
 //        //stairs
 //        thirdFloor.addDoors(, );
 //        thirdFloor.addDoors(, );
@@ -297,6 +265,16 @@ public class KCISimulator {
 //        secondFloor.addNpcs(, , , );
         
         
+    }
+    
+    public static boolean canMoveTo(int x, int y, int width, int height, Map map) {
+        Rectangle characterBounds = new Rectangle(x, y, width, height);
+        for (Rectangle walkableArea : map.getWalkable()) {
+            if (walkableArea.contains(characterBounds)) {
+                return true;
+            }
+        }
+        return false;
     }
     
 }

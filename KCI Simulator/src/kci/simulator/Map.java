@@ -12,6 +12,7 @@ public class Map {
     protected JLabel mapImage;
     protected ArrayList<NPC> npcs = new ArrayList<>();
     protected ArrayList<Door> doors = new ArrayList<>();
+    protected ArrayList<Rectangle> walkable = new ArrayList<>();
 
     public Map() {}
     
@@ -51,8 +52,8 @@ public class Map {
         npcs.add(new NPC(npcX,npcY,name,image));
     }
     
-    public void addDoors (int doorsX, int doorsY) {
-        doors.add(new Door(doorsX,doorsY));
+    public void addDoors (int doorsX, int doorsY, int next) {
+        doors.add(new Door(doorsX,doorsY,next));
     }
     
     public ArrayList<NPC> getNpcs() {
@@ -70,6 +71,16 @@ public class Map {
     public void setDoors(ArrayList<Door> doors) {
         this.doors = doors;
     }
+
+    public ArrayList<Rectangle> getWalkable() {
+        return walkable;
+    }
+
+    public void setWalkable(ArrayList<Rectangle> walkable) {
+        this.walkable = walkable;
+    }
     
-    
+    public void addWalkableArea(int x, int y, int width, int height) {
+        walkable.add(new Rectangle(x,y,width,height));
+    }
 }

@@ -233,7 +233,9 @@ public class KCISimulator {
         thirdFloor = new Map(0, 0, new JLabel(new ImageIcon(new ImageIcon("3rdfloorsketch.png").getImage().getScaledInstance((int)tileSize*40, (int)tileSize*40, Image.SCALE_DEFAULT))));
         
         thirdFloor.addWalkableArea(tileSize, (int)(tileSize*2.5), (int)(tileSize*20.5), (int)(tileSize*6.5));
-        thirdFloor.addWalkableArea((int)(tileSize*9.2), (int)(tileSize*8), (int)(tileSize*4.1), (int)(tileSize*12));
+        thirdFloor.addWalkableArea((int)(tileSize*9.2), (int)(tileSize*8), (int)(tileSize*4.1), (int)(tileSize*13.6));
+        thirdFloor.addWalkableArea((int)(tileSize*6), (int)(tileSize*15), (int)(tileSize*5), (int)(tileSize*1.5));
+        thirdFloor.addWalkableArea((int)(tileSize*10), (int)(tileSize*17.2), (int)(tileSize*11), (int)(tileSize*4.5));
 //        //stairs
 //        thirdFloor.addDoors(, );
 //        thirdFloor.addDoors(, );

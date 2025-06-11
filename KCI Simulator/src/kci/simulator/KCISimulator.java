@@ -14,7 +14,7 @@ public class KCISimulator {
     public static JLayeredPane layeredPane;
 
     public static int stamina = 100, tileSize, mapWidth, mapHeight, currentMap = 0;
-    public static boolean inDialogue = false;
+    public static boolean inDialogue = false, eKeyHeld;
     
     public static Set<Integer> pressedKeys = new HashSet<>();
     public static Map[] maps = new Map[6];
@@ -24,6 +24,8 @@ public class KCISimulator {
             facingW, facingS, facingA, facingD;
     
     public static NPC janicas = new NPC(300, 300, "janicas", new JLabel());
+    
+    public static javax.swing.Timer timer;
 
     public static void main(String[] args) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -61,7 +63,7 @@ public class KCISimulator {
         janicas.setImage(new JLabel(new ImageIcon(new ImageIcon("janicas.png")
                 .getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT))));
         janicas.getImage().setBounds(janicas.getNpcX(), janicas.getNpcY(), tileSize, tileSize);
-        layeredPane.add(janicas.getImage(), Integer.valueOf(3));
+        layeredPane.add(janicas.getImage(), Integer.valueOf(2));
         
         staminaBar = new JProgressBar(0, 100);
         staminaBar.setForeground(Color.green);
@@ -73,9 +75,9 @@ public class KCISimulator {
         
         fillMaps();
         
-        maps[0].getMapImage().setBounds(maps[0].getCharacterX(), maps[0].getCharacterY(), tileSize*40, tileSize*40);
-        layeredPane.add(maps[0].getMapImage(), Integer.valueOf(0));
-
+            maps[currentMap].getMapImage().setBounds(maps[currentMap].getCharacterX(), maps[currentMap].getCharacterY(), tileSize*40, tileSize*40);
+            layeredPane.add(maps[currentMap].getMapImage(), Integer.valueOf(0));
+        
         facingW = new ImageIcon(new ImageIcon("standfwd.gif").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT));
         facingS = new ImageIcon(new ImageIcon("standback.gif").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT));
         facingA = new ImageIcon(new ImageIcon("standleft.gif").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT));
@@ -92,6 +94,9 @@ public class KCISimulator {
             }
             public void keyReleased(KeyEvent e) {
                 pressedKeys.remove(e.getKeyCode());
+                if (e.getKeyCode() == KeyEvent.VK_E) {
+                    eKeyHeld = false; 
+                }
                 switch (e.getKeyCode()) {
                     case KeyEvent.VK_W:
                     case KeyEvent.VK_UP:
@@ -126,10 +131,10 @@ public class KCISimulator {
         interact.setFont(new java.awt.Font("Arial", Font.BOLD, 24));
         interact.setForeground(Color.red);
         interact.setBounds((mapWidth / 2) - 100, (int)(mapHeight * 0.8), 300, 24);
-        layeredPane.add(interact, Integer.valueOf(2));
+        layeredPane.add(interact, Integer.valueOf(3));
         interact.setVisible(false);
         
-        javax.swing.Timer timer = new javax.swing.Timer(16, new ActionListener() {
+        timer = new javax.swing.Timer(16, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 maps[currentMap].getMapImage().setVisible(true);
                 
@@ -152,13 +157,19 @@ public class KCISimulator {
                     if (charX >= door.getDoorX() - 100 && charX <= door.getDoorX() + 100 &&
                         charY >= door.getDoorY() - 100 && charY <= door.getDoorY() + 100) {
                         showInteract = true;
-                        if (pressedKeys.contains(KeyEvent.VK_E)) {
+                        if (pressedKeys.contains(KeyEvent.VK_E)  && !eKeyHeld) {
+                            timer.stop();
+                            layeredPane.remove(maps[currentMap].getMapImage());
+                            eKeyHeld = true;
                             maps[currentMap].getMapImage().setVisible(false);
                             int nextDoor = door.getNextDoor();
                             currentMap = door.getNextMap();
                             maps[currentMap].setCharacterX(maps[currentMap].getDoors().get(nextDoor).getDoorX());
                             maps[currentMap].setCharacterY(maps[currentMap].getDoors().get(nextDoor).getDoorY());
                             maps[currentMap].getMapImage().setVisible(true);
+                            maps[currentMap].getMapImage().setBounds(maps[currentMap].getCharacterX(), maps[currentMap].getCharacterY(), tileSize*40, tileSize*40);
+                            layeredPane.add(maps[currentMap].getMapImage(), Integer.valueOf(0));
+                            timer.start();
                         }
                     }
                 }
@@ -263,7 +274,7 @@ public class KCISimulator {
 //        maps[0].addDoors(, );
 //          
         //stairs
-        maps[0].addDoors((int)(tileSize*(-5)), (int)(tileSize*2.5),0 ,0 );
+        maps[0].addDoors((int)(tileSize*(-5)), (int)(tileSize),0 ,1 );
 
 //        //rooms
 //        maps[0].addDoors(, );
@@ -273,22 +284,28 @@ public class KCISimulator {
 //        maps[0].addNpcs(, , , );
 //        maps[0].addNpcs(, , , );
         
-//        secondFloor.setCharacterX(0);
-//        secondFloor.setCharacterY(0);
-//        secondFloor.setMapImage(new JLabel(new ImageIcon(new ImageIcon("image name here").getImage().getScaledInstance(mapWidth*3, mapHeight*3, Image.SCALE_DEFAULT))));
-//        
+        maps[1] = new Map(0, 0, new JLabel(new ImageIcon(new ImageIcon("2ndfloorsketch.png").getImage().getScaledInstance((int)tileSize*40, (int)tileSize*40, Image.SCALE_DEFAULT))));
+
+        maps[1].addWalkableArea(tileSize, (int)(tileSize*2.5), (int)(tileSize*20.5), (int)(tileSize*6.5));
+        maps[1].addWalkableArea((int)(tileSize*9.2), (int)(tileSize*8), (int)(tileSize*4.1), (int)(tileSize*13.6));
+        maps[1].addWalkableArea((int)(tileSize*6), (int)(tileSize*15), (int)(tileSize*5), (int)(tileSize*1.5));
+        maps[1].addWalkableArea((int)(tileSize*10), (int)(tileSize*17.2), (int)(tileSize*11), (int)(tileSize*4.5));
+        maps[1].addWalkableArea((int)(tileSize*14.17), (int)(tileSize*19), (int)(tileSize*4), (int)(tileSize*16));
+        maps[1].addWalkableArea((int)(tileSize*4.6), (int)(tileSize*31.4), (int)(tileSize*14.8  ), (int)(tileSize*6.5));
+        maps[1].addWalkableArea((int)(tileSize*2.5), (int)(tileSize*32), (int)(tileSize*4), (int)(tileSize*5.2));
+        
 //        //stairs
-//        secondFloor.addDoors(, );
-//        secondFloor.addDoors(, );
-//        secondFloor.addDoors(, );
+        maps[1].addDoors((int)(tileSize*(-5)), (int)(tileSize),0 ,0 );
+//        maps[1].addDoors(, );
+//        maps[1].addDoors(, );
 //        
 //        //rooms
-//        secondFloor.addDoors(, );
-//        secondFloor.addDoors(, );
+//        maps[1].addDoors(, );
+//        maps[1].addDoors(, );
 //        
 //        //hall monitors
-//        secondFloor.addNpcs(, , , );
-//        secondFloor.addNpcs(, , , );
+//        maps[1].addNpcs(, , , );
+//        maps[1].addNpcs(, , , );
         
         
     }

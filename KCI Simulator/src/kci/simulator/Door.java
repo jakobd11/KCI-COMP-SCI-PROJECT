@@ -7,12 +7,13 @@ import java.awt.event.*;
 import java.util.*;
 
 public class Door {
-    private int doorX, doorY, next;
+    private int doorX, doorY, nextDoor, nextMap;
 
-    public Door(int doorX, int doorY, int next) {
+    public Door(int doorX, int doorY, int nextDoor, int nextMap) {
         this.doorX = doorX;
         this.doorY = doorY;
-        this.next = next;
+        this.nextDoor = nextDoor;
+        this.nextMap = nextMap;
     }
 
     public int getDoorX() {
@@ -31,14 +32,23 @@ public class Door {
         this.doorY = doorY;
     }
 
-    public int getNext() {
-        return next;
+    public int getNextDoor() {
+        return nextDoor;
     }
 
-    public void setNext(int next) {
-        this.next = next;
+    public void setNextDoor(int nextDoor) {
+        this.nextDoor = nextDoor;
     }
-    
+
+    public int getNextMap() {
+        return nextMap;
+    }
+
+    public void setNextMap(int nextMap) {
+        this.nextMap = nextMap;
+    }
+
+
     
     
 }

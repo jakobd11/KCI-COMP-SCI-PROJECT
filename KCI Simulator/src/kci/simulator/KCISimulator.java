@@ -13,12 +13,13 @@ public class KCISimulator {
     public static JProgressBar staminaBar;
     public static JLayeredPane layeredPane;
 
-    public static int stamina = 100, tileSize, mapWidth, mapHeight;
+    public static int stamina = 100, tileSize, mapWidth, mapHeight, currentMap;
     public static boolean inDialogue = false;
     
     public static Map thirdFloor;
 
     public static Set<Integer> pressedKeys = new HashSet<>();
+    public static int[] maps = new int[6];
     
     public static ImageIcon walkingW, walkingS, walkingA, walkingD, 
             runningW, runningS, runningA, runningD,

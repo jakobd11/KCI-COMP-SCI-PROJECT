@@ -184,7 +184,7 @@ public class KCISimulator {
             sprinting = false;
         }
 
-        int speed = sprinting ? 7 : 4;
+        int speed = sprinting ? 13 : 4;
 
         if (pressedKeys.contains(KeyEvent.VK_W) || pressedKeys.contains(KeyEvent.VK_UP)) {
             dy += speed;
@@ -244,23 +244,14 @@ public class KCISimulator {
 //        compSci.addNpcs(0,0 ,"Mr. Janicas" , new JLabel(new ImageIcon(new ImageIcon("janicas.png").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT))));
         
         maps[0] = new Map(0, 0, new JLabel(new ImageIcon(new ImageIcon("3rdfloorsketch.png").getImage().getScaledInstance((int)tileSize*40, (int)tileSize*40, Image.SCALE_DEFAULT))));
-        
-<<<<<<< HEAD
-        thirdFloor.addWalkableArea(tileSize, (int)(tileSize*2.5), (int)(tileSize*20.5), (int)(tileSize*6.5));
-        thirdFloor.addWalkableArea((int)(tileSize*9.2), (int)(tileSize*8), (int)(tileSize*4.1), (int)(tileSize*13.6));
-        thirdFloor.addWalkableArea((int)(tileSize*6), (int)(tileSize*15), (int)(tileSize*5), (int)(tileSize*1.5));
-        thirdFloor.addWalkableArea((int)(tileSize*10), (int)(tileSize*17.2), (int)(tileSize*11), (int)(tileSize*4.5));
-        thirdFloor.addWalkableArea((int)(tileSize*14.17), (int)(tileSize*19), (int)(tileSize*4), (int)(tileSize*17));
-        thirdFloor.addWalkableArea((int)(tileSize*5), (int)(tileSize*31.4), (int)(tileSize*20.5), (int)(tileSize*6.5));
-        
-=======
+      
         maps[0].addWalkableArea(tileSize, (int)(tileSize*2.5), (int)(tileSize*20.5), (int)(tileSize*6.5));
         maps[0].addWalkableArea((int)(tileSize*9.2), (int)(tileSize*8), (int)(tileSize*4.1), (int)(tileSize*13.6));
         maps[0].addWalkableArea((int)(tileSize*6), (int)(tileSize*15), (int)(tileSize*5), (int)(tileSize*1.5));
         maps[0].addWalkableArea((int)(tileSize*10), (int)(tileSize*17.2), (int)(tileSize*11), (int)(tileSize*4.5));
-        maps[0].addWalkableArea((int)(tileSize*14.17), (int)(tileSize*19), (int)(tileSize*4), (int)(tileSize*19));
-        maps[0].addWalkableArea((int)(tileSize*15), (int)(tileSize*27.3), (int)(tileSize*4.3), (int)(tileSize*11));
->>>>>>> d279efb65bdb5e8519fedbd81a933efdce203aa5
+        maps[0].addWalkableArea((int)(tileSize*14.17), (int)(tileSize*19), (int)(tileSize*4), (int)(tileSize*16));
+        maps[0].addWalkableArea((int)(tileSize*4.6), (int)(tileSize*31.4), (int)(tileSize*14.8  ), (int)(tileSize*6.5));
+        maps[0].addWalkableArea((int)(tileSize*2.5), (int)(tileSize*32), (int)(tileSize*4), (int)(tileSize*5.2));
 //        //stairs
 //        maps[0].addDoors(, );
 //        maps[0].addDoors(, );

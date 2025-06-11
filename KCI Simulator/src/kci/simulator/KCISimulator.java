@@ -266,6 +266,7 @@ public class KCISimulator {
         maps[0].addWalkableArea((int)(tileSize*14.17), (int)(tileSize*19), (int)(tileSize*4), (int)(tileSize*19));
         maps[0].addWalkableArea((int)(tileSize*15), (int)(tileSize*27.3), (int)(tileSize*4.3), (int)(tileSize*11));
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 >>>>>>> d279efb65bdb5e8519fedbd81a933efdce203aa5
 //        //stairs
 //        maps[0].addDoors(, );
@@ -273,11 +274,16 @@ public class KCISimulator {
 //        maps[0].addDoors(, );
 //        
 =======
+=======
+>>>>>>> Stashed changes
         
         //stairs
         maps[0].addDoors((int)(tileSize*(-5)), (int)(tileSize*2.5),0 ,0 );
 
         
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 //        //rooms
 //        maps[0].addDoors(, );

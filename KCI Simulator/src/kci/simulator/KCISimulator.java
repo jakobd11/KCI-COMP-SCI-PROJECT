@@ -131,32 +131,39 @@ public class KCISimulator {
         
         javax.swing.Timer timer = new javax.swing.Timer(16, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                int charX = maps[0].getCharacterX();
-                int charY = maps[0].getCharacterY();
+                maps[currentMap].getMapImage().setVisible(true);
                 
-                for (int i = 0; i < maps[currentMap].getNpcs().size(); i++) {
-                    if (charX >= maps[currentMap].getNpcs().get(i).getNpcX() - 100 && charX <= maps[currentMap].getNpcs().get(i).getNpcX() + 100 &&
-                        charY >= maps[currentMap].getNpcs().get(i).getNpcY() - 100 && charY <= maps[currentMap].getNpcs().get(i).getNpcY() + 100) {
-                        interact.setVisible(true);
+                int charX = maps[currentMap].getCharacterX();
+                int charY = maps[currentMap].getCharacterY();
+                
+                boolean showInteract = false;
+
+                for (NPC npc : maps[currentMap].getNpcs()) {
+                    if (charX >= npc.getNpcX() - 100 && charX <= npc.getNpcX() + 100 &&
+                        charY >= npc.getNpcY() - 100 && charY <= npc.getNpcY() + 100) {
+                        showInteract = true;
                         if (pressedKeys.contains(KeyEvent.VK_E)) {
                             inDialogue = true;
                         }
-                    } else {
-                        interact.setVisible(false);
                     }
                 }
-                
-                for (int i = 0; i < maps[currentMap].getDoors().size(); i++) {
-                    if (charX >= maps[currentMap].getDoors().get(i).getDoorX() - 100 && charX <= maps[currentMap].getDoors().get(i).getDoorX() + 100 &&
-                        charY >= maps[currentMap].getDoors().get(i).getDoorY() - 100 && charY <= maps[currentMap].getDoors().get(i).getDoorY() + 100) {
-                        interact.setVisible(true);
-                        if (pressedKeys.contains(KeyEvent.VK_E)) {
 
+                for (Door door : maps[currentMap].getDoors()) {
+                    if (charX >= door.getDoorX() - 100 && charX <= door.getDoorX() + 100 &&
+                        charY >= door.getDoorY() - 100 && charY <= door.getDoorY() + 100) {
+                        showInteract = true;
+                        if (pressedKeys.contains(KeyEvent.VK_E)) {
+                            maps[currentMap].getMapImage().setVisible(false);
+                            int nextDoor = door.getNextDoor();
+                            currentMap = door.getNextMap();
+                            maps[currentMap].setCharacterX(maps[currentMap].getDoors().get(nextDoor).getDoorX());
+                            maps[currentMap].setCharacterY(maps[currentMap].getDoors().get(nextDoor).getDoorY());
+                            maps[currentMap].getMapImage().setVisible(true);
                         }
-                    } else {
-                        interact.setVisible(false);
                     }
                 }
+
+                interact.setVisible(showInteract);
                 
                 if (inDialogue && pressedKeys.contains(KeyEvent.VK_ESCAPE)) {
                     inDialogue = false;
@@ -217,19 +224,17 @@ public class KCISimulator {
         int charScreenX = (mapWidth / 2) - (tileSize / 2);
         int charScreenY = (mapHeight / 2) - (tileSize / 2);
 
-        int newMapX = maps[0].getCharacterX() + dx;
-        int newMapY = maps[0].getCharacterY() + dy;
+        int newMapX = maps[currentMap].getCharacterX() + dx;
+        int newMapY = maps[currentMap].getCharacterY() + dy;
 
         int characterMapX = -newMapX + charScreenX;
         int characterMapY = -newMapY + charScreenY;
 
-        if (canMoveTo(characterMapX, characterMapY, tileSize, tileSize, maps[0])) {
-            maps[0].setCharacterX(newMapX);
-            maps[0].setCharacterY(newMapY);
-            maps[0].getMapImage().setLocation(newMapX, newMapY);
+        if (canMoveTo(characterMapX, characterMapY, tileSize, tileSize, maps[currentMap])) {
+            maps[currentMap].setCharacterX(newMapX);
+            maps[currentMap].setCharacterY(newMapY);
+            maps[currentMap].getMapImage().setLocation(newMapX, newMapY);
         }
-
-        System.out.println("x: " + maps[0].getCharacterX() + "\ny: " + maps[0].getCharacterY());
         
         staminaBar.setValue(stamina);
     }
@@ -244,19 +249,33 @@ public class KCISimulator {
 //        compSci.addNpcs(0,0 ,"Mr. Janicas" , new JLabel(new ImageIcon(new ImageIcon("janicas.png").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT))));
         
         maps[0] = new Map(0, 0, new JLabel(new ImageIcon(new ImageIcon("3rdfloorsketch.png").getImage().getScaledInstance((int)tileSize*40, (int)tileSize*40, Image.SCALE_DEFAULT))));
+<<<<<<< HEAD
       
+=======
+
+>>>>>>> 5b5cc4761372eef73f8ddb871ed55b38d2eabc39
         maps[0].addWalkableArea(tileSize, (int)(tileSize*2.5), (int)(tileSize*20.5), (int)(tileSize*6.5));
         maps[0].addWalkableArea((int)(tileSize*9.2), (int)(tileSize*8), (int)(tileSize*4.1), (int)(tileSize*13.6));
         maps[0].addWalkableArea((int)(tileSize*6), (int)(tileSize*15), (int)(tileSize*5), (int)(tileSize*1.5));
         maps[0].addWalkableArea((int)(tileSize*10), (int)(tileSize*17.2), (int)(tileSize*11), (int)(tileSize*4.5));
+<<<<<<< HEAD
         maps[0].addWalkableArea((int)(tileSize*14.17), (int)(tileSize*19), (int)(tileSize*4), (int)(tileSize*16));
         maps[0].addWalkableArea((int)(tileSize*4.6), (int)(tileSize*31.4), (int)(tileSize*14.8  ), (int)(tileSize*6.5));
         maps[0].addWalkableArea((int)(tileSize*2.5), (int)(tileSize*32), (int)(tileSize*4), (int)(tileSize*5.2));
+=======
+        maps[0].addWalkableArea((int)(tileSize*14.17), (int)(tileSize*19), (int)(tileSize*4), (int)(tileSize*19));
+        maps[0].addWalkableArea((int)(tileSize*15), (int)(tileSize*27.3), (int)(tileSize*4.3), (int)(tileSize*11));
+
+>>>>>>> 5b5cc4761372eef73f8ddb871ed55b38d2eabc39
 //        //stairs
 //        maps[0].addDoors(, );
 //        maps[0].addDoors(, );
 //        maps[0].addDoors(, );
 //        
+        
+        //stairs
+        maps[0].addDoors((int)(tileSize*(-5)), (int)(tileSize*2.5),0 ,0 );
+
 //        //rooms
 //        maps[0].addDoors(, );
 //        maps[0].addDoors(, );

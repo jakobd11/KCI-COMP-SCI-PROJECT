@@ -52,8 +52,8 @@ public class Map {
         npcs.add(new NPC(npcX,npcY,name,image));
     }
     
-    public void addDoors (int doorsX, int doorsY, int next) {
-        doors.add(new Door(doorsX,doorsY,next));
+    public void addDoors (int doorsX, int doorsY, int nextDoor, int nextMap) {
+        doors.add(new Door(doorsX,doorsY,nextDoor,nextMap));
     }
     
     public ArrayList<NPC> getNpcs() {

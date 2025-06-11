@@ -237,7 +237,7 @@ public class KCISimulator {
         thirdFloor.addWalkableArea((int)(tileSize*6), (int)(tileSize*15), (int)(tileSize*5), (int)(tileSize*1.5));
         thirdFloor.addWalkableArea((int)(tileSize*10), (int)(tileSize*17.2), (int)(tileSize*11), (int)(tileSize*4.5));
         thirdFloor.addWalkableArea((int)(tileSize*14.17), (int)(tileSize*19), (int)(tileSize*4), (int)(tileSize*19));
-        thirdFloor.addWalkableArea((int)(tileSize*14.17), (int)(tileSize*19), (int)(tileSize*4), (int)(tileSize*19));
+        thirdFloor.addWalkableArea((int)(tileSize*15), (int)(tileSize*27.3), (int)(tileSize*4.3), (int)(tileSize*11));
 //        //stairs
 //        thirdFloor.addDoors(, );
 //        thirdFloor.addDoors(, );

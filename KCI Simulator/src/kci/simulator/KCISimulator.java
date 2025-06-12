@@ -13,7 +13,7 @@ public class KCISimulator {
     public static JProgressBar staminaBar;
     public static JLayeredPane layeredPane;
 
-    public static int stamina = 100, tileSize, mapWidth, mapHeight, currentMap = 0;
+    public static int stamina = 100, tileSize, mapWidth, mapHeight, currentMap = 0, charScreenX, charScreenY;
     public static boolean inDialogue = false, eKeyHeld;
     
     public static Set<Integer> pressedKeys = new HashSet<>();
@@ -23,13 +23,13 @@ public class KCISimulator {
             runningW, runningS, runningA, runningD,
             facingW, facingS, facingA, facingD;
     
-    public static NPC janicas = new NPC(300, 300, "janicas", new JLabel());
-    
     public static javax.swing.Timer timer;
 
     public static void main(String[] args) {
+        //finding screen size so everything is scaled different for every computer
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
+        //creating frame
         frame = new JFrame("KCI Simulator");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setForeground(Color.black);
@@ -37,34 +37,36 @@ public class KCISimulator {
         frame.getContentPane().setBackground(Color.black);
         frame.setLayout(new BorderLayout());
 
+        //declaring layered pane and important variables for later code
         layeredPane = new JLayeredPane();
         tileSize = (int)screenSize.getHeight() / 10;
         mapWidth = tileSize * 10;
         mapHeight = tileSize * 10;
+        charScreenX = (mapWidth / 2) - (tileSize / 2);
+        charScreenY = (mapHeight / 2) - (tileSize / 2);
         layeredPane.setPreferredSize(new Dimension(mapWidth, mapHeight));
         frame.add(layeredPane, BorderLayout.CENTER);
 
+        //left sided menu
         westMenu = new JPanel();
         westMenu.setPreferredSize(new Dimension((int)(screenSize.getWidth() - mapWidth) / 2, 100));
         westMenu.setLayout(new BoxLayout(westMenu, BoxLayout.Y_AXIS));
         westMenu.setBackground(Color.black);
         frame.add(westMenu, BorderLayout.WEST);
         
+        //right sided menu
         eastMenu = new JPanel();
         eastMenu.setPreferredSize(new Dimension((int)(screenSize.getWidth() - mapWidth) / 2, 100));
         eastMenu.setLayout(new BoxLayout(eastMenu, BoxLayout.Y_AXIS));
         eastMenu.setBackground(Color.black);
         frame.add(eastMenu, BorderLayout.EAST);
         
+        //image of rodney's face
         rodney = new JLabel(new ImageIcon(new ImageIcon("rodneycropped.png")
                 .getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_SMOOTH)));
         rodney.setAlignmentX(Component.CENTER_ALIGNMENT);
         
-        janicas.setImage(new JLabel(new ImageIcon(new ImageIcon("janicas.png")
-                .getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT))));
-        janicas.getImage().setBounds(janicas.getNpcX(), janicas.getNpcY(), tileSize, tileSize);
-        layeredPane.add(janicas.getImage(), Integer.valueOf(2));
-        
+        //green stamina bar 
         staminaBar = new JProgressBar(0, 100);
         staminaBar.setForeground(Color.green);
         staminaBar.setBackground(Color.gray);
@@ -73,21 +75,32 @@ public class KCISimulator {
         westMenu.add(rodney);
         westMenu.add(staminaBar);
         
+        //
         fillMaps();
         
-            maps[currentMap].getMapImage().setBounds(maps[currentMap].getCharacterX(), maps[currentMap].getCharacterY(), tileSize*40, tileSize*40);
-            layeredPane.add(maps[currentMap].getMapImage(), Integer.valueOf(0));
+        //map image
+        maps[currentMap].getMapImage().setBounds(maps[currentMap].getCharacterX(), maps[currentMap].getCharacterY(), tileSize*40, tileSize*40);
+        layeredPane.add(maps[currentMap].getMapImage(), Integer.valueOf(0));
         
+        //npc images
+        for (NPC npc : maps[currentMap].getNpcs()) {
+            npc.getImage().setBounds(npc.getNpcX() - maps[currentMap].getCharacterX() + charScreenX, npc.getNpcY() - maps[currentMap].getCharacterY() + charScreenY, tileSize, tileSize);
+            layeredPane.add(npc.getImage(), Integer.valueOf(2));
+        }
+        
+        //standing images
         facingW = new ImageIcon(new ImageIcon("standfwd.gif").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT));
         facingS = new ImageIcon(new ImageIcon("standback.gif").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT));
         facingA = new ImageIcon(new ImageIcon("standleft.gif").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT));
         facingD = new ImageIcon(new ImageIcon("standright.gif").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT));
 
+        //character image
         character = new JLabel(facingW);
         character.setBounds((mapWidth/2)-(tileSize/2), (mapHeight/2)-(tileSize/2), tileSize, tileSize);
         character.setDoubleBuffered(true);
         layeredPane.add(character, Integer.valueOf(1));
 
+        //constantly updating hash set of keys
         frame.addKeyListener(new KCIKeyListener() {
             public void keyPressed(KeyEvent e) {
                 pressedKeys.add(e.getKeyCode());
@@ -118,6 +131,7 @@ public class KCISimulator {
             }
         });
         
+        //movement images
         walkingW = new ImageIcon(new ImageIcon("walkfwd.gif").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT));
         walkingS = new ImageIcon(new ImageIcon("walkback.gif").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT));
         walkingA = new ImageIcon(new ImageIcon("walkleft.gif").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT));
@@ -127,6 +141,7 @@ public class KCISimulator {
         runningA = new ImageIcon(new ImageIcon("sprintleft.gif").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT));
         runningD = new ImageIcon(new ImageIcon("sprintright.gif").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT));
 
+        //interact display
         interact = new JLabel("Press [E] to interact. ");
         interact.setFont(new java.awt.Font("Arial", Font.BOLD, 24));
         interact.setForeground(Color.red);
@@ -134,18 +149,21 @@ public class KCISimulator {
         layeredPane.add(interact, Integer.valueOf(3));
         interact.setVisible(false);
         
+        //~60fps timer instead of keylistener
         timer = new javax.swing.Timer(16, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 maps[currentMap].getMapImage().setVisible(true);
                 
+                //chars current pos on map
                 int charX = maps[currentMap].getCharacterX();
                 int charY = maps[currentMap].getCharacterY();
                 
                 boolean showInteract = false;
 
+                //checking if char is within npc
                 for (NPC npc : maps[currentMap].getNpcs()) {
-                    if (charX >= npc.getNpcX() - 100 && charX <= npc.getNpcX() + 100 &&
-                        charY >= npc.getNpcY() - 100 && charY <= npc.getNpcY() + 100) {
+                    if (charX >= -npc.getNpcX() - 100 && charX <= -npc.getNpcX() + 100 &&
+                        charY >= -npc.getNpcY() - 100 && charY <= -npc.getNpcY() + 100) {
                         showInteract = true;
                         if (pressedKeys.contains(KeyEvent.VK_E)) {
                             inDialogue = true;
@@ -153,6 +171,7 @@ public class KCISimulator {
                     }
                 }
 
+                //checking if char is within door
                 for (Door door : maps[currentMap].getDoors()) {
                     if (charX >= door.getDoorX() - 100 && charX <= door.getDoorX() + 100 &&
                         charY >= door.getDoorY() - 100 && charY <= door.getDoorY() + 100) {
@@ -176,10 +195,12 @@ public class KCISimulator {
 
                 interact.setVisible(showInteract);
                 
+                //exit dialogue
                 if (inDialogue && pressedKeys.contains(KeyEvent.VK_ESCAPE)) {
                     inDialogue = false;
                 }
                 
+                //no movement if in dialogue
                 if (!inDialogue)
                     movement();
             }
@@ -194,6 +215,7 @@ public class KCISimulator {
     }
     
     public static void movement() {
+        //declarations
         boolean sprinting = pressedKeys.contains(KeyEvent.VK_SHIFT);
         boolean moving = false;
         int dx = 0, dy = 0;
@@ -204,6 +226,7 @@ public class KCISimulator {
 
         int speed = sprinting ? 13 : 4;
 
+        //checking movement direction and putting it into temp dir variable
         if (pressedKeys.contains(KeyEvent.VK_W) || pressedKeys.contains(KeyEvent.VK_UP)) {
             dy += speed;
             character.setIcon(sprinting ? runningW : walkingW);
@@ -225,31 +248,41 @@ public class KCISimulator {
             moving = true;
         }
 
+        //stamina system
         if (pressedKeys.contains(KeyEvent.VK_SHIFT) && moving) {
 //            stamina -= 1;
             if (stamina < 0) stamina = 0;
         } else {
             if (stamina < 100) stamina += 1;
         }
+
+        int newCharX = maps[currentMap].getCharacterX() + dx;
+        int newCharY = maps[currentMap].getCharacterY() + dy;
         
-        int charScreenX = (mapWidth / 2) - (tileSize / 2);
-        int charScreenY = (mapHeight / 2) - (tileSize / 2);
+        int characterMapX = charScreenX - newCharX;
+        int characterMapY = charScreenY - newCharY;
 
-        int newMapX = maps[currentMap].getCharacterX() + dx;
-        int newMapY = maps[currentMap].getCharacterY() + dy;
-
-        int characterMapX = -newMapX + charScreenX;
-        int characterMapY = -newMapY + charScreenY;
-
+        //checks if next move is restricted
         if (canMoveTo(characterMapX, characterMapY, tileSize, tileSize, maps[currentMap])) {
-            maps[currentMap].setCharacterX(newMapX);
-            maps[currentMap].setCharacterY(newMapY);
-            maps[currentMap].getMapImage().setLocation(newMapX, newMapY);
+            maps[currentMap].setCharacterX(newCharX);
+            maps[currentMap].setCharacterY(newCharY);
+            maps[currentMap].getMapImage().setLocation(newCharX, newCharY);
+            
+            //moves just npcs image
+            for (NPC npc : maps[currentMap].getNpcs()) {
+                int screenX = npc.getNpcX() + newCharX + charScreenX;
+                int screenY = npc.getNpcY() + newCharY + charScreenY;
+                npc.getImage().setLocation(screenX, screenY);
+            }
+            
         }
         
         staminaBar.setValue(stamina);
     }
     
+    /**
+     * 
+     */
     public static void fillMaps() {
 //         maps[0] = new Map(mapX, mapY, new JLabel(new ImageIcon(new ImageIcon("3rdfloorsketch.png").getImage().getScaledInstance((int)(tileSize), (int)(tileSize), Image.SCALE_DEFAULT))));
 //        
@@ -284,6 +317,7 @@ public class KCISimulator {
 //        maps[0].addDoors(, );
 //        
 //        //hall monitors
+        maps[0].addNpcs((int)(tileSize*(5)), (int)(tileSize)*(3), "Mr. Janicas", new JLabel(new ImageIcon(new ImageIcon("janicas.png").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT))));
 //        maps[0].addNpcs(, , , );
 //        maps[0].addNpcs(, , , );
         
@@ -315,7 +349,15 @@ public class KCISimulator {
         
         
     }
-    
+    /**
+     * 
+     * @param x
+     * @param y
+     * @param width
+     * @param height
+     * @param map
+     * @return 
+     */
     public static boolean canMoveTo(int x, int y, int width, int height, Map map) {
         Rectangle characterBounds = new Rectangle(x, y, width, height);
         for (Rectangle walkableArea : map.getWalkable()) {

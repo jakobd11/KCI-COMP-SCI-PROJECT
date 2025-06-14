@@ -8,14 +8,14 @@ import java.util.*;
 public class KCISimulator {
 
     public static JFrame gameFrame, menuFrame;
-    public static JPanel mapPanel, westMenu, eastMenu;
+    public static JPanel mapPanel, westMenu, eastMenu, pauseMenu;
     public static JLabel character, rodney, interact, title;
     public static JButton play, quit;
     public static JProgressBar staminaBar;
     public static JLayeredPane layeredPane;
 
     public static int stamina = 100, tileSize, mapWidth, mapHeight, currentMap = 2, charScreenX, charScreenY, mapSize;
-    public static boolean inDialogue = false, eKeyHeld;
+    public static boolean inDialogue = false, inPauseMenu = false, eKeyHeld;
     
     public static Set<Integer> pressedKeys = new HashSet<>();
     public static Map[] maps = new Map[6];
@@ -121,12 +121,15 @@ public class KCISimulator {
         westMenu.add(rodney);
         westMenu.add(staminaBar);
         
+        pauseMenu = new JPanel();
+        pauseMenu.setBackground(new Color(225,0,0,50));
+        pauseMenu.setBounds(tileSize*2, tileSize*1, mapWidth-tileSize*4, mapHeight-tileSize*2);
+        pauseMenu.setVisible(false);
+        layeredPane.add(pauseMenu, Integer.valueOf(5));
+        
         //
         fillMaps();
-        
-        //map image
-        
-        
+                
         //npc images
         for (NPC npc : maps[currentMap].getNpcs()) {
             npc.getImage().setBounds(npc.getNpcX() - maps[currentMap].getCharacterX() + charScreenX, npc.getNpcY() - maps[currentMap].getCharacterY() + charScreenY, tileSize, tileSize);
@@ -259,10 +262,13 @@ public class KCISimulator {
                 //exit dialogue
                 if (inDialogue && pressedKeys.contains(KeyEvent.VK_ESCAPE)) {
                     inDialogue = false;
+                } else if (pressedKeys.contains(KeyEvent.VK_ESCAPE)) {
+                    inPauseMenu = true;
+                    pauseMenu.setVisible(true);
                 }
                 
                 //no movement if in dialogue
-                if (!inDialogue)
+                if (!inDialogue && !inPauseMenu)
                     movement();
             }
         });

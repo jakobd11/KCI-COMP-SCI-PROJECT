@@ -9,8 +9,8 @@ public class KCISimulator {
 
     public static JFrame gameFrame, menuFrame;
     public static JPanel mapPanel, westMenu, eastMenu, pauseMenu;
-    public static JLabel character, rodney, interact, title;
-    public static JButton play, quit;
+    public static JLabel character, rodney, interact, title, status;
+    public static JButton play, quit, resume, savequit;
     public static JProgressBar staminaBar;
     public static JLayeredPane layeredPane;
 
@@ -122,9 +122,32 @@ public class KCISimulator {
         westMenu.add(staminaBar);
         
         pauseMenu = new JPanel();
-        pauseMenu.setBackground(new Color(225,0,0,50));
+        pauseMenu.setBackground(new Color(0,0,0,50));
         pauseMenu.setBounds(tileSize*2, tileSize*1, mapWidth-tileSize*4, mapHeight-tileSize*2);
+        pauseMenu.setLayout(null);
         pauseMenu.setVisible(false);
+        
+        status = new JLabel("PAUSED");
+        status.setFont(new java.awt.Font("Times New Roman", Font.BOLD, 45));
+        status.setBounds(150, 50, 300, 50);
+        status.setForeground(Color.white);
+        
+        resume = new JButton("RESUME");
+        resume.setFont(new java.awt.Font("Times New Roman", Font.BOLD, 45));
+        resume.setBounds(150, 100, 300, 50);
+        resume.setForeground(Color.black);
+        resume.setBackground(Color.gray);
+        
+        savequit = new JButton("SAVE & QUIT");
+        savequit.setFont(new java.awt.Font("Times New Roman", Font.BOLD, 45));
+        savequit.setBounds(150, 150, 300, 50);
+        savequit.setForeground(Color.black);
+        savequit.setBackground(Color.gray);
+        
+        pauseMenu.add(status);
+        pauseMenu.add(resume);
+        pauseMenu.add(savequit);
+        
         layeredPane.add(pauseMenu, Integer.valueOf(5));
         
         //

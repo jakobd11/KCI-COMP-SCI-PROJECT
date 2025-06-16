@@ -166,6 +166,19 @@ public class KCISimulator {
         
         layeredPane.add(pauseMenu, Integer.valueOf(5));
         
+        resume.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                inPauseMenu = false;
+                pauseMenu.setVisible(false);
+            }
+        });
+        
+        savequit.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+        
         //
         fillMaps();
                 

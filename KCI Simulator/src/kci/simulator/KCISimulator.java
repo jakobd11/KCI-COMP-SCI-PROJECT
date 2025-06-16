@@ -13,6 +13,9 @@ public class KCISimulator {
     public static JFrame gameFrame, menuFrame;
     public static JPanel mapPanel, westMenu, eastMenu, pauseMenu;
     public static JLabel character, rodney, interact, title, status;
+    public static JFrame gameFrame, menuFrame;
+    public static JPanel mapPanel, westMenu, eastMenu, pauseMenu;
+    public static JLabel character, rodney, interact, title, status, rodneyLabel, staminaBarLabel;
     public static JButton play, quit, resume, savequit;
     public static JProgressBar staminaBar;
     public static JLayeredPane layeredPane;
@@ -109,6 +112,12 @@ public class KCISimulator {
         eastMenu.setLayout(new BoxLayout(eastMenu, BoxLayout.Y_AXIS));
         eastMenu.setBackground(Color.black);
         gameFrame.add(eastMenu, BorderLayout.EAST);
+
+        
+        //image of rodney's face
+        rodney = new JLabel(new ImageIcon(new ImageIcon("rodneycropped.png")
+                .getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_SMOOTH)));
+        rodney.setAlignmentX(Component.CENTER_ALIGNMENT);
         
         rodneyLabel = new JLabel("Rodney The Raider");
         rodneyLabel.setFont(new java.awt.Font("Times New Roman", Font.BOLD, 36));
@@ -129,6 +138,7 @@ public class KCISimulator {
                 .getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_SMOOTH)));
         rodney.setAlignmentX(Component.CENTER_ALIGNMENT);
         
+
         //green stamina bar 
         staminaBar = new JProgressBar(0, 100);
         staminaBar.setForeground(Color.green);
@@ -169,6 +179,20 @@ public class KCISimulator {
         pauseMenu.add(savequit);
         
         layeredPane.add(pauseMenu, Integer.valueOf(5));
+        
+
+        resume.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                inPauseMenu = false;
+                pauseMenu.setVisible(false);
+            }
+        });
+        
+        savequit.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
         
         //
         fillMaps();
@@ -361,7 +385,7 @@ public class KCISimulator {
 
         //stamina system
         if (pressedKeys.contains(KeyEvent.VK_SHIFT) && moving) {
-            stamina -= 1;
+//            stamina -= 1;
             if (stamina < 0) stamina = 0;
         } else {
             if (stamina < 100) stamina += 1;
@@ -415,10 +439,7 @@ public class KCISimulator {
         maps[0].addWalkableArea((int)(tileSize*16), (int)(tileSize*27.2), (int)(tileSize*5), (int)(tileSize*5.8));
         maps[0].addWalkableArea((int)(tileSize*18), (int)(tileSize*21.4), (int)(tileSize*4), (int)(tileSize*6));
         maps[0].addWalkableArea((int)(tileSize*18.3), (int)(tileSize*20), (int)(tileSize*1.9), (int)(tileSize*12));
-//        //stairs
-//        maps[0].addDoors(, );
-//        maps[0].addDoors(, );
-//        maps[0].addDoors(, );
+
 //          
         //stairs
         maps[0].addDoors((int)(tileSize*(-5)), (int)(tileSize),0 ,1 );
@@ -427,6 +448,12 @@ public class KCISimulator {
 
 //        //rooms
         maps[0].addDoors((int)(tileSize*(-1)), (int)(tileSize),0 ,2);
+        maps[0].addDoors((int)(tileSize*(-10)), (int)(tileSize),0 ,1 );
+        maps[0].addDoors((int)(tileSize*(-16)), (int)(tileSize*(-19)),1 ,1 );
+        maps[0].addDoors((int)(tileSize*(1)), (int)(tileSize*(-29.5)),2 ,1 );
+
+//        //rooms
+        maps[0].addDoors((int)(tileSize*(1.8)), (int)(tileSize),0 ,2);
 //        maps[0].addDoors(, );
 //        
 //        //hall monitors
@@ -450,6 +477,9 @@ public class KCISimulator {
         maps[1].addDoors((int)(tileSize*(-5)), (int)(tileSize),0 ,0 );
         maps[1].addDoors((int)(tileSize*(-15)), (int)(tileSize*(-20)),1 ,0 );
         maps[1].addDoors((int)(tileSize*(-1)), (int)(tileSize*(-35)),2 ,0 );
+        maps[1].addDoors((int)(tileSize*(-10)), (int)(tileSize),0 ,0 );
+        maps[1].addDoors((int)(tileSize*(-16)), (int)(tileSize*(-19)),1 ,0 );
+        maps[1].addDoors((int)(tileSize*(1)), (int)(tileSize*(-29.5)),2 ,0 );
 //        maps[1].addDoors(, );
 //        maps[1].addDoors(, );
 //        

@@ -6,13 +6,6 @@ import java.awt.event.*;
 import java.util.*;
 
 public class KCISimulator {
-
-    public static JFrame frame;
-    public static JPanel mapPanel, westMenu, eastMenu;
-    public static JLabel character, rodney, interact, rodneyLabel, staminaBarLabel;
-    public static JFrame gameFrame, menuFrame;
-    public static JPanel mapPanel, westMenu, eastMenu, pauseMenu;
-    public static JLabel character, rodney, interact, title, status;
     public static JFrame gameFrame, menuFrame;
     public static JPanel mapPanel, westMenu, eastMenu, pauseMenu, dialoguePanel;
     public static JLabel character, rodney, interact, title, status, rodneyLabel, staminaBarLabel, dialogueText;
@@ -477,12 +470,6 @@ public class KCISimulator {
 
 //          
         //stairs
-        maps[0].addDoors((int)(tileSize*(-5)), (int)(tileSize),0 ,1 );
-        maps[0].addDoors((int)(tileSize*(-15)), (int)(tileSize*(-20)),1 ,1 );
-        maps[0].addDoors((int)(tileSize*(-1)), (int)(tileSize*(-35)),2 ,1 );
-
-//        //rooms
-        maps[0].addDoors((int)(tileSize*(-1)), (int)(tileSize),0 ,2);
         maps[0].addDoors((int)(tileSize*(-10)), (int)(tileSize),0 ,1 );
         maps[0].addDoors((int)(tileSize*(-16)), (int)(tileSize*(-19)),1 ,1 );
         maps[0].addDoors((int)(tileSize*(1)), (int)(tileSize*(-29.5)),2 ,1 );
@@ -509,9 +496,6 @@ public class KCISimulator {
         maps[1].addWalkableArea((int)(tileSize*18.3), (int)(tileSize*20), (int)(tileSize*1.9), (int)(tileSize*12));
         
 //        //stairs
-        maps[1].addDoors((int)(tileSize*(-5)), (int)(tileSize),0 ,0 );
-        maps[1].addDoors((int)(tileSize*(-15)), (int)(tileSize*(-20)),1 ,0 );
-        maps[1].addDoors((int)(tileSize*(-1)), (int)(tileSize*(-35)),2 ,0 );
         maps[1].addDoors((int)(tileSize*(-10)), (int)(tileSize),0 ,0 );
         maps[1].addDoors((int)(tileSize*(-16)), (int)(tileSize*(-19)),1 ,0 );
         maps[1].addDoors((int)(tileSize*(1)), (int)(tileSize*(-29.5)),2 ,0 );

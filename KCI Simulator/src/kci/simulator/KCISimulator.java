@@ -8,14 +8,14 @@ import java.util.*;
 public class KCISimulator {
 
     public static JFrame gameFrame, menuFrame;
-    public static JPanel mapPanel, westMenu, eastMenu, pauseMenu;
-    public static JLabel character, rodney, interact, title, status, rodneyLabel, staminaBarLabel;
+    public static JPanel mapPanel, westMenu, eastMenu, pauseMenu, dialoguePanel;
+    public static JLabel character, rodney, interact, title, status, rodneyLabel, staminaBarLabel, dialogueText;
     public static JButton play, quit, resume, savequit;
     public static JProgressBar staminaBar;
     public static JLayeredPane layeredPane;
 
-    public static int stamina = 100, tileSize, mapWidth, mapHeight, currentMap = 2, charScreenX, charScreenY, mapSize;
-    public static boolean inDialogue = false, inPauseMenu = false, eKeyHeld;
+    public static int stamina = 100, tileSize, mapWidth, mapHeight, currentMap = 2, charScreenX, charScreenY, mapSize, gameStage = 0;
+    public static boolean inDialogue = false, inPauseMenu = false, eKeyHeld, canExitDialogue = true;
     
     public static Set<Integer> pressedKeys = new HashSet<>();
     public static Map[] maps = new Map[6];
@@ -26,7 +26,7 @@ public class KCISimulator {
     
     public static javax.swing.Timer timer;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         //finding screen size so everything is scaled different for every computer
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         
@@ -179,6 +179,21 @@ public class KCISimulator {
             }
         });
         
+        dialoguePanel = new JPanel();
+        dialoguePanel.setBackground(new Color(0,0,0,75));
+        dialoguePanel.setBounds(tileSize*2, tileSize*6, mapWidth-tileSize*4, mapHeight-tileSize*6);
+        dialoguePanel.setLayout(null);
+        dialoguePanel.setVisible(false);
+        
+        dialogueText = new JLabel("");
+        dialogueText.setFont(new java.awt.Font("Times New Roman", Font.BOLD, 45));
+        dialogueText.setBounds(50, 50, 600, 50);
+        dialogueText.setForeground(Color.white);
+        
+        dialoguePanel.add(dialogueText);
+        
+        layeredPane.add(dialoguePanel, Integer.valueOf(6));
+        
         //
         fillMaps();
                 
@@ -265,8 +280,25 @@ public class KCISimulator {
                     if (charX >= -npc.getNpcX() - 100 && charX <= -npc.getNpcX() + 100 &&
                         charY >= -npc.getNpcY() - 100 && charY <= -npc.getNpcY() + 100) {
                         showInteract = true;
-                        if (pressedKeys.contains(KeyEvent.VK_E)) {
+                        if(currentMap >= 2) {
+                            if (pressedKeys.contains(KeyEvent.VK_E)) {
+                                inDialogue = true;
+                                dialogueText.setText(npc.getDialogue().get(gameStage));
+                                dialoguePanel.setVisible(true);
+                            }
+                        } else {
                             inDialogue = true;
+                            canExitDialogue = false;
+                            switch (gameStage) {
+                                case 0:
+                                    dialogueText.setText(npc.getDialogue().get(gameStage));
+                                    dialoguePanel.setVisible(true);
+                                    Thread.sleep(3000);
+                                    dialoguePanel.setVisible(false);
+                                    currentMap = 2;
+                                    break;
+                                    
+                            }
                         }
                     }
                 }
@@ -312,9 +344,12 @@ public class KCISimulator {
                 interact.setVisible(showInteract);
                 
                 //exit dialogue
-                if (inDialogue && pressedKeys.contains(KeyEvent.VK_ESCAPE)) {
+                if (inDialogue && pressedKeys.contains(KeyEvent.VK_BACK_SPACE) && canExitDialogue) {
                     inDialogue = false;
-                } else if (pressedKeys.contains(KeyEvent.VK_ESCAPE)) {
+                    dialoguePanel.setVisible(false);
+                } 
+                
+                if (pressedKeys.contains(KeyEvent.VK_ESCAPE) && !inDialogue) {
                     inPauseMenu = true;
                     pauseMenu.setVisible(true);
                 }
@@ -432,7 +467,7 @@ public class KCISimulator {
         maps[0].addDoors((int)(tileSize*(1)), (int)(tileSize*(-29.5)),2 ,1 );
 
 //        //rooms
-        maps[0].addDoors((int)(tileSize*(1.8)), (int)(tileSize),0 ,2);
+        maps[0].addDoors((int)(tileSize*(1.8)), (int)(tileSize*2),0 ,2);
 //        maps[0].addDoors(, );
 //        
 //        //hall monitors
@@ -474,6 +509,7 @@ public class KCISimulator {
         maps[2].addDoors((int)(tileSize*(-2)), (int)(tileSize*(4)),3 ,0);
         
         maps[2].addNpcs((int)(tileSize*(-1)), (int)(tileSize)*(-4), "Mr. Janicas", new JLabel(new ImageIcon(new ImageIcon("janicas.png").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT))));
+        maps[2].getNpcs().get(0).addDialogue("The attendance servers are down! Someone needs to hand-deliver this to the office—no excuses!");
     }
     /**
      * 

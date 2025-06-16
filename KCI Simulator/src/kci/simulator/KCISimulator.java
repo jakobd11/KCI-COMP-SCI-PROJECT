@@ -510,6 +510,7 @@ public class KCISimulator {
         
         maps[2].addNpcs((int)(tileSize*(-1)), (int)(tileSize)*(-4), "Mr. Janicas", new JLabel(new ImageIcon(new ImageIcon("janicas.png").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT))));
         maps[2].getNpcs().get(0).addDialogue("The attendance servers are down! Someone needs to hand-deliver this to the office—no excuses!");
+        
     }
     /**
      * 

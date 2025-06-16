@@ -430,12 +430,12 @@ public class KCISimulator {
 //        maps[0].addDoors(, );
 //          
         //stairs
-        maps[0].addDoors((int)(tileSize*(-5)), (int)(tileSize),0 ,1 );
+        maps[0].addDoors((int)(tileSize*(-11)), (int)(tileSize),0 ,1 );
         maps[0].addDoors((int)(tileSize*(-15)), (int)(tileSize*(-20)),1 ,1 );
         maps[0].addDoors((int)(tileSize*(-1)), (int)(tileSize*(-35)),2 ,1 );
 
 //        //rooms
-        maps[0].addDoors((int)(tileSize*(-1)), (int)(tileSize),0 ,2);
+        maps[0].addDoors((int)(tileSize*(1.8)), (int)(tileSize),0 ,2);
 //        maps[0].addDoors(, );
 //        
 //        //hall monitors

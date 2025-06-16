@@ -9,7 +9,7 @@ public class KCISimulator {
 
     public static JFrame frame;
     public static JPanel mapPanel, westMenu, eastMenu;
-    public static JLabel character, rodney, interact;
+    public static JLabel character, rodney, interact, rodneyLabel, staminaBarLabel;
     public static JProgressBar staminaBar;
     public static JLayeredPane layeredPane;
 
@@ -56,6 +56,20 @@ public class KCISimulator {
         eastMenu.setBackground(Color.black);
         frame.add(eastMenu, BorderLayout.EAST);
         
+        rodneyLabel = new JLabel("Rodney The Raider");
+        rodneyLabel.setFont(new java.awt.Font("Times New Roman", Font.BOLD, 36));
+        rodneyLabel.setAlignmentX(Component.CENTER_ALIGNMENT); //posX, posY, sizeX, sizeY
+        rodneyLabel.setForeground(Color.RED);
+        rodneyLabel.setOpaque(true);
+        rodneyLabel.setBackground(Color.BLACK);
+        
+        staminaBarLabel = new JLabel("Stamina Bar");
+        staminaBarLabel.setFont(new java.awt.Font("Times New Roman", Font.BOLD, 30));
+        staminaBarLabel.setAlignmentX(Component.CENTER_ALIGNMENT); //posX, posY, sizeX, sizeY
+        staminaBarLabel.setForeground(Color.GREEN);
+        staminaBarLabel.setOpaque(true);
+        staminaBarLabel.setBackground(Color.BLACK);
+        
         rodney = new JLabel(new ImageIcon(new ImageIcon("rodneycropped.png")
                 .getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_SMOOTH)));
         rodney.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -70,8 +84,11 @@ public class KCISimulator {
         staminaBar.setBackground(Color.gray);
         staminaBar.setAlignmentX(Component.CENTER_ALIGNMENT);
         
+        westMenu.add(rodneyLabel);
         westMenu.add(rodney);
+        westMenu.add(staminaBarLabel);
         westMenu.add(staminaBar);
+        
         
         fillMaps();
         
@@ -226,7 +243,7 @@ public class KCISimulator {
         }
 
         if (pressedKeys.contains(KeyEvent.VK_SHIFT) && moving) {
-//            stamina -= 1;
+            stamina -= 1;
             if (stamina < 0) stamina = 0;
         } else {
             if (stamina < 100) stamina += 1;

@@ -7,16 +7,13 @@ import java.util.*;
 
 public class KCISimulator {
 
-<<<<<<< HEAD
     public static JFrame frame;
     public static JPanel mapPanel, westMenu, eastMenu;
     public static JLabel character, rodney, interact, rodneyLabel, staminaBarLabel;
-=======
     public static JFrame gameFrame, menuFrame;
     public static JPanel mapPanel, westMenu, eastMenu, pauseMenu;
     public static JLabel character, rodney, interact, title, status;
     public static JButton play, quit, resume, savequit;
->>>>>>> 435643ce9603a2bf56d89b2594c00c3a3d7fad77
     public static JProgressBar staminaBar;
     public static JLayeredPane layeredPane;
 
@@ -113,7 +110,6 @@ public class KCISimulator {
         eastMenu.setBackground(Color.black);
         gameFrame.add(eastMenu, BorderLayout.EAST);
         
-<<<<<<< HEAD
         rodneyLabel = new JLabel("Rodney The Raider");
         rodneyLabel.setFont(new java.awt.Font("Times New Roman", Font.BOLD, 36));
         rodneyLabel.setAlignmentX(Component.CENTER_ALIGNMENT); //posX, posY, sizeX, sizeY
@@ -128,9 +124,7 @@ public class KCISimulator {
         staminaBarLabel.setOpaque(true);
         staminaBarLabel.setBackground(Color.BLACK);
         
-=======
         //image of rodney's face
->>>>>>> 435643ce9603a2bf56d89b2594c00c3a3d7fad77
         rodney = new JLabel(new ImageIcon(new ImageIcon("rodneycropped.png")
                 .getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_SMOOTH)));
         rodney.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -146,9 +140,7 @@ public class KCISimulator {
         westMenu.add(staminaBarLabel);
         westMenu.add(staminaBar);
         
-<<<<<<< HEAD
-        
-=======
+
         pauseMenu = new JPanel();
         pauseMenu.setBackground(new Color(0,0,0,50));
         pauseMenu.setBounds(tileSize*2, tileSize*1, mapWidth-tileSize*4, mapHeight-tileSize*2);
@@ -179,7 +171,6 @@ public class KCISimulator {
         layeredPane.add(pauseMenu, Integer.valueOf(5));
         
         //
->>>>>>> 435643ce9603a2bf56d89b2594c00c3a3d7fad77
         fillMaps();
                 
         //npc images

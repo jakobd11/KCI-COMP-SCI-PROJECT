@@ -5,13 +5,11 @@ import java.util.ArrayList;
 import javax.swing.JLabel;
 
 public class MovingNPC extends NPC {
-    private int speed, maxX, maxY;
+    private int speed;
 
-    public MovingNPC(int speed, int maxX, int maxY, int npcX, int npcY, String name, JLabel image) {
+    public MovingNPC(int speed, int npcX, int npcY, String name, JLabel image) {
         super(npcX, npcY, name, image);
         this.speed = speed;
-        this.maxX = maxX;
-        this.maxY = maxY;
     }
 
     public int getSpeed() {
@@ -20,22 +18,6 @@ public class MovingNPC extends NPC {
 
     public void setSpeed(int speed) {
         this.speed = speed;
-    }
-
-    public int getMaxX() {
-        return maxX;
-    }
-
-    public void setMaxX(int maxX) {
-        this.maxX = maxX;
-    }
-
-    public int getMaxY() {
-        return maxY;
-    }
-
-    public void setMaxY(int maxY) {
-        this.maxY = maxY;
     }
 
     public int getNpcX() {

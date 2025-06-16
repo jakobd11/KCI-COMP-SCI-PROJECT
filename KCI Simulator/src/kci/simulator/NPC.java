@@ -52,6 +52,10 @@ public class NPC{
     public void setImage(JLabel image) {
         this.image = image;
     } 
+    
+    public void addDialogue (String text) {
+        dialogue.add(text);
+    }
 
     public ArrayList<String> getDialogue() {
         return dialogue;

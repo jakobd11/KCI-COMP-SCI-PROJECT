@@ -5,11 +5,29 @@ import java.util.ArrayList;
 import javax.swing.JLabel;
 
 public class MovingNPC extends NPC {
-    private int speed;
+    private int speed, maxLeft, maxRight;
 
-    public MovingNPC(int speed, int npcX, int npcY, String name, JLabel image) {
+    public MovingNPC(int speed, int maxLeft, int maxRight, int npcX, int npcY, String name, JLabel image) {
         super(npcX, npcY, name, image);
         this.speed = speed;
+        this.maxLeft = maxLeft;
+        this.maxRight = maxRight;
+    }
+
+    public int getMaxLeft() {
+        return maxLeft;
+    }
+
+    public void setMaxUp(int maxLeft) {
+        this.maxLeft = maxLeft;
+    }
+
+    public int getMaxRight() {
+        return maxRight;
+    }
+
+    public void setMaxDown(int maxRight) {
+        this.maxRight = maxRight;
     }
 
     public int getSpeed() {

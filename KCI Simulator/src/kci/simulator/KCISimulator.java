@@ -211,6 +211,13 @@ public class KCISimulator {
             layeredPane.add(npc.getImage(), Integer.valueOf(3));
         }
         
+        for (MovingNPC npc : maps[currentMap].getMovingNpcs()) {
+            npc.getImage().setBounds(npc.getNpcX() - maps[currentMap].getCharacterX() + charScreenX,
+                                    npc.getNpcY() - maps[currentMap].getCharacterY() + charScreenY,
+                                    tileSize, tileSize);
+            layeredPane.add(npc.getImage(), Integer.valueOf(3));
+        }
+        
         //standing images
         facingW = new ImageIcon(new ImageIcon("standfwd.gif").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT));
         facingS = new ImageIcon(new ImageIcon("standback.gif").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT));
@@ -282,31 +289,82 @@ public class KCISimulator {
                 int charY = maps[currentMap].getCharacterY();
                 
                 boolean showInteract = false;
+                
+                if (currentMap <= 1) {
+                    for (MovingNPC npc : maps[currentMap].getMovingNpcs()) {
+                        if (npc.getNpcX() >= npc.getMaxRight()
+                                || npc.getNpcX() <= npc.getMaxLeft()) {
+                            npc.setSpeed(-npc.getSpeed()); // 
+                        }
+
+                        npc.setNpcX(npc.getNpcX() - npc.getSpeed());
+
+                        int screenX = npc.getNpcX() + maps[currentMap].getCharacterX() + charScreenX;
+                        int screenY = npc.getNpcY() + maps[currentMap].getCharacterY() + charScreenY;
+                        npc.getImage().setLocation(screenX, screenY);
+                    }
+                }
 
                 //checking if char is within npc
                 for (NPC npc : maps[currentMap].getNpcs()) {
                     if (charX >= -npc.getNpcX() - 100 && charX <= -npc.getNpcX() + 100 &&
                         charY >= -npc.getNpcY() - 100 && charY <= -npc.getNpcY() + 100) {
                         showInteract = true;
-                        if(currentMap >= 2) {
-                            if (pressedKeys.contains(KeyEvent.VK_E)) {
-                                inDialogue = true;
+                        if (pressedKeys.contains(KeyEvent.VK_E)) {
+                            inDialogue = true;
+                            dialogueText.setText(npc.getDialogue().get(gameStage));
+                            dialoguePanel.setVisible(true);
+                        }
+                    }
+                }
+                
+                for (MovingNPC npc : maps[currentMap].getMovingNpcs()) {
+                    if (charX >= -npc.getNpcX() - 100 && charX <= -npc.getNpcX() + 100 &&
+                        charY >= -npc.getNpcY() - 100 && charY <= -npc.getNpcY() + 100) {
+                        inDialogue = true;
+                        canExitDialogue = false;
+                        switch (gameStage) {
+                            case 0:
                                 dialogueText.setText(npc.getDialogue().get(gameStage));
                                 dialoguePanel.setVisible(true);
-                            }
-                        } else {
-                            inDialogue = true;
-                            canExitDialogue = false;
-                            switch (gameStage) {
-                                case 0:
-                                    dialogueText.setText(npc.getDialogue().get(gameStage));
-                                    dialoguePanel.setVisible(true);
-                                    Thread.sleep(3000);
-                                    dialoguePanel.setVisible(false);
-                                    currentMap = 2;
-                                    break;
-                                    
-                            }
+                                new javax.swing.Timer(3000, new ActionListener() {
+                                    @Override
+                                    public void actionPerformed(ActionEvent e) {
+                                        timer.stop();
+                                        layeredPane.remove(maps[currentMap].getMapImage());
+                                        for (NPC npc : maps[currentMap].getNpcs()) {
+                                            layeredPane.remove(npc.getImage());
+                                        }
+                                        for (MovingNPC npc : maps[currentMap].getMovingNpcs()) {
+                                            layeredPane.remove(npc.getImage());
+                                        }
+                                        dialoguePanel.setVisible(false);
+                                        currentMap = 2;
+                                        switch(currentMap) {
+                                            case 0:
+                                            case 1:
+                                                mapSize = 40*tileSize;
+                                                break;
+                                            case 2:
+                                                mapSize = 10*tileSize;
+                                                break;
+                                        }       
+                                        maps[currentMap].getMapImage().setVisible(true);
+                                        maps[currentMap].getMapImage().setBounds(maps[currentMap].getCharacterX(), maps[currentMap].getCharacterY(), mapSize, mapSize);
+                                        for (NPC npc : maps[currentMap].getNpcs()) {
+                                            npc.getImage().setBounds(npc.getNpcX() - maps[currentMap].getCharacterX() + charScreenX, npc.getNpcY() - maps[currentMap].getCharacterY() + charScreenY, tileSize, tileSize);
+                                            layeredPane.add(npc.getImage(), Integer.valueOf(3));
+                                        }
+                                        layeredPane.add(maps[currentMap].getMapImage(), Integer.valueOf(1));
+                                        layeredPane.repaint();
+                                        timer.start();
+                                        
+                                    }
+                                }) {{
+                                    setRepeats(false);
+                                    start();
+                                }};
+                                break;    
                         }
                     }
                 }
@@ -321,6 +379,9 @@ public class KCISimulator {
                             layeredPane.remove(maps[currentMap].getMapImage());
                             eKeyHeld = true;
                             for (NPC npc : maps[currentMap].getNpcs()) {
+                                layeredPane.remove(npc.getImage());
+                            }
+                            for (MovingNPC npc : maps[currentMap].getMovingNpcs()) {
                                 layeredPane.remove(npc.getImage());
                             }
                             int nextDoor = door.getNextDoor();
@@ -340,6 +401,12 @@ public class KCISimulator {
                             maps[currentMap].getMapImage().setBounds(maps[currentMap].getCharacterX(), maps[currentMap].getCharacterY(), mapSize, mapSize);
                             for (NPC npc : maps[currentMap].getNpcs()) {
                                 npc.getImage().setBounds(npc.getNpcX() - maps[currentMap].getCharacterX() + charScreenX, npc.getNpcY() - maps[currentMap].getCharacterY() + charScreenY, tileSize, tileSize);
+                                layeredPane.add(npc.getImage(), Integer.valueOf(3));
+                            }
+                            for (MovingNPC npc : maps[currentMap].getMovingNpcs()) {
+                                npc.getImage().setBounds(npc.getNpcX() - maps[currentMap].getCharacterX() + charScreenX,
+                                                        npc.getNpcY() - maps[currentMap].getCharacterY() + charScreenY,
+                                                        tileSize, tileSize);
                                 layeredPane.add(npc.getImage(), Integer.valueOf(3));
                             }
                             layeredPane.add(maps[currentMap].getMapImage(), Integer.valueOf(1));
@@ -447,13 +514,7 @@ public class KCISimulator {
      * 
      */
     public static void fillMaps() {
-//         maps[0] = new Map(mapX, mapY, new JLabel(new ImageIcon(new ImageIcon("3rdfloorsketch.png").getImage().getScaledInstance((int)(tileSize), (int)(tileSize), Image.SCALE_DEFAULT))));
-//        
-////        //class exit
-////        compSci.addDoors(, );
-//        
-//        //janicas
-//        compSci.addNpcs(0,0 ,"Mr. Janicas" , new JLabel(new ImageIcon(new ImageIcon("janicas.png").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT))));
+
         
         maps[0] = new Map(0, 0, new JLabel(new ImageIcon(new ImageIcon("3rdfloorsketch.png").getImage().getScaledInstance((int)tileSize*40, (int)tileSize*40, Image.SCALE_DEFAULT))));
 
@@ -479,7 +540,8 @@ public class KCISimulator {
 //        maps[0].addDoors(, );
 //        
 //        //hall monitors
-//        maps[0].addNpcs(, , , );
+        maps[0].addNpcs(3, (int)(tileSize), (int)(tileSize*(15)), (int)(tileSize), (int)(tileSize), "Hall Monitor", new JLabel(new ImageIcon(new ImageIcon("janicas.png").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT))));
+        maps[0].getMovingNpcs().get(0).addDialogue("Why aren’t you in class? Get back!");
 //        maps[0].addNpcs(, , , );
         
         maps[1] = new Map(0, 0, new JLabel(new ImageIcon(new ImageIcon("2ndfloorsketch.png").getImage().getScaledInstance((int)tileSize*40, (int)tileSize*40, Image.SCALE_DEFAULT))));

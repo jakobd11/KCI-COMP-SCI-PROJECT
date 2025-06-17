@@ -553,7 +553,7 @@ public class KCISimulator {
 //        maps[0].addDoors(, );
 //        
 //        //hall monitors
-        maps[0].addNpcs(3, (int)(tileSize), (int)(tileSize*(15)), (int)(tileSize), (int)(tileSize), "Hall Monitor", new JLabel(new ImageIcon(new ImageIcon("janicas.png").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT))));
+        maps[0].addNpcs(3, (int)(tileSize), (int)(tileSize*(15)), (int)(tileSize), (int)(tileSize), "Hall Monitor", new JLabel(new ImageIcon(new ImageIcon("hallmonitor.png").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT))));
         maps[0].getMovingNpcs().get(0).addDialogue("Why aren’t you in class? Get back!");
         maps[0].getMovingNpcs().get(0).addDialogue("I see you are bringing the attendence back, you're lucky this time.");
 //        maps[0].addNpcs(, , , );

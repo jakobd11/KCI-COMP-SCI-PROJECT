@@ -552,7 +552,7 @@ public class KCISimulator {
         //stairs
         maps[0].addDoors((int)(tileSize*(-10)), (int)(tileSize*(2)),0 ,1 );
         maps[0].addDoors((int)(tileSize*(-17)), (int)(tileSize*(-19.5)),1 ,1 );
-        maps[0].addDoors((int)(tileSize*(1)), (int)(tileSize*(-29)),2 ,1 );
+        maps[0].addDoors((int)(tileSize*(1)), (int)(tileSize*(-29.5)),2 ,1 );
 
         //rooms
         maps[0].addDoors((int)(tileSize*(1.8)), (int)(tileSize*2),0 ,2);
@@ -579,25 +579,9 @@ public class KCISimulator {
         maps[1].addWalkableArea((int)(tileSize*18), (int)(tileSize*21.4), (int)(tileSize*4), (int)(tileSize*6));
         maps[1].addWalkableArea((int)(tileSize*18.3), (int)(tileSize*20), (int)(tileSize*1.9), (int)(tileSize*12));
         
-<<<<<<< HEAD
-//        //stairs
-        maps[1].addDoors((int)(tileSize*(-10)), (int)(tileSize*(2)),0 ,0 );
-        maps[1].addDoors((int)(tileSize*(-17)), (int)(tileSize*(-19.5)),1 ,0 );
-        maps[1].addDoors((int)(tileSize*(1)), (int)(tileSize*(-29)),2 ,0 );
-//        maps[1].addDoors(, );
-//        maps[1].addDoors(, );
-//        
-//        //rooms
-//        maps[1].addDoors(, );
-//        maps[1].addDoors(, );
-//        
-//        //hall monitors
-//        maps[1].addNpcs(, , , );
-//        maps[1].addNpcs(, , , );
-=======
         //stairs
-        maps[1].addDoors((int)(tileSize*(-10)), (int)(tileSize),0 ,0 );
-        maps[1].addDoors((int)(tileSize*(-16)), (int)(tileSize*(-19)),1 ,0 );
+        maps[1].addDoors((int)(tileSize*(-10)), (int)(tileSize*2),0 ,0 );
+        maps[1].addDoors((int)(tileSize*(-17)), (int)(tileSize*(-19.5)),1 ,0 );
         maps[1].addDoors((int)(tileSize*(1)), (int)(tileSize*(-29.5)),2 ,0 );
         
         //rooms 
@@ -611,7 +595,6 @@ public class KCISimulator {
         maps[1].addNpcs(4, (int)(tileSize*(-1)), (int)(tileSize*(12)), (int)(tileSize), (int)(tileSize*(29)), "Hall Monitor", new JLabel(new ImageIcon(new ImageIcon("hallmonitor.png").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT))));
         maps[1].getMovingNpcs().get(0).addDialogue("<html>Why aren’t you in class? Get back!</html>");
         maps[1].getMovingNpcs().get(0).addDialogue("<html>I see you are bringing the attendence back, you're lucky this time.</html>");
->>>>>>> 69bcd714b17648999e21587d2b3d94f567adde1d
 
         maps[2] = new Map(0, 0, new JLabel(new ImageIcon(new ImageIcon("csclass.png").getImage().getScaledInstance((int)tileSize*10, (int)tileSize*10, Image.SCALE_DEFAULT))));
         

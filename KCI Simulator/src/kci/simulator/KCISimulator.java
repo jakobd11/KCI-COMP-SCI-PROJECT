@@ -307,8 +307,8 @@ public class KCISimulator {
 
                 //checking if char is within npc
                 for (NPC npc : maps[currentMap].getNpcs()) {
-                    if (charX >= -npc.getNpcX() - 100 && charX <= -npc.getNpcX() + 100 &&
-                        charY >= -npc.getNpcY() - 100 && charY <= -npc.getNpcY() + 100) {
+                    if (charX >= -npc.getNpcX() - tileSize && charX <= -npc.getNpcX() + tileSize &&
+                        charY >= -npc.getNpcY() - tileSize && charY <= -npc.getNpcY() + tileSize) {
                         showInteract = true;
                         if (pressedKeys.contains(KeyEvent.VK_E)) {
                             switch (currentMap) {
@@ -323,8 +323,8 @@ public class KCISimulator {
                 }
                 
                 for (MovingNPC npc : maps[currentMap].getMovingNpcs()) {
-                    if (charX >= -npc.getNpcX() - 100 && charX <= -npc.getNpcX() + 100 &&
-                        charY >= -npc.getNpcY() - 100 && charY <= -npc.getNpcY() + 100) {
+                    if (charX >= -npc.getNpcX() - tileSize && charX <= -npc.getNpcX() + tileSize &&
+                        charY >= -npc.getNpcY() - tileSize && charY <= -npc.getNpcY() + tileSize) {
                         inDialogue = true;
                         canExitDialogue = false;
                         switch (gameStage) {
@@ -384,8 +384,8 @@ public class KCISimulator {
 
                 //checking if char is within door
                 for (Door door : maps[currentMap].getDoors()) {
-                    if (charX >= door.getDoorX() - 100 && charX <= door.getDoorX() + 100 &&
-                        charY >= door.getDoorY() - 100 && charY <= door.getDoorY() + 100) {
+                    if (charX >= door.getDoorX() - tileSize && charX <= door.getDoorX() + tileSize &&
+                        charY >= door.getDoorY() - tileSize && charY <= door.getDoorY() + tileSize) {
                         showInteract = true;
                         if (pressedKeys.contains(KeyEvent.VK_E)  && !eKeyHeld) {
                             timer.stop();
@@ -535,8 +535,6 @@ public class KCISimulator {
      * 
      */
     public static void fillMaps() {
-
-        
         maps[0] = new Map(0, 0, new JLabel(new ImageIcon(new ImageIcon("third.png").getImage().getScaledInstance((int)tileSize*40, (int)tileSize*40, Image.SCALE_DEFAULT))));
 
         maps[0].addWalkableArea(tileSize, (int)(tileSize*2.5), (int)(tileSize*20.5), (int)(tileSize*6.5));
@@ -549,22 +547,23 @@ public class KCISimulator {
         maps[0].addWalkableArea((int)(tileSize*16), (int)(tileSize*27.2), (int)(tileSize*5), (int)(tileSize*5.8));
         maps[0].addWalkableArea((int)(tileSize*18), (int)(tileSize*21.4), (int)(tileSize*4), (int)(tileSize*6));
         maps[0].addWalkableArea((int)(tileSize*18.3), (int)(tileSize*20), (int)(tileSize*1.9), (int)(tileSize*12));
-
-//          
+   
         //stairs
         maps[0].addDoors((int)(tileSize*(-10)), (int)(tileSize*(2)),0 ,1 );
         maps[0].addDoors((int)(tileSize*(-17)), (int)(tileSize*(-19.5)),1 ,1 );
         maps[0].addDoors((int)(tileSize*(1)), (int)(tileSize*(-29)),2 ,1 );
 
-//        //rooms
+        //rooms
         maps[0].addDoors((int)(tileSize*(1.8)), (int)(tileSize*2),0 ,2);
-//        maps[0].addDoors(, );
-//        
-//        //hall monitors
-        maps[0].addNpcs(3, (int)(tileSize), (int)(tileSize*(15)), (int)(tileSize), (int)(tileSize), "Hall Monitor", new JLabel(new ImageIcon(new ImageIcon("hallmonitor.png").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT))));
+        maps[0].addDoors((int)(tileSize*(1.8)), (int)(tileSize*(-4)),0, 3);
+        
+        //hall monitors
+        maps[0].addNpcs(4, (int)(tileSize), (int)(tileSize*(15)), (int)(tileSize), (int)(tileSize), "Hall Monitor", new JLabel(new ImageIcon(new ImageIcon("hallmonitor.png").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT))));
         maps[0].getMovingNpcs().get(0).addDialogue("<html>Why aren’t you in class? Get back!</html>");
         maps[0].getMovingNpcs().get(0).addDialogue("<html>I see you are bringing the attendence back, you're lucky this time.</html>");
-//        maps[0].addNpcs(, , , );
+        maps[0].addNpcs(4, (int)(tileSize*(-1)), (int)(tileSize*(15)), (int)(tileSize), (int)(tileSize*(29)), "Hall Monitor", new JLabel(new ImageIcon(new ImageIcon("hallmonitor.png").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT))));
+        maps[0].getMovingNpcs().get(0).addDialogue("<html>Why aren’t you in class? Get back!</html>");
+        maps[0].getMovingNpcs().get(0).addDialogue("<html>I see you are bringing the attendence back, you're lucky this time.</html>");
         
         maps[1] = new Map(0, 0, new JLabel(new ImageIcon(new ImageIcon("second.png").getImage().getScaledInstance((int)tileSize*40, (int)tileSize*40, Image.SCALE_DEFAULT))));
 
@@ -579,6 +578,7 @@ public class KCISimulator {
         maps[1].addWalkableArea((int)(tileSize*18), (int)(tileSize*21.4), (int)(tileSize*4), (int)(tileSize*6));
         maps[1].addWalkableArea((int)(tileSize*18.3), (int)(tileSize*20), (int)(tileSize*1.9), (int)(tileSize*12));
         
+<<<<<<< HEAD
 //        //stairs
         maps[1].addDoors((int)(tileSize*(-10)), (int)(tileSize*(2)),0 ,0 );
         maps[1].addDoors((int)(tileSize*(-17)), (int)(tileSize*(-19.5)),1 ,0 );
@@ -593,6 +593,24 @@ public class KCISimulator {
 //        //hall monitors
 //        maps[1].addNpcs(, , , );
 //        maps[1].addNpcs(, , , );
+=======
+        //stairs
+        maps[1].addDoors((int)(tileSize*(-10)), (int)(tileSize),0 ,0 );
+        maps[1].addDoors((int)(tileSize*(-16)), (int)(tileSize*(-19)),1 ,0 );
+        maps[1].addDoors((int)(tileSize*(1)), (int)(tileSize*(-29.5)),2 ,0 );
+        
+        //rooms
+        maps[1].addDoors((int)(tileSize*(-2)), (int)(tileSize*(-11.5)),0 ,4);
+        maps[1].addDoors((int)(tileSize*(-14)), (int)(tileSize*(-28)),0, 5);
+        
+        //hall monitors
+        maps[1].addNpcs(4, (int)(tileSize), (int)(tileSize*(14)), (int)(tileSize), (int)(tileSize), "Hall Monitor", new JLabel(new ImageIcon(new ImageIcon("hallmonitor.png").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT))));
+        maps[1].getMovingNpcs().get(0).addDialogue("<html>Why aren’t you in class? Get back!</html>");
+        maps[1].getMovingNpcs().get(0).addDialogue("<html>I see you are bringing the attendence back, you're lucky this time.</html>");
+        maps[1].addNpcs(4, (int)(tileSize*(-1)), (int)(tileSize*(12)), (int)(tileSize), (int)(tileSize*(29)), "Hall Monitor", new JLabel(new ImageIcon(new ImageIcon("hallmonitor.png").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT))));
+        maps[1].getMovingNpcs().get(0).addDialogue("<html>Why aren’t you in class? Get back!</html>");
+        maps[1].getMovingNpcs().get(0).addDialogue("<html>I see you are bringing the attendence back, you're lucky this time.</html>");
+>>>>>>> 69bcd714b17648999e21587d2b3d94f567adde1d
 
         maps[2] = new Map(0, 0, new JLabel(new ImageIcon(new ImageIcon("csclass.png").getImage().getScaledInstance((int)tileSize*10, (int)tileSize*10, Image.SCALE_DEFAULT))));
         

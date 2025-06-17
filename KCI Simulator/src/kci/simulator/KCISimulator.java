@@ -575,7 +575,7 @@ public class KCISimulator {
         maps[1].addDoors((int)(tileSize*(-16)), (int)(tileSize*(-19)),1 ,0 );
         maps[1].addDoors((int)(tileSize*(1)), (int)(tileSize*(-29.5)),2 ,0 );
         
-        //rooms
+        //rooms 
         maps[1].addDoors((int)(tileSize*(-2)), (int)(tileSize*(-11.5)),0 ,4);
         maps[1].addDoors((int)(tileSize*(-14)), (int)(tileSize*(-28)),0, 5);
         

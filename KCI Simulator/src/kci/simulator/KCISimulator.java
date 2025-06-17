@@ -188,14 +188,14 @@ public class KCISimulator {
         });
         
         dialoguePanel = new JPanel();
-        dialoguePanel.setBackground(new Color(0,0,0,75));
+        dialoguePanel.setBackground(Color.black);
         dialoguePanel.setBounds(tileSize*2, tileSize*6, mapWidth-tileSize*4, mapHeight-tileSize*6);
         dialoguePanel.setLayout(null);
         dialoguePanel.setVisible(false);
         
         dialogueText = new JLabel("");
         dialogueText.setFont(new java.awt.Font("Times New Roman", Font.BOLD, 45));
-        dialogueText.setBounds(50, 50, 600, 50);
+        dialogueText.setBounds(0, 0, mapWidth-tileSize*4, mapHeight-tileSize*6);
         dialogueText.setForeground(Color.white);
         
         dialoguePanel.add(dialogueText);
@@ -561,9 +561,9 @@ public class KCISimulator {
 //        maps[0].addDoors(, );
 //        
 //        //hall monitors
-        maps[0].addNpcs(3, (int)(tileSize), (int)(tileSize*(15)), (int)(tileSize), (int)(tileSize), "Hall Monitor", new JLabel(new ImageIcon(new ImageIcon("janicas.png").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT))));
-        maps[0].getMovingNpcs().get(0).addDialogue("Why aren’t you in class? Get back!");
-        maps[0].getMovingNpcs().get(0).addDialogue("I see you are bringing the attendence back, you're lucky this time.");
+        maps[0].addNpcs(3, (int)(tileSize), (int)(tileSize*(15)), (int)(tileSize), (int)(tileSize), "Hall Monitor", new JLabel(new ImageIcon(new ImageIcon("hallmonitor.png").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT))));
+        maps[0].getMovingNpcs().get(0).addDialogue("<html>Why aren’t you in class? Get back!</html>");
+        maps[0].getMovingNpcs().get(0).addDialogue("<html>I see you are bringing the attendence back, you're lucky this time.</html>");
 //        maps[0].addNpcs(, , , );
         
         maps[1] = new Map(0, 0, new JLabel(new ImageIcon(new ImageIcon("second.png").getImage().getScaledInstance((int)tileSize*40, (int)tileSize*40, Image.SCALE_DEFAULT))));
@@ -601,8 +601,8 @@ public class KCISimulator {
         maps[2].addDoors((int)(tileSize*(-2)), (int)(tileSize*(4)),3 ,0);
         
         maps[2].addNpcs((int)(tileSize*(-1)), (int)(tileSize)*(-4), "Mr. Janicas", new JLabel(new ImageIcon(new ImageIcon("janicas.png").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT))));
-        maps[2].getNpcs().get(0).addDialogue("The attendance servers are down! Someone needs to hand-deliver this to the office—no excuses!");
-        maps[2].getNpcs().get(0).addDialogue("You're still here? I told you to bring the attendance to the office.");
+        maps[2].getNpcs().get(0).addDialogue("<html>The attendance servers are down! Someone needs to hand-deliver this to the office—no excuses!</html>");
+        maps[2].getNpcs().get(0).addDialogue("<html>You're still here? I told you to bring the attendance to the office.</html>");
         
     }
     /**

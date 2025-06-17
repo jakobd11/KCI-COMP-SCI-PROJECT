@@ -527,8 +527,6 @@ public class KCISimulator {
      * 
      */
     public static void fillMaps() {
-
-        
         maps[0] = new Map(0, 0, new JLabel(new ImageIcon(new ImageIcon("third.png").getImage().getScaledInstance((int)tileSize*40, (int)tileSize*40, Image.SCALE_DEFAULT))));
 
         maps[0].addWalkableArea(tileSize, (int)(tileSize*2.5), (int)(tileSize*20.5), (int)(tileSize*6.5));
@@ -541,18 +539,17 @@ public class KCISimulator {
         maps[0].addWalkableArea((int)(tileSize*16), (int)(tileSize*27.2), (int)(tileSize*5), (int)(tileSize*5.8));
         maps[0].addWalkableArea((int)(tileSize*18), (int)(tileSize*21.4), (int)(tileSize*4), (int)(tileSize*6));
         maps[0].addWalkableArea((int)(tileSize*18.3), (int)(tileSize*20), (int)(tileSize*1.9), (int)(tileSize*12));
-
-//          
+   
         //stairs
         maps[0].addDoors((int)(tileSize*(-10)), (int)(tileSize),0 ,1 );
         maps[0].addDoors((int)(tileSize*(-16)), (int)(tileSize*(-19)),1 ,1 );
         maps[0].addDoors((int)(tileSize*(1)), (int)(tileSize*(-29.5)),2 ,1 );
 
-//        //rooms
+        //rooms
         maps[0].addDoors((int)(tileSize*(1.8)), (int)(tileSize*2),0 ,2);
         maps[0].addDoors((int)(tileSize*(1.8)), (int)(tileSize*(-4)),0, 3);
-//        
-//        //hall monitors
+        
+        //hall monitors
         maps[0].addNpcs(4, (int)(tileSize), (int)(tileSize*(15)), (int)(tileSize), (int)(tileSize), "Hall Monitor", new JLabel(new ImageIcon(new ImageIcon("hallmonitor.png").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT))));
         maps[0].getMovingNpcs().get(0).addDialogue("<html>Why aren’t you in class? Get back!</html>");
         maps[0].getMovingNpcs().get(0).addDialogue("<html>I see you are bringing the attendence back, you're lucky this time.</html>");
@@ -573,18 +570,16 @@ public class KCISimulator {
         maps[1].addWalkableArea((int)(tileSize*18), (int)(tileSize*21.4), (int)(tileSize*4), (int)(tileSize*6));
         maps[1].addWalkableArea((int)(tileSize*18.3), (int)(tileSize*20), (int)(tileSize*1.9), (int)(tileSize*12));
         
-//        //stairs
+        //stairs
         maps[1].addDoors((int)(tileSize*(-10)), (int)(tileSize),0 ,0 );
         maps[1].addDoors((int)(tileSize*(-16)), (int)(tileSize*(-19)),1 ,0 );
         maps[1].addDoors((int)(tileSize*(1)), (int)(tileSize*(-29.5)),2 ,0 );
-//        maps[1].addDoors(, );
-//        maps[1].addDoors(, );
-//        
-//        //rooms
-//        maps[1].addDoors(, );
-//        maps[1].addDoors(, );
-//        
-//        //hall monitors
+        
+        //rooms
+        maps[1].addDoors((int)(tileSize*(-2)), (int)(tileSize*(-11.5)),0 ,4);
+        maps[1].addDoors((int)(tileSize*(-14)), (int)(tileSize*(-28)),0, 5);
+        
+        //hall monitors
         maps[1].addNpcs(4, (int)(tileSize), (int)(tileSize*(14)), (int)(tileSize), (int)(tileSize), "Hall Monitor", new JLabel(new ImageIcon(new ImageIcon("hallmonitor.png").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT))));
         maps[1].getMovingNpcs().get(0).addDialogue("<html>Why aren’t you in class? Get back!</html>");
         maps[1].getMovingNpcs().get(0).addDialogue("<html>I see you are bringing the attendence back, you're lucky this time.</html>");

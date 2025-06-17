@@ -340,7 +340,9 @@ public class KCISimulator {
                                             case 2:
                                                 mapSize = 10*tileSize;
                                                 break;
-                                        }       
+                                        }      
+                                        maps[currentMap].setCharacterX(maps[currentMap].getDoors().get(0).getDoorX());
+                                        maps[currentMap].setCharacterY(maps[currentMap].getDoors().get(0).getDoorY());
                                         maps[currentMap].getMapImage().setVisible(true);
                                         maps[currentMap].getMapImage().setBounds(maps[currentMap].getCharacterX(), maps[currentMap].getCharacterY(), mapSize, mapSize);
                                         for (NPC npc : maps[currentMap].getNpcs()) {
@@ -351,6 +353,8 @@ public class KCISimulator {
                                         layeredPane.repaint();
                                         timer.start();
                                         
+                                        inDialogue = false;
+                                        canExitDialogue = true;
                                     }
                                 }) {{
                                     setRepeats(false);

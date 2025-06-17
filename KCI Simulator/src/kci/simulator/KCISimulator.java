@@ -329,6 +329,7 @@ public class KCISimulator {
                         canExitDialogue = false;
                         switch (gameStage) {
                             case 0:
+                            case 1:
                                 dialogueText.setText(npc.getDialogue().get(gameStage));
                                 dialoguePanel.setVisible(true);
                                 new javax.swing.Timer(3000, new ActionListener() {

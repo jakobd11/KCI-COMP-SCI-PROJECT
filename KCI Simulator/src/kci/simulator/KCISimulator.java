@@ -17,6 +17,7 @@ public class KCISimulator {
     public static boolean inDialogue = false, inPauseMenu = false, eKeyHeld, canExitDialogue = true;
     
     public static Set<Integer> pressedKeys = new HashSet<>();
+    public static ArrayList<JLabel> inventory = new ArrayList<>();
     public static Map[] maps = new Map[6];
     
     public static ImageIcon walkingW, walkingS, walkingA, walkingD, 
@@ -404,6 +405,9 @@ public class KCISimulator {
                                 case 1:
                                     mapSize = 40*tileSize;
                                     break;
+                                case 5:
+                                case 4:
+                                case 3:
                                 case 2:
                                     mapSize = 10*tileSize;
                                     break;
@@ -550,12 +554,12 @@ public class KCISimulator {
    
         //stairs
         maps[0].addDoors((int)(tileSize*(-10)), (int)(tileSize*(2)),0 ,1 );
-        maps[0].addDoors((int)(tileSize*(-17)), (int)(tileSize*(-19.5)),1 ,1 );
+        maps[0].addDoors((int)(tileSize*(-16)), (int)(tileSize*(-19.5)),1 ,1 );
         maps[0].addDoors((int)(tileSize*(1)), (int)(tileSize*(-29.5)),2 ,1 );
 
         //rooms
         maps[0].addDoors((int)(tileSize*(1.8)), (int)(tileSize*2),0 ,2);
-        maps[0].addDoors((int)(tileSize*(1.8)), (int)(tileSize*(-4)),0, 3);
+        maps[0].addDoors((int)(tileSize*(2)), (int)(tileSize*(-3)),0, 3);
         
         //hall monitors
         maps[0].addNpcs(4, (int)(tileSize), (int)(tileSize*(15)), (int)(tileSize), (int)(tileSize), "Hall Monitor", new JLabel(new ImageIcon(new ImageIcon("hallmonitor.png").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT))));
@@ -580,7 +584,7 @@ public class KCISimulator {
         
         //stairs
         maps[1].addDoors((int)(tileSize*(-10)), (int)(tileSize*2),0 ,0 );
-        maps[1].addDoors((int)(tileSize*(-17)), (int)(tileSize*(-19.5)),1 ,0 );
+        maps[1].addDoors((int)(tileSize*(-16)), (int)(tileSize*(-19.5)),1 ,0 );
         maps[1].addDoors((int)(tileSize*(1)), (int)(tileSize*(-29.5)),2 ,0 );
         
         //rooms 
@@ -604,6 +608,24 @@ public class KCISimulator {
         maps[2].addNpcs((int)(tileSize*(-1)), (int)(tileSize)*(-4), "Mr. Janicas", new JLabel(new ImageIcon(new ImageIcon("janicas.png").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT))));
         maps[2].getNpcs().get(0).addDialogue("<html>The attendance servers are down! Someone needs to hand-deliver this to the office—no excuses!</html>");
         maps[2].getNpcs().get(0).addDialogue("<html>You're still here? I told you to bring the attendance to the office.</html>");
+        
+        maps[3] = new Map(0, 0, new JLabel(new ImageIcon(new ImageIcon("bathroom.png").getImage().getScaledInstance((int)tileSize*10, (int)tileSize*10, Image.SCALE_DEFAULT))));
+        
+        maps[3].addWalkableArea(0, 0, (int)(tileSize*8), (int)(tileSize*10));
+        
+        maps[3].addDoors((int)(tileSize*(2.5)), (int)(tileSize*(-4)),4 ,0);
+        
+        maps[4] = new Map(0, 0, new JLabel(new ImageIcon(new ImageIcon("library.png").getImage().getScaledInstance((int)tileSize*10, (int)tileSize*10, Image.SCALE_DEFAULT))));
+        
+        maps[4].addWalkableArea(0, 0, (int)(tileSize*5.8), (int)(tileSize*10));
+        
+        maps[4].addDoors((int)(tileSize*(-0.2)), (int)(tileSize*(3.5)),4 ,1);
+        
+        maps[5] = new Map(0, 0, new JLabel(new ImageIcon(new ImageIcon("office.png").getImage().getScaledInstance((int)tileSize*10, (int)tileSize*10, Image.SCALE_DEFAULT))));
+        
+        maps[5].addWalkableArea((int)(tileSize*4), 0, (int)(tileSize*6), (int)(tileSize*10));
+        
+        maps[5].addDoors((int)(tileSize*(0.5)), (int)(tileSize*(4)),5 ,1);
         
     }
     /**

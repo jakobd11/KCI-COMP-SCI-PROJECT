@@ -299,8 +299,8 @@ public class KCISimulator {
 
                 //checking if char is within npc
                 for (NPC npc : maps[currentMap].getNpcs()) {
-                    if (charX >= -npc.getNpcX() - 100 && charX <= -npc.getNpcX() + 100 &&
-                        charY >= -npc.getNpcY() - 100 && charY <= -npc.getNpcY() + 100) {
+                    if (charX >= -npc.getNpcX() - tileSize && charX <= -npc.getNpcX() + tileSize &&
+                        charY >= -npc.getNpcY() - tileSize && charY <= -npc.getNpcY() + tileSize) {
                         showInteract = true;
                         if (pressedKeys.contains(KeyEvent.VK_E)) {
                             switch (currentMap) {
@@ -315,8 +315,8 @@ public class KCISimulator {
                 }
                 
                 for (MovingNPC npc : maps[currentMap].getMovingNpcs()) {
-                    if (charX >= -npc.getNpcX() - 100 && charX <= -npc.getNpcX() + 100 &&
-                        charY >= -npc.getNpcY() - 100 && charY <= -npc.getNpcY() + 100) {
+                    if (charX >= -npc.getNpcX() - tileSize && charX <= -npc.getNpcX() + tileSize &&
+                        charY >= -npc.getNpcY() - tileSize && charY <= -npc.getNpcY() + tileSize) {
                         inDialogue = true;
                         canExitDialogue = false;
                         switch (gameStage) {
@@ -376,8 +376,8 @@ public class KCISimulator {
 
                 //checking if char is within door
                 for (Door door : maps[currentMap].getDoors()) {
-                    if (charX >= door.getDoorX() - 100 && charX <= door.getDoorX() + 100 &&
-                        charY >= door.getDoorY() - 100 && charY <= door.getDoorY() + 100) {
+                    if (charX >= door.getDoorX() - tileSize && charX <= door.getDoorX() + tileSize &&
+                        charY >= door.getDoorY() - tileSize && charY <= door.getDoorY() + tileSize) {
                         showInteract = true;
                         if (pressedKeys.contains(KeyEvent.VK_E)  && !eKeyHeld) {
                             timer.stop();

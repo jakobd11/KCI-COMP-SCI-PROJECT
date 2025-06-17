@@ -294,13 +294,13 @@ public class KCISimulator {
                     for (MovingNPC npc : maps[currentMap].getMovingNpcs()) {
                         if (npc.getNpcX() >= npc.getMaxRight()
                                 || npc.getNpcX() <= npc.getMaxLeft()) {
-                            npc.setSpeed(-npc.getSpeed()); // 
+                            npc.setSpeed(-npc.getSpeed()); 
                         }
 
                         npc.setNpcX(npc.getNpcX() - npc.getSpeed());
 
-                        int screenX = npc.getNpcX() + maps[currentMap].getCharacterX() + charScreenX;
-                        int screenY = npc.getNpcY() + maps[currentMap].getCharacterY() + charScreenY;
+                        int screenX = npc.getNpcX() + charX + charScreenX;
+                        int screenY = npc.getNpcY() + charY + charScreenY;
                         npc.getImage().setLocation(screenX, screenY);
                     }
                 }
@@ -311,9 +311,13 @@ public class KCISimulator {
                         charY >= -npc.getNpcY() - 100 && charY <= -npc.getNpcY() + 100) {
                         showInteract = true;
                         if (pressedKeys.contains(KeyEvent.VK_E)) {
-                            inDialogue = true;
-                            dialogueText.setText(npc.getDialogue().get(gameStage));
-                            dialoguePanel.setVisible(true);
+                            switch (currentMap) {
+                                case 2:
+                                    inDialogue = true;
+                                    dialogueText.setText(npc.getDialogue().get(gameStage));
+                                    dialoguePanel.setVisible(true);
+                                    break;
+                            }
                         }
                     }
                 }
@@ -368,7 +372,12 @@ public class KCISimulator {
                                     setRepeats(false);
                                     start();
                                 }};
-                                break;    
+                                break;
+                            case 1:
+                                dialogueText.setText(npc.getDialogue().get(gameStage));
+                                dialoguePanel.setVisible(true);
+                                canExitDialogue = true;
+                                break;
                         }
                     }
                 }
@@ -426,8 +435,16 @@ public class KCISimulator {
                 if (inDialogue && pressedKeys.contains(KeyEvent.VK_BACK_SPACE) && canExitDialogue) {
                     inDialogue = false;
                     dialoguePanel.setVisible(false);
+                    switch(currentMap) {
+                        case 2:
+                            if (gameStage == 0) {
+                                gameStage++;
+                            }
+                            break;
+                    }
                 } 
                 
+                //open pause menu
                 if (pressedKeys.contains(KeyEvent.VK_ESCAPE) && !inDialogue) {
                     inPauseMenu = true;
                     pauseMenu.setVisible(true);
@@ -520,14 +537,14 @@ public class KCISimulator {
     public static void fillMaps() {
 
         
-        maps[0] = new Map(0, 0, new JLabel(new ImageIcon(new ImageIcon("3rdfloorsketch.png").getImage().getScaledInstance((int)tileSize*40, (int)tileSize*40, Image.SCALE_DEFAULT))));
+        maps[0] = new Map(0, 0, new JLabel(new ImageIcon(new ImageIcon("third.png").getImage().getScaledInstance((int)tileSize*40, (int)tileSize*40, Image.SCALE_DEFAULT))));
 
         maps[0].addWalkableArea(tileSize, (int)(tileSize*2.5), (int)(tileSize*20.5), (int)(tileSize*6.5));
         maps[0].addWalkableArea((int)(tileSize*9.2), (int)(tileSize*8), (int)(tileSize*4.1), (int)(tileSize*13.6));
-        maps[0].addWalkableArea((int)(tileSize*6), (int)(tileSize*15), (int)(tileSize*5), (int)(tileSize*1.5));
+        maps[0].addWalkableArea((int)(tileSize*6), (int)(tileSize*15), (int)(tileSize*5), (int)(tileSize*3.5));
         maps[0].addWalkableArea((int)(tileSize*10), (int)(tileSize*17.2), (int)(tileSize*11), (int)(tileSize*4.5));
         maps[0].addWalkableArea((int)(tileSize*14.17), (int)(tileSize*19), (int)(tileSize*4), (int)(tileSize*16));
-        maps[0].addWalkableArea((int)(tileSize*4.6), (int)(tileSize*31.4), (int)(tileSize*14.8  ), (int)(tileSize*6.5));
+        maps[0].addWalkableArea((int)(tileSize*4.6), (int)(tileSize*31.4), (int)(tileSize*17.5), (int)(tileSize*6));
         maps[0].addWalkableArea((int)(tileSize*2.5), (int)(tileSize*32), (int)(tileSize*4), (int)(tileSize*5.2)); 
         maps[0].addWalkableArea((int)(tileSize*16), (int)(tileSize*27.2), (int)(tileSize*5), (int)(tileSize*5.8));
         maps[0].addWalkableArea((int)(tileSize*18), (int)(tileSize*21.4), (int)(tileSize*4), (int)(tileSize*6));
@@ -546,16 +563,17 @@ public class KCISimulator {
 //        //hall monitors
         maps[0].addNpcs(3, (int)(tileSize), (int)(tileSize*(15)), (int)(tileSize), (int)(tileSize), "Hall Monitor", new JLabel(new ImageIcon(new ImageIcon("janicas.png").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT))));
         maps[0].getMovingNpcs().get(0).addDialogue("Why aren’t you in class? Get back!");
+        maps[0].getMovingNpcs().get(0).addDialogue("I see you are bringing the attendence back, you're lucky this time.");
 //        maps[0].addNpcs(, , , );
         
-        maps[1] = new Map(0, 0, new JLabel(new ImageIcon(new ImageIcon("2ndfloorsketch.png").getImage().getScaledInstance((int)tileSize*40, (int)tileSize*40, Image.SCALE_DEFAULT))));
+        maps[1] = new Map(0, 0, new JLabel(new ImageIcon(new ImageIcon("second.png").getImage().getScaledInstance((int)tileSize*40, (int)tileSize*40, Image.SCALE_DEFAULT))));
 
         maps[1].addWalkableArea(tileSize, (int)(tileSize*2.5), (int)(tileSize*20.5), (int)(tileSize*6.5));
         maps[1].addWalkableArea((int)(tileSize*9.2), (int)(tileSize*8), (int)(tileSize*4.1), (int)(tileSize*13.6));
-        maps[1].addWalkableArea((int)(tileSize*6), (int)(tileSize*15), (int)(tileSize*5), (int)(tileSize*1.5));
+        maps[1].addWalkableArea((int)(tileSize*6), (int)(tileSize*15), (int)(tileSize*5), (int)(tileSize*3.5));
         maps[1].addWalkableArea((int)(tileSize*10), (int)(tileSize*17.2), (int)(tileSize*11), (int)(tileSize*4.5));
-        maps[1].addWalkableArea((int)(tileSize*14.17), (int)(tileSize*19), (int)(tileSize*4), (int)(tileSize*16));
-        maps[1].addWalkableArea((int)(tileSize*4.6), (int)(tileSize*31.4), (int)(tileSize*14.8  ), (int)(tileSize*6.5));
+        maps[1].addWalkableArea((int)(tileSize*14.17), (int)(tileSize*19), (int)(tileSize*6), (int)(tileSize*16));
+        maps[1].addWalkableArea((int)(tileSize*4.6), (int)(tileSize*31.4), (int)(tileSize*14.8  ), (int)(tileSize*6));
         maps[1].addWalkableArea((int)(tileSize*2.5), (int)(tileSize*32), (int)(tileSize*4), (int)(tileSize*5.2)); 
         maps[1].addWalkableArea((int)(tileSize*16), (int)(tileSize*27.2), (int)(tileSize*5), (int)(tileSize*5.8));
         maps[1].addWalkableArea((int)(tileSize*18), (int)(tileSize*21.4), (int)(tileSize*4), (int)(tileSize*6));
@@ -584,6 +602,7 @@ public class KCISimulator {
         
         maps[2].addNpcs((int)(tileSize*(-1)), (int)(tileSize)*(-4), "Mr. Janicas", new JLabel(new ImageIcon(new ImageIcon("janicas.png").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT))));
         maps[2].getNpcs().get(0).addDialogue("The attendance servers are down! Someone needs to hand-deliver this to the office—no excuses!");
+        maps[2].getNpcs().get(0).addDialogue("You're still here? I told you to bring the attendance to the office.");
         
     }
     /**

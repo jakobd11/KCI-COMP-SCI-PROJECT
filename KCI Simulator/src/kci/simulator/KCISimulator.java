@@ -452,6 +452,13 @@ public class KCISimulator {
                                 eastMenu.add(inventory.get("attendance"));
                             }
                             break;
+                        case 5:
+                            if (gameStage == 1) {
+                                gameStage++;
+                                eastMenu.remove(inventory.get("attendance"));
+                                inventory.remove("attendance");
+                            }
+                            break;
                     }
                 } 
                 

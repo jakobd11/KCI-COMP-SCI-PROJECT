@@ -8,13 +8,13 @@ import java.util.*;
 public class KCISimulator {
     public static JFrame gameFrame, menuFrame;
     public static JPanel mapPanel, westMenu, eastMenu, pauseMenu, dialoguePanel;
-    public static JLabel character, rodney, interact, title, status, rodneyLabel, staminaBarLabel, dialogueText, inventoryLabel;
+    public static JLabel character, rodney, interact, title, status, rodneyLabel, staminaBarLabel, dialogueText, nameText, inventoryLabel;
     public static JButton play, quit, resume, savequit;
     public static JProgressBar staminaBar;
     public static JLayeredPane layeredPane;
 
-    public static int stamina = 100, tileSize, mapWidth, mapHeight, currentMap = 2, charScreenX, charScreenY, mapSize, gameStage = 0;
-    public static boolean inDialogue = false, inPauseMenu = false, eKeyHeld, canExitDialogue = true;
+    public static int stamina = 100, tileSize, mapWidth, mapHeight, currentMap = 2, charScreenX, charScreenY, mapSize, gameStage = 0, time = 20000;
+    public static boolean inDialogue = false, inPauseMenu = false, eKeyHeld, canExitDialogue = true, timeStart = false;
     
     public static Set<Integer> pressedKeys = new HashSet<>();
     public static HashMap<String, JLabel> inventory = new HashMap<>();
@@ -205,7 +205,13 @@ public class KCISimulator {
         dialogueText.setBounds(0, 0, mapWidth-tileSize*4, mapHeight-tileSize*6);
         dialogueText.setForeground(Color.white);
         
+        nameText = new JLabel("");
+        nameText.setFont(new java.awt.Font("Times New Roman", Font.BOLD, 45));
+        nameText.setBounds(0, 0, mapWidth-tileSize*4, 45);
+        nameText.setForeground(Color.white);
+        
         dialoguePanel.add(dialogueText);
+        dialoguePanel.add(nameText, BorderLayout.NORTH);
         
         layeredPane.add(dialoguePanel, Integer.valueOf(6));
         
@@ -318,13 +324,10 @@ public class KCISimulator {
                         charY >= -npc.getNpcY() - tileSize && charY <= -npc.getNpcY() + tileSize) {
                         showInteract = true;
                         if (pressedKeys.contains(KeyEvent.VK_E)) {
-                            switch (currentMap) {
-                                case 2:
                                     inDialogue = true;
                                     dialogueText.setText(npc.getDialogue().get(gameStage));
+                                    nameText.setText(npc.getName());
                                     dialoguePanel.setVisible(true);
-                                    break;
-                            }
                         }
                     }
                 }
@@ -338,6 +341,7 @@ public class KCISimulator {
                             case 2:
                             case 0:
                                 dialogueText.setText(npc.getDialogue().get(gameStage));
+                                nameText.setText(npc.getName());
                                 dialoguePanel.setVisible(true);
                                 new javax.swing.Timer(3000, new ActionListener() {
                                     @Override
@@ -375,6 +379,7 @@ public class KCISimulator {
                                 break;
                             case 1:
                                 dialogueText.setText(npc.getDialogue().get(gameStage));
+                                nameText.setText(npc.getName());
                                 dialoguePanel.setVisible(true);
                                 canExitDialogue = true;
                                 break;
@@ -447,8 +452,42 @@ public class KCISimulator {
                                 eastMenu.add(inventory.get("attendance"));
                             }
                             break;
+                        case 5:
+                            if (gameStage == 1) {
+                                gameStage++;
+                                eastMenu.remove(inventory.get("attendance"));
+                                inventory.remove("attendance");
+                                eastMenu.repaint();
+                            }
+                            break;
+                        case 3:
+                            if (gameStage == 2) {
+                                gameStage++;
+                                inventory.put("hallpass", new JLabel(new ImageIcon(new ImageIcon("hallpass.png").getImage().getScaledInstance(tileSize*2, tileSize*2, Image.SCALE_DEFAULT))));
+                                inventory.get("hallpass").setAlignmentX(Component.CENTER_ALIGNMENT);
+                                eastMenu.add(inventory.get("hallpass"));
+                                eastMenu.remove(inventory.get("money"));
+                                inventory.remove("money");
+                                eastMenu.repaint();
+                                timeStart = true;
+                                inventory.put("book", new JLabel(new ImageIcon(new ImageIcon("book.png").getImage().getScaledInstance(tileSize*2, tileSize*2, Image.SCALE_DEFAULT))));
+                                inventory.get("book").setAlignmentX(Component.CENTER_ALIGNMENT);
+                                eastMenu.add(inventory.get("book"));
+                                dialoguePanel.setVisible(true);
+                            }
+                            break;
                     }
-                } 
+                }
+                
+                if(timeStart) {
+                    time--;
+                    dialogueText.setText("<html>A cursed book has been placed in your inventory, you have " + time + " to return the book</html>");
+                    nameText.setText("Cursed Message");
+                    if (time <= 0) {
+                        timeStart=false;
+                        dialoguePanel.setVisible(false);
+                    }
+                }
                 
                 //open pause menu
                 if (pressedKeys.contains(KeyEvent.VK_ESCAPE) && !inDialogue) {
@@ -567,9 +606,11 @@ public class KCISimulator {
         maps[0].addNpcs(4, (int)(tileSize), (int)(tileSize*(15)), (int)(tileSize), (int)(tileSize), "Hall Monitor", new JLabel(new ImageIcon(new ImageIcon("hallmonitor.png").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT))));
         maps[0].getMovingNpcs().get(0).addDialogue("<html>Why aren’t you in class? Get back!</html>");
         maps[0].getMovingNpcs().get(0).addDialogue("<html>I see you are bringing the attendence back, you're lucky this time.</html>");
+        maps[0].getMovingNpcs().get(0).addDialogue("<html>Don't you know you need a hall pass now!</html>");
         maps[0].addNpcs(4, (int)(tileSize*(-1)), (int)(tileSize*(15)), (int)(tileSize), (int)(tileSize*(29)), "Hall Monitor", new JLabel(new ImageIcon(new ImageIcon("hallmonitor.png").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT))));
         maps[0].getMovingNpcs().get(1).addDialogue("<html>Why aren’t you in class? Get back!</html>");
         maps[0].getMovingNpcs().get(1).addDialogue("<html>I see you are bringing the attendence back, you're lucky this time.</html>");
+        maps[0].getMovingNpcs().get(1).addDialogue("<html>Don't you know you need a hall pass now!</html>");
         
         maps[1] = new Map(0, 0, new JLabel(new ImageIcon(new ImageIcon("second.png").getImage().getScaledInstance((int)tileSize*40, (int)tileSize*40, Image.SCALE_DEFAULT))));
 
@@ -577,7 +618,7 @@ public class KCISimulator {
         maps[1].addWalkableArea((int)(tileSize*9.2), (int)(tileSize*8), (int)(tileSize*4.1), (int)(tileSize*13.6));
         maps[1].addWalkableArea((int)(tileSize*6), (int)(tileSize*15), (int)(tileSize*5), (int)(tileSize*3.5));
         maps[1].addWalkableArea((int)(tileSize*10), (int)(tileSize*17.2), (int)(tileSize*11), (int)(tileSize*4.5));
-        maps[1].addWalkableArea((int)(tileSize*14.17), (int)(tileSize*19), (int)(tileSize*6.5), (int)(tileSize*13));
+        maps[1].addWalkableArea((int)(tileSize*14.17), (int)(tileSize*19), (int)(tileSize*6.5), (int)(tileSize*14));
         maps[1].addWalkableArea((int)(tileSize*4.6), (int)(tileSize*31.4), (int)(tileSize*14.67), (int)(tileSize*6));
         maps[1].addWalkableArea((int)(tileSize*2.5), (int)(tileSize*32), (int)(tileSize*4), (int)(tileSize*5.2)); 
         maps[1].addWalkableArea((int)(tileSize*16), (int)(tileSize*27.2), (int)(tileSize*3.3), (int)(tileSize*5.8));
@@ -591,15 +632,17 @@ public class KCISimulator {
         
         //rooms 
         maps[1].addDoors((int)(tileSize*(-2)), (int)(tileSize*(-11.5)),0 ,4);
-        maps[1].addDoors((int)(tileSize*(-14)), (int)(tileSize*(-28)),0, 5);
+        maps[1].addDoors((int)(tileSize*(-13)), (int)(tileSize*(-28)),0, 5);
         
         //hall monitors
         maps[1].addNpcs(4, (int)(tileSize), (int)(tileSize*(14)), (int)(tileSize), (int)(tileSize), "Hall Monitor", new JLabel(new ImageIcon(new ImageIcon("hallmonitor.png").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT))));
         maps[1].getMovingNpcs().get(0).addDialogue("<html>Why aren’t you in class? Get back!</html>");
         maps[1].getMovingNpcs().get(0).addDialogue("<html>I see you are bringing the attendence back, you're lucky this time.</html>");
+        maps[1].getMovingNpcs().get(0).addDialogue("<html>Don't you know you need a hall pass now!</html>");
         maps[1].addNpcs(4, (int)(tileSize*(-1)), (int)(tileSize*(12)), (int)(tileSize), (int)(tileSize*(29)), "Hall Monitor", new JLabel(new ImageIcon(new ImageIcon("hallmonitor.png").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT))));
         maps[1].getMovingNpcs().get(1).addDialogue("<html>Why aren’t you in class? Get back!</html>");
         maps[1].getMovingNpcs().get(1).addDialogue("<html>I see you are bringing the attendence back, you're lucky this time.</html>");
+        maps[1].getMovingNpcs().get(1).addDialogue("<html>Don't you know you need a hall pass now!</html>");
 
         maps[2] = new Map(0, 0, new JLabel(new ImageIcon(new ImageIcon("csclass.png").getImage().getScaledInstance((int)tileSize*10, (int)tileSize*10, Image.SCALE_DEFAULT))));
         
@@ -610,6 +653,7 @@ public class KCISimulator {
         maps[2].addNpcs((int)(tileSize*(-1)), (int)(tileSize)*(-4), "Mr. Janicas", new JLabel(new ImageIcon(new ImageIcon("janicas.png").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT))));
         maps[2].getNpcs().get(0).addDialogue("<html>The attendance servers are down! Someone needs to hand-deliver this to the office—no excuses!</html>");
         maps[2].getNpcs().get(0).addDialogue("<html>You're still here? I told you to bring the attendance to the office.</html>");
+        maps[2].getNpcs().get(0).addDialogue("<html>Thanks for bringing that attendance back.</html>");
         
         maps[3] = new Map(0, 0, new JLabel(new ImageIcon(new ImageIcon("bathroom.png").getImage().getScaledInstance((int)tileSize*10, (int)tileSize*10, Image.SCALE_DEFAULT))));
         
@@ -617,17 +661,32 @@ public class KCISimulator {
         
         maps[3].addDoors((int)(tileSize*(2.5)), (int)(tileSize*(-4)),4 ,0);
         
+        maps[3].addNpcs((int)(tileSize*(-1)), (int)(tileSize)*(-4), "Bathroom Dweller", new JLabel(new ImageIcon(new ImageIcon("bathroomdweller.png").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT))));
+        maps[3].getNpcs().get(0).addDialogue("<html>What do you want?</html>");
+        maps[3].getNpcs().get(0).addDialogue("<html>Why are you bringing the attendance to the washroom?</html>");
+        maps[3].getNpcs().get(0).addDialogue("<html>I heard you're looking for a hall pass, just give me that 20 and take mine.</html>");
+        
         maps[4] = new Map(0, 0, new JLabel(new ImageIcon(new ImageIcon("library.png").getImage().getScaledInstance((int)tileSize*10, (int)tileSize*10, Image.SCALE_DEFAULT))));
         
         maps[4].addWalkableArea(0, 0, (int)(tileSize*5.8), (int)(tileSize*10));
         
         maps[4].addDoors((int)(tileSize*(-0.2)), (int)(tileSize*(3.5)),3 ,1);
         
+        maps[4].addNpcs((int)(tileSize*(-3.5)), (int)(tileSize*(-4.5)), "Librarian", new JLabel(new ImageIcon(new ImageIcon("librarian.png").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT))));
+        maps[4].getNpcs().get(0).addDialogue("<html>Shouldn't you be in class right now?</html>");
+        maps[4].getNpcs().get(0).addDialogue("<html>That attendance should probably be in the office.</html>");
+        maps[4].getNpcs().get(0).addDialogue("<html>Make sure to return your books before the end of the semester.</html>");
+        
         maps[5] = new Map(0, 0, new JLabel(new ImageIcon(new ImageIcon("office.png").getImage().getScaledInstance((int)tileSize*10, (int)tileSize*10, Image.SCALE_DEFAULT))));
         
         maps[5].addWalkableArea((int)(tileSize*4), 0, (int)(tileSize*6), (int)(tileSize*10));
         
         maps[5].addDoors((int)(tileSize*(0.5)), (int)(tileSize*(4)),4 ,1);
+        
+        maps[5].addNpcs((int)(tileSize*(2.5)), (int)(tileSize)*(-4), "Office Receptionist", new JLabel(new ImageIcon(new ImageIcon("officerecep.png").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT))));
+        maps[5].getNpcs().get(0).addDialogue("<html>Shouldn't you be in class right now?</html>");
+        maps[5].getNpcs().get(0).addDialogue("<html>Thank you for bringing the attendance back, just so you know hall passes are now mandatory.</html>");
+        maps[5].getNpcs().get(0).addDialogue("<html>Unfortunately, we are all out of hall passes, you will just have to find one.</html>");
         
     }
     /**

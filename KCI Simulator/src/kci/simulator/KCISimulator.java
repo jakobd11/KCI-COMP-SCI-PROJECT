@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 
+
 public class KCISimulator {
     public static JFrame gameFrame, menuFrame;
     public static JPanel mapPanel, westMenu, eastMenu, pauseMenu, dialoguePanel;
@@ -27,8 +28,9 @@ public class KCISimulator {
     public static javax.swing.Timer timer;
 
     public static void main(String[] args) throws InterruptedException {
-        //finding screen size so everything is scaled different for every computer
+        gameStage = GameSaver.load();
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        tileSize = (int)screenSize.getHeight() / 10;
         
         //creating frame for game
         gameFrame = new JFrame("KCI Simulator");
@@ -38,9 +40,51 @@ public class KCISimulator {
         gameFrame.getContentPane().setBackground(Color.black);
         gameFrame.setLayout(new BorderLayout());
 
+         //right sided menu
+        eastMenu = new JPanel();
+        eastMenu.setPreferredSize(new Dimension((int)(screenSize.getWidth() - mapWidth) / 2, 100));
+        eastMenu.setLayout(new BoxLayout(eastMenu, BoxLayout.Y_AXIS));
+        eastMenu.setBackground(Color.black);
+        
+        switch (gameStage) {
+    case 0:
+        inventory.put("money", new JLabel(new ImageIcon(
+            new ImageIcon("money.png").getImage().getScaledInstance(tileSize * 2, tileSize, Image.SCALE_DEFAULT)
+        )));
+        inventory.get("money").setAlignmentX(Component.CENTER_ALIGNMENT);
+        eastMenu.add(inventory.get("money"));
+        break;
+    case 1:
+        // stage 0 reward: money
+        // stage 1 reward: attendance
+        inventory.put("attendance", new JLabel(new ImageIcon(
+            new ImageIcon("attendance.png").getImage().getScaledInstance(tileSize * 2, tileSize * 2, Image.SCALE_DEFAULT)
+        )));
+        inventory.get("attendance").setAlignmentX(Component.CENTER_ALIGNMENT);
+        eastMenu.add(inventory.get("attendance"));
+        break;
+    case 2:
+    case 3:
+        // stage 0 = money → stage 1 = attendance → stage 2 = hallpass/book
+        inventory.put("hallpass", new JLabel(new ImageIcon(
+            new ImageIcon("hallpass.png").getImage().getScaledInstance(tileSize * 2, tileSize * 2, Image.SCALE_DEFAULT)
+        )));
+        inventory.get("hallpass").setAlignmentX(Component.CENTER_ALIGNMENT);
+        eastMenu.add(inventory.get("hallpass"));
+
+        inventory.put("book", new JLabel(new ImageIcon(
+            new ImageIcon("book.png").getImage().getScaledInstance(tileSize * 2, tileSize * 2, Image.SCALE_DEFAULT)
+        )));
+        inventory.get("book").setAlignmentX(Component.CENTER_ALIGNMENT);
+        eastMenu.add(inventory.get("book"));
+        break;
+        }
+        //finding screen size so everything is scaled different for every computer
+        
+        
+
         //declaring layered pane and important variables for later code
         layeredPane = new JLayeredPane();
-        tileSize = (int)screenSize.getHeight() / 10;
         mapWidth = tileSize * 10;
         mapHeight = tileSize * 10;
         charScreenX = (mapWidth / 2) - (tileSize / 2);
@@ -100,11 +144,7 @@ public class KCISimulator {
         westMenu.setBackground(Color.black);
         gameFrame.add(westMenu, BorderLayout.WEST);
         
-        //right sided menu
-        eastMenu = new JPanel();
-        eastMenu.setPreferredSize(new Dimension((int)(screenSize.getWidth() - mapWidth) / 2, 100));
-        eastMenu.setLayout(new BoxLayout(eastMenu, BoxLayout.Y_AXIS));
-        eastMenu.setBackground(Color.black);
+       
         
         inventoryLabel = new JLabel("Inventory");
         inventoryLabel.setFont(new java.awt.Font("Times New Roman", Font.BOLD, 36));
@@ -190,6 +230,7 @@ public class KCISimulator {
         
         savequit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                GameSaver.save(gameStage);
                 System.exit(0);
             }
         });
@@ -450,6 +491,7 @@ public class KCISimulator {
                                 inventory.put("attendance", new JLabel(new ImageIcon(new ImageIcon("attendance.png").getImage().getScaledInstance(tileSize*2, tileSize*2, Image.SCALE_DEFAULT))));
                                 inventory.get("attendance").setAlignmentX(Component.CENTER_ALIGNMENT);
                                 eastMenu.add(inventory.get("attendance"));
+                                GameSaver.save(gameStage);
                             }
                             break;
                         case 5:
@@ -458,6 +500,7 @@ public class KCISimulator {
                                 eastMenu.remove(inventory.get("attendance"));
                                 inventory.remove("attendance");
                                 eastMenu.repaint();
+                                GameSaver.save(gameStage);
                             }
                             break;
                         case 3:
@@ -474,6 +517,8 @@ public class KCISimulator {
                                 inventory.get("book").setAlignmentX(Component.CENTER_ALIGNMENT);
                                 eastMenu.add(inventory.get("book"));
                                 dialoguePanel.setVisible(true);
+                                GameSaver.save(gameStage);
+
                             }
                             break;
                     }

@@ -13,8 +13,8 @@ public class KCISimulator {
     public static JProgressBar staminaBar;
     public static JLayeredPane layeredPane;
 
-    public static int stamina = 100, tileSize, mapWidth, mapHeight, currentMap = 2, charScreenX, charScreenY, mapSize, gameStage = 0;
-    public static boolean inDialogue = false, inPauseMenu = false, eKeyHeld, canExitDialogue = true;
+    public static int stamina = 100, tileSize, mapWidth, mapHeight, currentMap = 2, charScreenX, charScreenY, mapSize, gameStage = 0, time = 20000;
+    public static boolean inDialogue = false, inPauseMenu = false, eKeyHeld, canExitDialogue = true, timeStart = false;
     
     public static Set<Integer> pressedKeys = new HashSet<>();
     public static HashMap<String, JLabel> inventory = new HashMap<>();
@@ -469,10 +469,25 @@ public class KCISimulator {
                                 eastMenu.remove(inventory.get("money"));
                                 inventory.remove("money");
                                 eastMenu.repaint();
+                                timeStart = true;
+                                inventory.put("book", new JLabel(new ImageIcon(new ImageIcon("book.png").getImage().getScaledInstance(tileSize*2, tileSize*2, Image.SCALE_DEFAULT))));
+                                inventory.get("book").setAlignmentX(Component.CENTER_ALIGNMENT);
+                                eastMenu.add(inventory.get("book"));
+                                dialoguePanel.setVisible(true);
                             }
                             break;
                     }
-                } 
+                }
+                
+                if(timeStart) {
+                    time--;
+                    dialogueText.setText("<html>A cursed book has been placed in your inventory, you have " + time + " to return the book</html>");
+                    nameText.setText("Cursed Message");
+                    if (time <= 0) {
+                        timeStart=false;
+                        dialoguePanel.setVisible(false);
+                    }
+                }
                 
                 //open pause menu
                 if (pressedKeys.contains(KeyEvent.VK_ESCAPE) && !inDialogue) {

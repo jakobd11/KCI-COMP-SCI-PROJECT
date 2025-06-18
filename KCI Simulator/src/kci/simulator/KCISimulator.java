@@ -1,9 +1,11 @@
 package kci.simulator;
 
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.io.*;
 
 public class KCISimulator {
     public static JFrame gameFrame, menuFrame, endFrame;
@@ -13,8 +15,9 @@ public class KCISimulator {
     public static JProgressBar staminaBar;
     public static JLayeredPane layeredPane;
 
-    public static int stamina = 100, tileSize, mapWidth, mapHeight, currentMap = 2, charScreenX, charScreenY, mapSize, gameStage = 0, time = 2000;
-    public static boolean inDialogue = false, inPauseMenu = false, eKeyHeld, canExitDialogue = true, timeStart = false;
+
+    public static int stamina = 100, tileSize, mapWidth, mapHeight, currentMap = 2, charScreenX, charScreenY, mapSize, gameStage = 0, time = 1000;
+    public static boolean inDialogue = false, inPauseMenu = false, eKeyHeld, canExitDialogue = true, timeStart = false, delete;
     
     public static Set<Integer> pressedKeys = new HashSet<>();
     public static HashMap<String, JLabel> inventory = new HashMap<>();
@@ -25,6 +28,7 @@ public class KCISimulator {
             facingW, facingS, facingA, facingD;
     
     public static javax.swing.Timer timer;
+
 
     public static void main(String[] args) throws InterruptedException {
         //finding screen size so everything is scaled different for every computer
@@ -38,6 +42,7 @@ public class KCISimulator {
         gameFrame.getContentPane().setBackground(Color.black);
         gameFrame.setLayout(new BorderLayout());
 
+
         //declaring layered pane and important variables for later code
         layeredPane = new JLayeredPane();
         tileSize = (int)screenSize.getHeight() / 10;
@@ -48,6 +53,7 @@ public class KCISimulator {
         mapSize = tileSize*10;
         layeredPane.setPreferredSize(new Dimension(mapWidth, mapHeight));
         gameFrame.add(layeredPane, BorderLayout.CENTER);
+
 
         menuFrame = new JFrame("Main Menu");
         menuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -102,7 +108,7 @@ public class KCISimulator {
         endFrame.setLayout(null);
         
         end = new JLabel("");
-        end.setFont(new java.awt.Font("Times New Roman", Font.BOLD, 45));
+        end.setFont(new java.awt.Font("Times New Roman", Font.BOLD, 30));
         end.setBounds(150, 0, 300, 150);
         end.setForeground(Color.white);
         
@@ -137,6 +143,7 @@ public class KCISimulator {
         
         gameFrame.add(eastMenu, BorderLayout.EAST);
 
+
         
         //image of rodney's face
         rodney = new JLabel(new ImageIcon(new ImageIcon("rodneycropped.png")
@@ -157,6 +164,7 @@ public class KCISimulator {
         staminaBarLabel.setOpaque(true);
         staminaBarLabel.setBackground(Color.BLACK);
 
+
         //green stamina bar 
         staminaBar = new JProgressBar(0, 100);
         staminaBar.setForeground(Color.green);
@@ -168,6 +176,7 @@ public class KCISimulator {
         westMenu.add(staminaBarLabel);
         westMenu.add(staminaBar);
         
+
 
         pauseMenu = new JPanel();
         pauseMenu.setBackground(new Color(0,0,0,50));
@@ -199,6 +208,7 @@ public class KCISimulator {
         layeredPane.add(pauseMenu, Integer.valueOf(5));
         
 
+
         resume.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 inPauseMenu = false;
@@ -208,6 +218,7 @@ public class KCISimulator {
         
         savequit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                saveGame();
                 System.exit(0);
             }
         });
@@ -270,11 +281,13 @@ public class KCISimulator {
         facingA = new ImageIcon(new ImageIcon("standleft.gif").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT));
         facingD = new ImageIcon(new ImageIcon("standright.gif").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT));
 
+
         //character image
         character = new JLabel(facingW);
         character.setBounds((mapWidth/2)-(tileSize/2), (mapHeight/2)-(tileSize/2), tileSize, tileSize);
         character.setDoubleBuffered(true);
         layeredPane.add(character, Integer.valueOf(2));
+
 
         //constantly updating hash set of keys
         gameFrame.addKeyListener(new KCIKeyListener() {
@@ -317,6 +330,7 @@ public class KCISimulator {
         runningA = new ImageIcon(new ImageIcon("sprintleft.gif").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT));
         runningD = new ImageIcon(new ImageIcon("sprintright.gif").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT));
 
+
         //interact display
         interact = new JLabel("Press [E] to interact. ");
         interact.setFont(new java.awt.Font("Arial", Font.BOLD, 24));
@@ -343,13 +357,16 @@ public class KCISimulator {
                             npc.setSpeed(-npc.getSpeed()); 
                         }
 
+
                         npc.setNpcX(npc.getNpcX() - npc.getSpeed());
+
 
                         int screenX = npc.getNpcX() + charX + charScreenX;
                         int screenY = npc.getNpcY() + charY + charScreenY;
                         npc.getImage().setLocation(screenX, screenY);
                     }
                 }
+
 
                 //checking if char is within npc
                 for (NPC npc : maps[currentMap].getNpcs()) {
@@ -363,6 +380,8 @@ public class KCISimulator {
                                     gameFrame.dispose();
                                     endFrame.setVisible(true);
                                     end.setText("<html>You returned the book in time and completed the game!</html>");
+                                    delete = true;
+                                    saveGame();
                                 } else {
                                     inDialogue = true;
                                     dialogueText.setText(npc.getDialogue().get(gameStage));
@@ -440,6 +459,7 @@ public class KCISimulator {
                     }
                 }
 
+
                 //checking if char is within door
                 for (Door door : maps[currentMap].getDoors()) {
                     if (charX >= door.getDoorX() - tileSize && charX <= door.getDoorX() + tileSize &&
@@ -490,6 +510,7 @@ public class KCISimulator {
                     }
                 }
 
+
                 interact.setVisible(showInteract);
                 
                 //exit dialogue
@@ -534,17 +555,19 @@ public class KCISimulator {
                 
                 if(timeStart) {
                     time--;
-                    cursedText.setText("<html>A cursed book has been placed in your inventory, you have " + time + " to return the book to the library.</html>");
+                    cursedText.setText("<html>A cursed book has been placed in your inventory, you have " + time + " to return the book to the library!</html>");
                     if (time <= 0) {
                         timeStart=false;
                         gameFrame.dispose();
                         endFrame.setVisible(true);
                         end.setText("<html>You ran out of time and died.</html>");
+                        delete = true;
+                        saveGame();
                     }
                 }
                 
                 //open pause menu
-                if (pressedKeys.contains(KeyEvent.VK_ESCAPE) && !inDialogue) {
+                if (pressedKeys.contains(KeyEvent.VK_ESCAPE) && !inDialogue && !timeStart) {
                     inPauseMenu = true;
                     pauseMenu.setVisible(true);
                 }
@@ -555,6 +578,9 @@ public class KCISimulator {
             }
         });
         timer.start();
+
+
+        loadGame();
 
         menuFrame.setVisible(true);
         
@@ -574,7 +600,9 @@ public class KCISimulator {
             sprinting = false;
         }
 
+
         int speed = sprinting ? 8 : 4;
+
 
         //checking movement direction and putting it into temp dir variable
         if (pressedKeys.contains(KeyEvent.VK_W) || pressedKeys.contains(KeyEvent.VK_UP)) {
@@ -598,6 +626,7 @@ public class KCISimulator {
             moving = true;
         }
 
+
         //stamina system
         if (pressedKeys.contains(KeyEvent.VK_SHIFT) && moving) {
             stamina -= 1;
@@ -606,11 +635,13 @@ public class KCISimulator {
             if (stamina < 100) stamina += 1;
         }
 
+
         int newCharX = maps[currentMap].getCharacterX() + dx;
         int newCharY = maps[currentMap].getCharacterY() + dy;
         
         int characterMapX = charScreenX - newCharX;
         int characterMapY = charScreenY - newCharY;
+
 
         //checks if next move is restricted
         if (canMoveTo(characterMapX, characterMapY, tileSize, tileSize, maps[currentMap])) {
@@ -636,6 +667,7 @@ public class KCISimulator {
     public static void fillMaps() {
         maps[0] = new Map(0, 0, new JLabel(new ImageIcon(new ImageIcon("third.png").getImage().getScaledInstance((int)tileSize*40, (int)tileSize*40, Image.SCALE_DEFAULT))));
 
+
         maps[0].addWalkableArea(tileSize, (int)(tileSize*2.5), (int)(tileSize*20.5), (int)(tileSize*6.5));
         maps[0].addWalkableArea((int)(tileSize*9.2), (int)(tileSize*8), (int)(tileSize*4.1), (int)(tileSize*13.6));
         maps[0].addWalkableArea((int)(tileSize*6), (int)(tileSize*15), (int)(tileSize*5), (int)(tileSize*3.5));
@@ -652,6 +684,7 @@ public class KCISimulator {
         maps[0].addDoors((int)(tileSize*(-16)), (int)(tileSize*(-19.5)),1 ,1 );
         maps[0].addDoors((int)(tileSize*(1)), (int)(tileSize*(-29.5)),2 ,1 );
 
+
         //rooms
         maps[0].addDoors((int)(tileSize*(1.8)), (int)(tileSize*2),0 ,2);
         maps[0].addDoors((int)(tileSize*(2)), (int)(tileSize*(-3)),0, 3);
@@ -661,16 +694,19 @@ public class KCISimulator {
         maps[0].getMovingNpcs().get(0).addDialogue("<html>Why aren’t you in class? Get back!</html>");
         maps[0].getMovingNpcs().get(0).addDialogue("<html>I see you are bringing the attendence back, you're lucky this time.</html>");
         maps[0].getMovingNpcs().get(0).addDialogue("<html>Don't you know you need a hall pass now!</html>");
-        maps[0].getMovingNpcs().get(0).addDialogue("<html>Where di you get that from?</html>");
+        maps[0].getMovingNpcs().get(0).addDialogue("<html>Where did you get that from?</html>");
+
 
         maps[0].addNpcs(10, (int)(tileSize*(-1)), (int)(tileSize*(15)), (int)(tileSize), (int)(tileSize*(29)), "Hall Monitor", new JLabel(new ImageIcon(new ImageIcon("hallmonitor.png").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT))));
         maps[0].getMovingNpcs().get(1).addDialogue("<html>Why aren’t you in class? Get back!</html>");
         maps[0].getMovingNpcs().get(1).addDialogue("<html>I see you are bringing the attendence back, you're lucky this time.</html>");
         maps[0].getMovingNpcs().get(1).addDialogue("<html>Don't you know you need a hall pass now!</html>");
-        maps[0].getMovingNpcs().get(1).addDialogue("<html>Where di you get that from?</html>");
+        maps[0].getMovingNpcs().get(1).addDialogue("<html>Where dih you get that from?</html>");
+
 
         
         maps[1] = new Map(0, 0, new JLabel(new ImageIcon(new ImageIcon("second.png").getImage().getScaledInstance((int)tileSize*40, (int)tileSize*40, Image.SCALE_DEFAULT))));
+
 
         maps[1].addWalkableArea(tileSize, (int)(tileSize*2.5), (int)(tileSize*20.5), (int)(tileSize*6.5));
         maps[1].addWalkableArea((int)(tileSize*9.2), (int)(tileSize*8), (int)(tileSize*4.1), (int)(tileSize*13.6));
@@ -697,13 +733,15 @@ public class KCISimulator {
         maps[1].getMovingNpcs().get(0).addDialogue("<html>Why aren’t you in class? Get back!</html>");
         maps[1].getMovingNpcs().get(0).addDialogue("<html>I see you are bringing the attendence back, you're lucky this time.</html>");
         maps[1].getMovingNpcs().get(0).addDialogue("<html>Don't you know you need a hall pass now!</html>");
-        maps[1].getMovingNpcs().get(0).addDialogue("<html>Where di you get that from?</html>");
+        maps[1].getMovingNpcs().get(0).addDialogue("<html>Where did you get that from?</html>");
+
 
         maps[1].addNpcs(10, (int)(tileSize*(-1)), (int)(tileSize*(12)), (int)(tileSize), (int)(tileSize*(29)), "Hall Monitor", new JLabel(new ImageIcon(new ImageIcon("hallmonitor.png").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT))));
         maps[1].getMovingNpcs().get(1).addDialogue("<html>Why aren’t you in class? Get back!</html>");
         maps[1].getMovingNpcs().get(1).addDialogue("<html>I see you are bringing the attendence back, you're lucky this time.</html>");
         maps[1].getMovingNpcs().get(1).addDialogue("<html>Don't you know you need a hall pass now!</html>");
-        maps[1].getMovingNpcs().get(1).addDialogue("<html>Where di you get that from?</html>");
+        maps[1].getMovingNpcs().get(1).addDialogue("<html>Where did you get that from?</html>");
+
 
         maps[2] = new Map(0, 0, new JLabel(new ImageIcon(new ImageIcon("csclass.png").getImage().getScaledInstance((int)tileSize*10, (int)tileSize*10, Image.SCALE_DEFAULT))));
         
@@ -747,6 +785,7 @@ public class KCISimulator {
         maps[4].getNpcs().get(1).addDialogue("<html>...</html>");
         maps[4].getNpcs().get(1).addDialogue("<html>...</html>");
 
+
         
         maps[5] = new Map(0, 0, new JLabel(new ImageIcon(new ImageIcon("office.png").getImage().getScaledInstance((int)tileSize*10, (int)tileSize*10, Image.SCALE_DEFAULT))));
         
@@ -757,7 +796,7 @@ public class KCISimulator {
         maps[5].addNpcs((int)(tileSize*(2.5)), (int)(tileSize)*(-4), "Office Receptionist", new JLabel(new ImageIcon(new ImageIcon("officerecep.png").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT))));
         maps[5].getNpcs().get(0).addDialogue("<html>Shouldn't you be in class right now?</html>");
         maps[5].getNpcs().get(0).addDialogue("<html>Thank you for bringing the attendance back, just so you know hall passes are now mandatory.</html>");
-        maps[5].getNpcs().get(0).addDialogue("<html>Unfortunately, we are all out of hall passes, you will just have to find one.</html>");
+        maps[5].getNpcs().get(0).addDialogue("<html>Unfortunately, we are all out of hall passes, you will just have to find one. Try checking one of the bathrooms.</html>");
         maps[4].getNpcs().get(0).addDialogue("<html>Where did you get that book from?</html>");
         
     }
@@ -780,4 +819,65 @@ public class KCISimulator {
         return false;
     }
     
+
+    public static void saveGame() {
+        if(delete) {
+            try {
+                new File("savegame.txt").delete();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            } 
+            System.out.println("Save deleted");
+        } else {
+            try (FileWriter writer = new FileWriter("savegame.txt")) {
+                writer.write(gameStage + "\n");
+                writer.write(time + "\n");
+                writer.write(timeStart + "\n");
+
+                for (String item : inventory.keySet()) {
+                    writer.write(item + "\n");
+                }
+
+                System.out.println("Game saved");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void loadGame() {
+        try (BufferedReader reader = new BufferedReader(new FileReader("savegame.txt"))) {
+            currentMap = 2;
+            gameStage = Integer.parseInt(reader.readLine());
+            time = Integer.parseInt(reader.readLine());
+            timeStart = Boolean.parseBoolean(reader.readLine());
+
+            int charX = (int)(tileSize*(-2));
+            int charY = (int)(tileSize*(4));
+            maps[currentMap].setCharacterX(charX);
+            maps[currentMap].setCharacterY(charY);
+            maps[currentMap].getMapImage().setLocation(charX, charY);
+
+            inventory.clear();
+            eastMenu.removeAll();
+            eastMenu.add(inventoryLabel);
+
+            String item;
+            while ((item = reader.readLine()) != null) {
+                ImageIcon icon = new ImageIcon(new ImageIcon(item + ".png").getImage().getScaledInstance(tileSize*2, tileSize*2, Image.SCALE_DEFAULT));
+                JLabel label = new JLabel(icon);
+                label.setAlignmentX(Component.CENTER_ALIGNMENT);
+                inventory.put(item, label);
+                eastMenu.add(label);
+            }
+
+            eastMenu.revalidate();
+            eastMenu.repaint();
+
+            System.out.println("Game loaded");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

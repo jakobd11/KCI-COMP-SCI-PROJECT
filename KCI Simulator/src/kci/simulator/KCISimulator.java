@@ -8,7 +8,7 @@ import java.util.*;
 public class KCISimulator {
     public static JFrame gameFrame, menuFrame;
     public static JPanel mapPanel, westMenu, eastMenu, pauseMenu, dialoguePanel;
-    public static JLabel character, rodney, interact, title, status, rodneyLabel, staminaBarLabel, dialogueText, inventoryLabel;
+    public static JLabel character, rodney, interact, title, status, rodneyLabel, staminaBarLabel, dialogueText, nameText, inventoryLabel;
     public static JButton play, quit, resume, savequit;
     public static JProgressBar staminaBar;
     public static JLayeredPane layeredPane;
@@ -205,7 +205,13 @@ public class KCISimulator {
         dialogueText.setBounds(0, 0, mapWidth-tileSize*4, mapHeight-tileSize*6);
         dialogueText.setForeground(Color.white);
         
+        nameText = new JLabel("");
+        nameText.setFont(new java.awt.Font("Times New Roman", Font.BOLD, 45));
+        nameText.setBounds(0, 0, mapWidth-tileSize*4, 45);
+        nameText.setForeground(Color.white);
+        
         dialoguePanel.add(dialogueText);
+        dialoguePanel.add(nameText, BorderLayout.NORTH);
         
         layeredPane.add(dialoguePanel, Integer.valueOf(6));
         
@@ -322,6 +328,7 @@ public class KCISimulator {
                                 case 2:
                                     inDialogue = true;
                                     dialogueText.setText(npc.getDialogue().get(gameStage));
+                                    nameText.setText(npc.getName());
                                     dialoguePanel.setVisible(true);
                                     break;
                             }
@@ -337,6 +344,7 @@ public class KCISimulator {
                         switch (gameStage) {
                             case 0:
                                 dialogueText.setText(npc.getDialogue().get(gameStage));
+                                nameText.setText(npc.getName());
                                 dialoguePanel.setVisible(true);
                                 new javax.swing.Timer(3000, new ActionListener() {
                                     @Override
@@ -382,6 +390,7 @@ public class KCISimulator {
                                 break;
                             case 1:
                                 dialogueText.setText(npc.getDialogue().get(gameStage));
+                                nameText.setText(npc.getName());
                                 dialoguePanel.setVisible(true);
                                 canExitDialogue = true;
                                 break;

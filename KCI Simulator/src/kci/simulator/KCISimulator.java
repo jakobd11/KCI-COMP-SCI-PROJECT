@@ -324,14 +324,10 @@ public class KCISimulator {
                         charY >= -npc.getNpcY() - tileSize && charY <= -npc.getNpcY() + tileSize) {
                         showInteract = true;
                         if (pressedKeys.contains(KeyEvent.VK_E)) {
-                            switch (currentMap) {
-                                case 2:
                                     inDialogue = true;
                                     dialogueText.setText(npc.getDialogue().get(gameStage));
                                     nameText.setText(npc.getName());
                                     dialoguePanel.setVisible(true);
-                                    break;
-                            }
                         }
                     }
                 }
@@ -342,6 +338,7 @@ public class KCISimulator {
                         inDialogue = true;
                         canExitDialogue = false;
                         switch (gameStage) {
+                            case 2:
                             case 0:
                                 dialogueText.setText(npc.getDialogue().get(gameStage));
                                 nameText.setText(npc.getName());
@@ -359,15 +356,7 @@ public class KCISimulator {
                                         }
                                         dialoguePanel.setVisible(false);
                                         currentMap = 2;
-                                        switch(currentMap) {
-                                            case 0:
-                                            case 1:
-                                                mapSize = 40*tileSize;
-                                                break;
-                                            case 2:
-                                                mapSize = 10*tileSize;
-                                                break;
-                                        }      
+                                        mapSize = 10*tileSize;   
                                         maps[currentMap].setCharacterX(maps[currentMap].getDoors().get(0).getDoorX());
                                         maps[currentMap].setCharacterY(maps[currentMap].getDoors().get(0).getDoorY());
                                         maps[currentMap].getMapImage().setVisible(true);
@@ -607,7 +596,7 @@ public class KCISimulator {
         
         //rooms 
         maps[1].addDoors((int)(tileSize*(-2)), (int)(tileSize*(-11.5)),0 ,4);
-        maps[1].addDoors((int)(tileSize*(-14)), (int)(tileSize*(-28)),0, 5);
+        maps[1].addDoors((int)(tileSize*(-13)), (int)(tileSize*(-28)),0, 5);
         
         //hall monitors
         maps[1].addNpcs(4, (int)(tileSize), (int)(tileSize*(14)), (int)(tileSize), (int)(tileSize), "Hall Monitor", new JLabel(new ImageIcon(new ImageIcon("hallmonitor.png").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT))));
@@ -633,17 +622,29 @@ public class KCISimulator {
         
         maps[3].addDoors((int)(tileSize*(2.5)), (int)(tileSize*(-4)),4 ,0);
         
+        maps[3].addNpcs((int)(tileSize*(-1)), (int)(tileSize)*(-4), "Bathroom Dweller", new JLabel(new ImageIcon(new ImageIcon("bathroomdweller.png").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT))));
+        maps[3].getNpcs().get(0).addDialogue("<html>What do you want?</html>");
+        maps[3].getNpcs().get(0).addDialogue("<html>Why are you bringing the attendance to the washroom?</html>");
+        
         maps[4] = new Map(0, 0, new JLabel(new ImageIcon(new ImageIcon("library.png").getImage().getScaledInstance((int)tileSize*10, (int)tileSize*10, Image.SCALE_DEFAULT))));
         
         maps[4].addWalkableArea(0, 0, (int)(tileSize*5.8), (int)(tileSize*10));
         
         maps[4].addDoors((int)(tileSize*(-0.2)), (int)(tileSize*(3.5)),3 ,1);
         
+        maps[4].addNpcs((int)(tileSize*(-3.5)), (int)(tileSize*(-4.5)), "Librarian", new JLabel(new ImageIcon(new ImageIcon("librarian.png").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT))));
+        maps[4].getNpcs().get(0).addDialogue("<html>Shouldn't you be in class right now?</html>");
+        maps[4].getNpcs().get(0).addDialogue("<html>That attendance should probably be in the office.</html>");
+        
         maps[5] = new Map(0, 0, new JLabel(new ImageIcon(new ImageIcon("office.png").getImage().getScaledInstance((int)tileSize*10, (int)tileSize*10, Image.SCALE_DEFAULT))));
         
         maps[5].addWalkableArea((int)(tileSize*4), 0, (int)(tileSize*6), (int)(tileSize*10));
         
         maps[5].addDoors((int)(tileSize*(0.5)), (int)(tileSize*(4)),4 ,1);
+        
+        maps[5].addNpcs((int)(tileSize*(2.5)), (int)(tileSize)*(-4), "Office Receptionist", new JLabel(new ImageIcon(new ImageIcon("officerecep.png").getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT))));
+        maps[5].getNpcs().get(0).addDialogue("<html>Shouldn't you be in class right now?</html>");
+        maps[5].getNpcs().get(0).addDialogue("<html>Thank you for bringing the attendance back, just so you know hall passes are now mandatory.</html>");
         
     }
     /**

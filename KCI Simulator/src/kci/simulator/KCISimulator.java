@@ -335,6 +335,7 @@ public class KCISimulator {
                         inDialogue = true;
                         canExitDialogue = false;
                         switch (gameStage) {
+                            case 2:
                             case 0:
                                 dialogueText.setText(npc.getDialogue().get(gameStage));
                                 dialoguePanel.setVisible(true);
@@ -351,15 +352,7 @@ public class KCISimulator {
                                         }
                                         dialoguePanel.setVisible(false);
                                         currentMap = 2;
-                                        switch(currentMap) {
-                                            case 0:
-                                            case 1:
-                                                mapSize = 40*tileSize;
-                                                break;
-                                            case 2:
-                                                mapSize = 10*tileSize;
-                                                break;
-                                        }      
+                                        mapSize = 10*tileSize;   
                                         maps[currentMap].setCharacterX(maps[currentMap].getDoors().get(0).getDoorX());
                                         maps[currentMap].setCharacterY(maps[currentMap].getDoors().get(0).getDoorY());
                                         maps[currentMap].getMapImage().setVisible(true);

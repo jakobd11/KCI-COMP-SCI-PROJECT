@@ -1,3 +1,9 @@
+/**
+ * Program Name: KCI Simulator
+ * Programmers: Jakob Dombrowski, Abdur Rehman Bin Asad, Ava Elmitt
+ * Date: June 17, 2025
+ * Description: Complete missions as a KCI student
+ */
 package kci.simulator;
 
 import javax.swing.*;
@@ -510,6 +516,10 @@ public class KCISimulator {
         gameFrame.pack();
     }
     
+    /**
+     * Method Name: Movement
+     * Description: Moves character if keys are being pressed and if stamina is being used
+     */
     public static void movement() {
         //declarations
         boolean sprinting = pressedKeys.contains(KeyEvent.VK_SHIFT);
@@ -577,7 +587,8 @@ public class KCISimulator {
     }
     
     /**
-     * 
+     * Method Name: Fill Maps:
+     * Description: Adds boundaries, NPCs, dialogue, and POIs to the map
      */
     public static void fillMaps() {
         maps[0] = new Map(0, 0, new JLabel(new ImageIcon(new ImageIcon("third.png").getImage().getScaledInstance((int)tileSize*40, (int)tileSize*40, Image.SCALE_DEFAULT))));
@@ -690,13 +701,14 @@ public class KCISimulator {
         
     }
     /**
-     * 
+     * Method Name: Can Move To
+     * Description: Ensures player only moves within set boundaries
      * @param x
      * @param y
      * @param width
      * @param height
      * @param map
-     * @return 
+     * @return - boolean that if true, the player can walk there, if false they are blocked
      */
     public static boolean canMoveTo(int x, int y, int width, int height, Map map) {
         Rectangle characterBounds = new Rectangle(x, y, width, height);

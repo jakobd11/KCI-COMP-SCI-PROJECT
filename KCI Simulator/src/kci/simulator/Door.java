@@ -1,4 +1,7 @@
-
+/**
+ * Class Name: Door
+ * Description: Switches maps when interacting with stairs or doors
+ */
 package kci.simulator;
 
 import javax.swing.*;

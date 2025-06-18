@@ -1,4 +1,7 @@
-
+/**
+ * Class Name: KCI Key Listener
+ * Description: tracks keys that are pressed
+ */
 package kci.simulator;
 
 import java.awt.*;

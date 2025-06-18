@@ -1,4 +1,7 @@
-
+/**
+ * Class Name: Map
+ * Description: Creates map and adds doors, NPCs, moving NPCs and walkable areas
+ */
 package kci.simulator;
 
 import javax.swing.*;

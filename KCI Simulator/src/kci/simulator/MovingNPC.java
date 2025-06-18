@@ -1,4 +1,7 @@
-
+/**
+ * Class Name: Moving NPC
+ * Description:Creates a location, name, image, position, and dialogue for an NPC that moves throughout the map
+ */
 package kci.simulator;
 
 import java.util.ArrayList;

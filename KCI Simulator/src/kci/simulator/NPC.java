@@ -1,6 +1,7 @@
-
-
-
+/**
+ * Class Name: NPC
+ * Description: Creates a location, name, image, position, and dialogue for an NPC
+ */
 package kci.simulator;
 
 import javax.swing.*;

@@ -5,8 +5,6 @@
  * Description: Complete missions as a KCI student
  */
 package kci.simulator;
-
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -14,6 +12,7 @@ import java.util.*;
 import java.io.*;
 
 public class KCISimulator {
+    // global declarations
     public static JFrame gameFrame, menuFrame, endFrame;
     public static JPanel mapPanel, westMenu, eastMenu, pauseMenu, dialoguePanel, cursedPanel;
     public static JLabel character, rodney, interact, title, status, rodneyLabel, staminaBarLabel, dialogueText, nameText, inventoryLabel, end, cursedText;
@@ -60,7 +59,7 @@ public class KCISimulator {
         layeredPane.setPreferredSize(new Dimension(mapWidth, mapHeight));
         gameFrame.add(layeredPane, BorderLayout.CENTER);
 
-
+        //making main menu frame
         menuFrame = new JFrame("Main Menu");
         menuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         menuFrame.setBounds((int)(screenSize.getWidth()/2) - 300, (int)(screenSize.getHeight()/2) - 150, 600, 300);
@@ -90,6 +89,7 @@ public class KCISimulator {
         menuFrame.add(play);
         menuFrame.add(quit);
         
+        //menu button actions
         play.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 menuFrame.dispose();
@@ -183,7 +183,7 @@ public class KCISimulator {
         westMenu.add(staminaBar);
         
 
-
+        //pause menu
         pauseMenu = new JPanel();
         pauseMenu.setBackground(new Color(0,0,0,50));
         pauseMenu.setBounds(tileSize*2, tileSize*1, mapWidth-tileSize*4, mapHeight-tileSize*2);
@@ -229,6 +229,7 @@ public class KCISimulator {
             }
         });
         
+        //displaying dialogue for NPCs
         dialoguePanel = new JPanel();
         dialoguePanel.setBackground(Color.black);
         dialoguePanel.setBounds(tileSize*2, tileSize*6, mapWidth-tileSize*4, mapHeight-tileSize*6);
@@ -265,7 +266,6 @@ public class KCISimulator {
         
         layeredPane.add(cursedPanel, Integer.valueOf(6));
         
-        //
         fillMaps();
                 
         //npc images
@@ -728,7 +728,6 @@ public class KCISimulator {
         maps[1].addWalkableArea((int)(tileSize*2.5), (int)(tileSize*32), (int)(tileSize*4), (int)(tileSize*5.2)); 
         maps[1].addWalkableArea((int)(tileSize*16), (int)(tileSize*27.2), (int)(tileSize*3.3), (int)(tileSize*5.8));
         maps[1].addWalkableArea((int)(tileSize*18), (int)(tileSize*21.4), (int)(tileSize*4), (int)(tileSize*6));
-//        maps[1].addWalkableArea((int)(tileSize*18.3), (int)(tileSize*20), (int)(tileSize*1.9), (int)(tileSize*12));
         
         //stairs
         maps[1].addDoors((int)(tileSize*(-10)), (int)(tileSize*2),0 ,0 );
@@ -811,6 +810,7 @@ public class KCISimulator {
         maps[4].getNpcs().get(0).addDialogue("<html>Where did you get that book from?</html>");
         
     }
+    
     /**
      * Method Name: Can Move To
      * Description: Ensures player only moves within set boundaries
@@ -831,7 +831,10 @@ public class KCISimulator {
         return false;
     }
     
-
+    /**
+     * Method Name: Save Game
+     * Description: Saves the game stage, time and inventory to a text file
+     */
     public static void saveGame() {
         if(delete) {
             try {
@@ -857,6 +860,10 @@ public class KCISimulator {
         }
     }
 
+    /**
+     * Method Name: Load Game
+     * Description: Get information from previous saves in the game so that the user can start from where they last played
+     */
     public static void loadGame() {
         try (BufferedReader reader = new BufferedReader(new FileReader("savegame.txt"))) {
             currentMap = 2;

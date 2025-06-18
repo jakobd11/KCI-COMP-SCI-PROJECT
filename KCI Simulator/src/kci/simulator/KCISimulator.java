@@ -8,7 +8,7 @@ import java.util.*;
 public class KCISimulator {
     public static JFrame gameFrame, menuFrame;
     public static JPanel mapPanel, westMenu, eastMenu, pauseMenu, dialoguePanel;
-    public static JLabel character, rodney, interact, title, status, rodneyLabel, staminaBarLabel, dialogueText;
+    public static JLabel character, rodney, interact, title, status, rodneyLabel, staminaBarLabel, dialogueText, inventoryLabel;
     public static JButton play, quit, resume, savequit;
     public static JProgressBar staminaBar;
     public static JLayeredPane layeredPane;
@@ -17,7 +17,7 @@ public class KCISimulator {
     public static boolean inDialogue = false, inPauseMenu = false, eKeyHeld, canExitDialogue = true;
     
     public static Set<Integer> pressedKeys = new HashSet<>();
-    public static ArrayList<JLabel> inventory = new ArrayList<>();
+    public static HashMap<String, JLabel> inventory = new HashMap<>();
     public static Map[] maps = new Map[6];
     
     public static ImageIcon walkingW, walkingS, walkingA, walkingD, 
@@ -105,12 +105,24 @@ public class KCISimulator {
         eastMenu.setPreferredSize(new Dimension((int)(screenSize.getWidth() - mapWidth) / 2, 100));
         eastMenu.setLayout(new BoxLayout(eastMenu, BoxLayout.Y_AXIS));
         eastMenu.setBackground(Color.black);
+        
+        inventoryLabel = new JLabel("Inventory");
+        inventoryLabel.setFont(new java.awt.Font("Times New Roman", Font.BOLD, 36));
+        inventoryLabel.setAlignmentX(Component.CENTER_ALIGNMENT); //posX, posY, sizeX, sizeY
+        inventoryLabel.setForeground(Color.white);
+        
+        inventory.put("money", new JLabel(new ImageIcon(new ImageIcon("money.png").getImage().getScaledInstance(tileSize*2, tileSize, Image.SCALE_DEFAULT))));
+        inventory.get("money").setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        eastMenu.add(inventoryLabel);
+        eastMenu.add(inventory.get("money"));
+        
         gameFrame.add(eastMenu, BorderLayout.EAST);
 
         
         //image of rodney's face
         rodney = new JLabel(new ImageIcon(new ImageIcon("rodneycropped.png")
-                .getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_SMOOTH)));
+                .getImage().getScaledInstance(tileSize*2, tileSize*2, Image.SCALE_SMOOTH)));
         rodney.setAlignmentX(Component.CENTER_ALIGNMENT);
         
         rodneyLabel = new JLabel("Rodney The Raider");
@@ -126,12 +138,6 @@ public class KCISimulator {
         staminaBarLabel.setForeground(Color.GREEN);
         staminaBarLabel.setOpaque(true);
         staminaBarLabel.setBackground(Color.BLACK);
-        
-        //image of rodney's face
-        rodney = new JLabel(new ImageIcon(new ImageIcon("rodneycropped.png")
-                .getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_SMOOTH)));
-        rodney.setAlignmentX(Component.CENTER_ALIGNMENT);
-        
 
         //green stamina bar 
         staminaBar = new JProgressBar(0, 100);
@@ -329,6 +335,7 @@ public class KCISimulator {
                         inDialogue = true;
                         canExitDialogue = false;
                         switch (gameStage) {
+                            case 2:
                             case 0:
                                 dialogueText.setText(npc.getDialogue().get(gameStage));
                                 dialoguePanel.setVisible(true);
@@ -345,15 +352,7 @@ public class KCISimulator {
                                         }
                                         dialoguePanel.setVisible(false);
                                         currentMap = 2;
-                                        switch(currentMap) {
-                                            case 0:
-                                            case 1:
-                                                mapSize = 40*tileSize;
-                                                break;
-                                            case 2:
-                                                mapSize = 10*tileSize;
-                                                break;
-                                        }      
+                                        mapSize = 10*tileSize;   
                                         maps[currentMap].setCharacterX(maps[currentMap].getDoors().get(0).getDoorX());
                                         maps[currentMap].setCharacterY(maps[currentMap].getDoors().get(0).getDoorY());
                                         maps[currentMap].getMapImage().setVisible(true);
@@ -443,6 +442,9 @@ public class KCISimulator {
                         case 2:
                             if (gameStage == 0) {
                                 gameStage++;
+                                inventory.put("attendance", new JLabel(new ImageIcon(new ImageIcon("attendance.png").getImage().getScaledInstance(tileSize*2, tileSize*2, Image.SCALE_DEFAULT))));
+                                inventory.get("attendance").setAlignmentX(Component.CENTER_ALIGNMENT);
+                                eastMenu.add(inventory.get("attendance"));
                             }
                             break;
                     }
@@ -575,12 +577,12 @@ public class KCISimulator {
         maps[1].addWalkableArea((int)(tileSize*9.2), (int)(tileSize*8), (int)(tileSize*4.1), (int)(tileSize*13.6));
         maps[1].addWalkableArea((int)(tileSize*6), (int)(tileSize*15), (int)(tileSize*5), (int)(tileSize*3.5));
         maps[1].addWalkableArea((int)(tileSize*10), (int)(tileSize*17.2), (int)(tileSize*11), (int)(tileSize*4.5));
-        maps[1].addWalkableArea((int)(tileSize*14.17), (int)(tileSize*19), (int)(tileSize*6), (int)(tileSize*16));
-        maps[1].addWalkableArea((int)(tileSize*4.6), (int)(tileSize*31.4), (int)(tileSize*14.8  ), (int)(tileSize*6));
+        maps[1].addWalkableArea((int)(tileSize*14.17), (int)(tileSize*19), (int)(tileSize*6.5), (int)(tileSize*13));
+        maps[1].addWalkableArea((int)(tileSize*4.6), (int)(tileSize*31.4), (int)(tileSize*14.67), (int)(tileSize*6));
         maps[1].addWalkableArea((int)(tileSize*2.5), (int)(tileSize*32), (int)(tileSize*4), (int)(tileSize*5.2)); 
-        maps[1].addWalkableArea((int)(tileSize*16), (int)(tileSize*27.2), (int)(tileSize*5), (int)(tileSize*5.8));
+        maps[1].addWalkableArea((int)(tileSize*16), (int)(tileSize*27.2), (int)(tileSize*3.3), (int)(tileSize*5.8));
         maps[1].addWalkableArea((int)(tileSize*18), (int)(tileSize*21.4), (int)(tileSize*4), (int)(tileSize*6));
-        maps[1].addWalkableArea((int)(tileSize*18.3), (int)(tileSize*20), (int)(tileSize*1.9), (int)(tileSize*12));
+//        maps[1].addWalkableArea((int)(tileSize*18.3), (int)(tileSize*20), (int)(tileSize*1.9), (int)(tileSize*12));
         
         //stairs
         maps[1].addDoors((int)(tileSize*(-10)), (int)(tileSize*2),0 ,0 );
@@ -619,13 +621,13 @@ public class KCISimulator {
         
         maps[4].addWalkableArea(0, 0, (int)(tileSize*5.8), (int)(tileSize*10));
         
-        maps[4].addDoors((int)(tileSize*(-0.2)), (int)(tileSize*(3.5)),4 ,1);
+        maps[4].addDoors((int)(tileSize*(-0.2)), (int)(tileSize*(3.5)),3 ,1);
         
         maps[5] = new Map(0, 0, new JLabel(new ImageIcon(new ImageIcon("office.png").getImage().getScaledInstance((int)tileSize*10, (int)tileSize*10, Image.SCALE_DEFAULT))));
         
         maps[5].addWalkableArea((int)(tileSize*4), 0, (int)(tileSize*6), (int)(tileSize*10));
         
-        maps[5].addDoors((int)(tileSize*(0.5)), (int)(tileSize*(4)),5 ,1);
+        maps[5].addDoors((int)(tileSize*(0.5)), (int)(tileSize*(4)),4 ,1);
         
     }
     /**

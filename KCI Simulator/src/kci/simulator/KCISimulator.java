@@ -457,6 +457,7 @@ public class KCISimulator {
                                 gameStage++;
                                 eastMenu.remove(inventory.get("attendance"));
                                 inventory.remove("attendance");
+                                eastMenu.repaint();
                             }
                             break;
                     }
